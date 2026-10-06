@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { authClient } from "@/lib/auth-client"
 import { toast } from "sonner"
@@ -44,7 +44,7 @@ export default function AuthPage() {
   // =========================================================
   // SIGN IN
   // =========================================================
-
+  const searchParams = useSearchParams()
   async function handleSignIn(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
@@ -67,9 +67,11 @@ export default function AuthPage() {
       }
 
       toast.success("Signed in successfully!")
-      router.push("/dashboard")
+      const callback = searchParams.get("callbackUrl") || "/"
+      router.push(callback)
     } catch (error) {
       toast.error("Something went wrong. Please try again.")
+      console.log(error)
     } finally {
       setIsLoading(false)
     }

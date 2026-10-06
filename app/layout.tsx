@@ -3,6 +3,9 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
+import HeaderComponent from "./(pages)/Components/HeaderCompontent";
+import FooterComponent from "./(pages)/Components/FooterComponent";
+import Footer from "./(pages)/Components/Footer";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -32,7 +35,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             enableSystem={false}
             disableTransitionOnChange
           >
-            {children}
+            <HeaderComponent />
+            <div className="mt-19">
+              {children}
+            </div>
+            {/* <FooterComponent/> */}
+            <Footer />
           </ThemeProvider>
         <Toaster />
       </body>
