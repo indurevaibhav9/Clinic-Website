@@ -1,12 +1,21 @@
-"use client"
-import Link from "next/link"
-import  HeaderComponent from "../Components/HeaderCompontent"
-import FooterComponent from "../Components/FooterComponent"
-import { useState } from "react"
-import Image from "next/image"
-import { Search, Stethoscope, PhoneCall, Calendar, ChevronDown, Menu } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { ClipboardList, Award, Rocket, Crown, Tag } from "lucide-react"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+import Link from "next/link";
+import FooterComponent from "../Components/FooterComponent";
+import { useState } from "react";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { Search, Calendar, Menu } from "lucide-react";
+import {
+  ClipboardList,
+  Award,
+  Rocket,
+  Crown,
+  Tag,
+  Stethoscope,
+  PhoneCall,
+  ChevronDown,
+} from "lucide-react";
 import {
   Sparkles,
   Ear,
@@ -15,35 +24,26 @@ import {
   Microscope,
   Bone,
   Baby,
-
-} from "lucide-react"
-import {
-  MapPin,
-
-
-  ChevronsRight,
-
-  ArrowUp,
-
-} from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent } from "@/components/ui/card"
+} from "lucide-react";
+import { MapPin, ChevronsRight, ArrowUp } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   UserCheck,
   Ambulance,
-
   Clock,
   Users,
   Smile,
   Bed,
   Trophy,
+} from "lucide-react";
+import {} from "lucide-react";
 
-} from "lucide-react"
-
-import { Plus, Minus, Pill } from "lucide-react"
-import ProfileMenu from "@/components/profileMenu"
+import { Plus, Minus, Pill } from "lucide-react";
+import ProfileMenu from "@/components/profileMenu";
+import AppointmentForm from "../Components/AppointmentForm";
+import Footer from "../Components/Footer";
 export default function HomeComponent() {
-
   const doctors = [
     {
       id: 1,
@@ -71,14 +71,14 @@ export default function HomeComponent() {
       specialty: "Heart Surgery Specialist",
       image: "/Assets/doctor-eishita.png",
     },
-  ]
+  ];
 
   // Track expanded state for each doctor by ID
-  const [expandedDoctorId, setExpandedDoctorId] = useState<number | null>(2)
+  const [expandedDoctorId, setExpandedDoctorId] = useState<number | null>(2);
 
   const toggleSocials = (id: number) => {
-    setExpandedDoctorId((prev) => (prev === id ? null : id))
-  }
+    setExpandedDoctorId((prev) => (prev === id ? null : id));
+  };
   const specialties = [
     {
       title: "Professional Staff",
@@ -104,7 +104,7 @@ export default function HomeComponent() {
         "On the other hand we denounce with righteous indignation and denounce with righteous indignation.",
       icon: Clock,
     },
-  ]
+  ];
 
   const stats = [
     {
@@ -127,7 +127,7 @@ export default function HomeComponent() {
       label: "Winning Awards",
       icon: Trophy,
     },
-  ]
+  ];
   const plans = [
     {
       name: "Regular Plan",
@@ -186,7 +186,7 @@ export default function HomeComponent() {
         "Free Equipment Use",
       ],
     },
-  ]
+  ];
 
   const nservices = [
     {
@@ -240,12 +240,12 @@ export default function HomeComponent() {
       pos: "top-[48%] left-[81%]",
       active: false,
     },
-  ]
+  ];
   const scrollToTop = () => {
     if (typeof window !== "undefined") {
-      window.scrollTo({ top: 0, behavior: "smooth" })
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
-  }
+  };
 
   const services = [
     { title: "Dental Care", href: "#", active: false },
@@ -254,7 +254,7 @@ export default function HomeComponent() {
     { title: "Cardiology", href: "#", active: false },
     { title: "Precise Diagnosis", href: "#", active: false },
     { title: "Ambulance Services", href: "#", active: false },
-  ]
+  ];
 
   const recentPosts = [
     {
@@ -269,7 +269,7 @@ export default function HomeComponent() {
       title: "Female doctors checking resu on digital tablet",
       image: "/Assets/post-2.jpg",
     },
-  ]
+  ];
 
   const openingHours = [
     { day: "Monday:", hours: "09:00 am - 10.00 pm" },
@@ -278,21 +278,18 @@ export default function HomeComponent() {
     { day: "Thursday:", hours: "09:00 am - 10.00 pm" },
     { day: "Friday:", hours: "09:00 am - 10.00 pm" },
     { day: "Sat - Sun day:", hours: "Closed", isClosed: true },
-  ]
-  const [activeService, setActiveService] = useState<number>(3)
+  ];
+  const [activeService, setActiveService] = useState<number>(3);
   function handleAppointmentClick() {
-    console.log("Appointment button clicked")
+    console.log("Appointment button clicked");
   }
+
+  
 
   return (
     <div className="flex min-h-screen flex-col justify-between bg-white">
-     
-       <HeaderComponent/>
-
       {/* MAIN BODY CONTENT */}
       <main className="flex-1 w-full bg-[#0d5cff]">
-
-
         <section className="relative w-full overflow-hidden bg-[#0d5cff] py-8 text-white sm:py-10 lg:py-12">
           {/* Background Glow */}
           <div
@@ -316,8 +313,9 @@ export default function HomeComponent() {
                   </h1>
 
                   <p className="mx-auto mt-4 max-w-md text-xs leading-relaxed text-gray-600 sm:text-sm lg:mx-0">
-                    It is a long established fact that a reader will be distracted by
-                    the readable content of a page when looking at its layout.
+                    It is a long established fact that a reader will be
+                    distracted by the readable content of a page when looking at
+                    its layout.
                   </p>
 
                   <div className="mt-6 flex justify-center lg:justify-start">
@@ -368,8 +366,9 @@ export default function HomeComponent() {
                   </div>
 
                   <p className="mt-5 text-xs leading-relaxed text-blue-100/90">
-                    It is a long established fact that a reader will be distracted by
-                    the readable content of a page when looking at its layout.
+                    It is a long established fact that a reader will be
+                    distracted by the readable content of a page when looking at
+                    its layout.
                   </p>
                 </div>
 
@@ -389,88 +388,12 @@ export default function HomeComponent() {
                   Apply For Appointment
                 </h3>
 
-                <form
-                  onSubmit={(e) => e.preventDefault()}
-                  className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2"
-                >
-                  {/* Full Name */}
-                  <div>
-                    <input
-                      type="text"
-                      name="fullName"
-                      required
-                      placeholder="Your Full Name*"
-                      className="w-full rounded-md bg-gray-100 px-4 py-3 text-xs text-gray-800 outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  {/* Email Address */}
-                  <div>
-                    <input
-                      type="email"
-                      name="email"
-                      required
-                      placeholder="Email Address*"
-                      className="w-full rounded-md bg-gray-100 px-4 py-3 text-xs text-gray-800 outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  {/* Preferred Date */}
-                  <div className="relative">
-                    <input
-                      type="date"
-                      name="preferredDate"
-                      aria-label="Preferred Date"
-                      className="w-full min-w-0 rounded-md bg-gray-100 px-4 py-3 pr-3 text-xs text-gray-800 outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  {/* Type of Services */}
-                  <div className="relative">
-                    <select
-                      name="service"
-                      defaultValue=""
-                      className="w-full min-w-0 appearance-none rounded-md bg-gray-100 px-4 py-3 pr-10 text-xs text-gray-800 outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="" disabled>
-                        Type of Services
-                      </option>
-                      <option value="cardiology">Cardiology</option>
-                      <option value="neurology">Neurology</option>
-                      <option value="pediatrics">Pediatrics</option>
-                    </select>
-
-                    <div className="pointer-events-none absolute right-0 top-0 flex h-full w-10 items-center justify-center rounded-r-md bg-emerald-500 text-white">
-                      <ChevronDown className="h-4 w-4" />
-                    </div>
-                  </div>
-
-                  {/* Address */}
-                  <div>
-                    <input
-                      type="text"
-                      name="address"
-                      required
-                      placeholder="Address*"
-                      className="w-full rounded-md bg-gray-100 px-4 py-3 text-xs text-gray-800 outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500"
-                    />
-                  </div>
-
-                  {/* Submit Button */}
-                  <div>
-                    <button
-                      type="submit"
-                      className="w-full rounded-md bg-[#0d5cff] py-3 text-xs font-semibold text-white shadow transition-colors hover:bg-blue-700"
-                    >
-                      Now Appointment
-                    </button>
-                  </div>
-                </form>
+                <AppointmentForm />
+                
               </div>
             </div>
           </div>
         </section>
-
 
         <section className="relative w-full overflow-hidden bg-white py-12 sm:py-16 lg:py-24 text-gray-900">
           {/* Decorative watermark intentionally omitted to avoid a broken image
@@ -478,7 +401,6 @@ export default function HomeComponent() {
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
-
               {/* LEFT CONTENT COLUMN */}
               <div className="lg:col-span-6 z-10 text-left">
                 {/* Pill Badge Tag */}
@@ -489,15 +411,17 @@ export default function HomeComponent() {
 
                 {/* Main Heading */}
                 <h2 className="mt-4 text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl lg:text-4xl leading-tight">
-                  Complete Medical Solutions In One <br className="hidden sm:inline" />
+                  Complete Medical Solutions In One{" "}
+                  <br className="hidden sm:inline" />
                   Place & Good Health
                 </h2>
 
                 {/* Paragraph Text */}
                 <p className="mt-4 text-xs sm:text-sm text-gray-500 leading-relaxed">
-                  There are many variations of passages of Lorem Ipsum available, but the majority have
-                  suffered alteration in some form, by injected humour, or randomised word which don't
-                  look even slightly believable. If you are going to use a passage.
+                  There are many variations of passages of Lorem Ipsum
+                  available, but the majority have suffered alteration in some
+                  form, by injected humour, or randomised word which don't look
+                  even slightly believable. If you are going to use a passage.
                 </p>
 
                 {/* Bullet Points Grid */}
@@ -534,7 +458,6 @@ export default function HomeComponent() {
               {/* RIGHT MEDIA COLUMN */}
               <div className="lg:col-span-6 relative flex justify-center lg:justify-end">
                 <div className="relative w-full max-w-lg lg:max-w-none">
-
                   {/* Main Medical Image Container */}
                   <div className="relative overflow-hidden rounded-2xl shadow-xl border border-gray-100">
                     <div className="relative h-[320px] sm:h-[420px] lg:h-[460px] w-full">
@@ -557,18 +480,20 @@ export default function HomeComponent() {
                     </div>
                     <div>
                       <div className="flex items-baseline gap-1">
-                        <span className="text-2xl sm:text-3xl font-extrabold text-blue-600">25</span>
-                        <span className="text-xs sm:text-sm font-bold text-gray-800">Years</span>
+                        <span className="text-2xl sm:text-3xl font-extrabold text-blue-600">
+                          25
+                        </span>
+                        <span className="text-xs sm:text-sm font-bold text-gray-800">
+                          Years
+                        </span>
                       </div>
                       <span className="text-xs font-semibold text-gray-700 block">
                         Experience
                       </span>
                     </div>
                   </div>
-
                 </div>
               </div>
-
             </div>
           </div>
         </section>
@@ -578,7 +503,6 @@ export default function HomeComponent() {
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-100/40 via-transparent to-transparent pointer-events-none" />
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
             {/* SECTION HEADER */}
             <div className="text-center max-w-2xl mx-auto">
               <div className="inline-flex items-center gap-2 rounded-full bg-blue-100/80 px-3.5 py-1 text-xs font-semibold text-blue-600">
@@ -594,7 +518,7 @@ export default function HomeComponent() {
             {/* PRICING CARDS GRID */}
             <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
               {plans.map((plan, index) => {
-                const Icon = plan.icon
+                const Icon = plan.icon;
 
                 return (
                   <div
@@ -622,16 +546,21 @@ export default function HomeComponent() {
                         {/* Price Tag */}
                         <div className="relative z-10 flex items-baseline text-white">
                           <span className="text-lg font-bold">$</span>
-                          <span className="text-3xl font-extrabold tracking-tight">{plan.price}</span>
-                          <span className="text-[11px] font-medium opacity-90 ml-0.5">/Per Mon</span>
+                          <span className="text-3xl font-extrabold tracking-tight">
+                            {plan.price}
+                          </span>
+                          <span className="text-[11px] font-medium opacity-90 ml-0.5">
+                            /Per Mon
+                          </span>
                         </div>
                       </div>
 
                       {/* Card Title & Features */}
                       <div className="p-6 text-center">
                         <h3
-                          className={`text-base font-bold ${plan.isFeatured ? "text-blue-600" : "text-gray-900"
-                            }`}
+                          className={`text-base font-bold ${
+                            plan.isFeatured ? "text-blue-600" : "text-gray-900"
+                          }`}
                         >
                           {plan.name}
                         </h3>
@@ -651,19 +580,19 @@ export default function HomeComponent() {
                     <div className="p-6 pt-0 text-center">
                       <Link
                         href="#"
-                        className={`inline-block w-full rounded-md py-2.5 text-xs font-semibold transition-all ${plan.isFeatured
-                          ? "bg-[#0d5cff] text-white shadow-md hover:bg-blue-700"
-                          : "border border-gray-300 bg-white text-gray-700 hover:border-blue-500 hover:text-blue-600"
-                          }`}
+                        className={`inline-block w-full rounded-md py-2.5 text-xs font-semibold transition-all ${
+                          plan.isFeatured
+                            ? "bg-[#0d5cff] text-white shadow-md hover:bg-blue-700"
+                            : "border border-gray-300 bg-white text-gray-700 hover:border-blue-500 hover:text-blue-600"
+                        }`}
                       >
                         Buy Now
                       </Link>
                     </div>
                   </div>
-                )
+                );
               })}
             </div>
-
           </div>
         </section>
         <section className="relative w-full overflow-hidden bg-[#0d5cff] py-16 sm:py-20 lg:py-28 text-white">
@@ -674,7 +603,6 @@ export default function HomeComponent() {
           <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1.5px,transparent_1.5px)] [background-size:32px_32px] pointer-events-none" />
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
             {/* SECTION HEADER */}
             <div className="text-center max-w-2xl mx-auto z-10 relative">
               <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold text-white backdrop-blur-sm border border-white/20">
@@ -690,8 +618,8 @@ export default function HomeComponent() {
             {/* DESKTOP VIEW: Scattered Interactive Floating Nodes (Hidden on Mobile/Tablet) */}
             <div className="relative mt-12 hidden lg:block h-[500px] w-full">
               {nservices.map((service) => {
-                const Icon = service.icon
-                const isSelected = activeService === service.id
+                const Icon = service.icon;
+                const isSelected = activeService === service.id;
 
                 return (
                   <div
@@ -727,40 +655,43 @@ export default function HomeComponent() {
                     {/* Circular Icon Node */}
                     <button
                       onClick={() => setActiveService(service.id)}
-                      className={`group relative flex h-14 w-14 items-center justify-center rounded-full bg-white p-1 transition-all duration-300 hover:scale-110 shadow-lg ${isSelected
-                        ? "ring-4 ring-emerald-400 ring-offset-2 ring-offset-[#0d5cff]"
-                        : "border-2 border-emerald-400 hover:ring-2 hover:ring-white"
-                        }`}
+                      className={`group relative flex h-14 w-14 items-center justify-center rounded-full bg-white p-1 transition-all duration-300 hover:scale-110 shadow-lg ${
+                        isSelected
+                          ? "ring-4 ring-emerald-400 ring-offset-2 ring-offset-[#0d5cff]"
+                          : "border-2 border-emerald-400 hover:ring-2 hover:ring-white"
+                      }`}
                     >
                       <div className="flex h-full w-full items-center justify-center rounded-full bg-white text-blue-600 transition-colors group-hover:bg-blue-50">
                         <Icon className="h-6 w-6 text-blue-600" />
                       </div>
                     </button>
                   </div>
-                )
+                );
               })}
             </div>
 
             {/* MOBILE & TABLET VIEW: Responsive Grid Layout (Visible on Small/Medium Screens) */}
             <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:hidden">
               {nservices.map((service) => {
-                const Icon = service.icon
-                const isSelected = activeService === service.id
+                const Icon = service.icon;
+                const isSelected = activeService === service.id;
 
                 return (
                   <button
                     key={service.id}
                     onClick={() => setActiveService(service.id)}
-                    className={`flex flex-col items-center justify-center rounded-2xl p-5 text-center transition-all ${isSelected
-                      ? "bg-white text-gray-900 shadow-xl"
-                      : "bg-white/10 text-white hover:bg-white/20 border border-white/10"
-                      }`}
+                    className={`flex flex-col items-center justify-center rounded-2xl p-5 text-center transition-all ${
+                      isSelected
+                        ? "bg-white text-gray-900 shadow-xl"
+                        : "bg-white/10 text-white hover:bg-white/20 border border-white/10"
+                    }`}
                   >
                     <div
-                      className={`flex h-12 w-12 items-center justify-center rounded-full p-1 mb-3 ${isSelected
-                        ? "bg-blue-600 text-white"
-                        : "bg-white text-blue-600 border-2 border-emerald-400"
-                        }`}
+                      className={`flex h-12 w-12 items-center justify-center rounded-full p-1 mb-3 ${
+                        isSelected
+                          ? "bg-blue-600 text-white"
+                          : "bg-white text-blue-600 border-2 border-emerald-400"
+                      }`}
                     >
                       <Icon className="h-6 w-6" />
                     </div>
@@ -768,10 +699,9 @@ export default function HomeComponent() {
                       {service.title}
                     </span>
                   </button>
-                )
+                );
               })}
             </div>
-
           </div>
         </section>
         <section className="relative w-full overflow-hidden bg-gradient-to-b from-[#f0f6ff] via-[#e8f1fd] to-white py-12 sm:py-16 lg:py-20 text-gray-900">
@@ -779,10 +709,8 @@ export default function HomeComponent() {
           <div className="absolute inset-0 bg-[radial-gradient(#0d5cff_1px,transparent_1px)] [background-size:32px_32px] opacity-[0.05] pointer-events-none" />
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
             {/* UPPER SECTION: Text Content & Medical Team Image */}
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
-
               {/* Left Side: Specialties Grid */}
               <div className="lg:col-span-7 z-10">
                 {/* shadcn Badge Component */}
@@ -801,7 +729,7 @@ export default function HomeComponent() {
                 {/* 2x2 Features Grid */}
                 <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2">
                   {specialties.map((item, index) => {
-                    const Icon = item.icon
+                    const Icon = item.icon;
                     return (
                       <div key={index} className="flex gap-4 items-start">
                         {/* Circle Icon Badge */}
@@ -818,7 +746,7 @@ export default function HomeComponent() {
                           </p>
                         </div>
                       </div>
-                    )
+                    );
                   })}
                 </div>
               </div>
@@ -835,7 +763,6 @@ export default function HomeComponent() {
                   />
                 </div>
               </div>
-
             </div>
 
             {/* LOWER SECTION: Blue Statistics Banner */}
@@ -847,7 +774,7 @@ export default function HomeComponent() {
                 <CardContent className="p-6 sm:p-10 relative z-10">
                   <div className="grid grid-cols-2 gap-8 lg:grid-cols-4 items-center text-center">
                     {stats.map((stat, index) => {
-                      const Icon = stat.icon
+                      const Icon = stat.icon;
                       return (
                         <div key={index} className="flex flex-col items-center">
                           {/* Round Green Icon */}
@@ -865,13 +792,12 @@ export default function HomeComponent() {
                             {stat.label}
                           </span>
                         </div>
-                      )
+                      );
                     })}
                   </div>
                 </CardContent>
               </Card>
             </div>
-
           </div>
         </section>
         <section className="relative w-full overflow-hidden bg-white py-16 sm:py-20 lg:py-24 text-gray-900">
@@ -887,7 +813,6 @@ export default function HomeComponent() {
           </div>
 
           <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
             {/* SECTION HEADER */}
             <div className="text-center max-w-xl mx-auto">
               <Badge
@@ -906,7 +831,7 @@ export default function HomeComponent() {
             {/* DOCTORS GRID */}
             <div className="mt-12 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
               {doctors.map((doctor) => {
-                const isExpanded = expandedDoctorId === doctor.id
+                const isExpanded = expandedDoctorId === doctor.id;
 
                 return (
                   <Card
@@ -987,183 +912,13 @@ export default function HomeComponent() {
                       </div>
                     </CardContent>
                   </Card>
-                )
+                );
               })}
             </div>
-
           </div>
         </section>
-        <footer className="relative w-full bg-[#03091e] text-slate-300 pt-16 lg:pt-20 pb-12 overflow-hidden">
-          {/* BACKGROUND GRAPHIC PATTERN */}
-          <div className="absolute inset-0 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:32px_32px] opacity-5 pointer-events-none" />
-
-          <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
-            {/* TOP FLOATING CONTACT BANNER */}
-            <div className="relative -mt-28 mb-16 lg:-mt-32">
-              <Card className="border-none bg-[#0d5cff] text-white shadow-2xl rounded-2xl overflow-hidden">
-                <CardContent className="p-6 sm:p-8">
-                  <div className="grid grid-cols-1 gap-6 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/20">
-
-                    {/* Office Address */}
-                    <div className="flex items-center gap-4 pt-4 md:pt-0 md:pr-4">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-emerald-400 text-white shadow-md">
-                        <MapPin className="h-6 w-6" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-white">Office Address</h4>
-                        <p className="mt-1 text-xs text-blue-100 leading-tight">
-                          259 Hilton Street, MK 256 <br />
-                          North, United State
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Working Hours */}
-                    <div className="flex items-center gap-4 pt-4 md:pt-0 md:px-6">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-emerald-400 text-white shadow-md">
-                        <Clock className="h-6 w-6" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-white">Working Hours</h4>
-                        <p className="mt-1 text-xs text-blue-100 leading-tight">
-                          Weekdays 8:00 am – 10:00 pm <br />
-                          Weekend 10:00 am – 12:00 pm
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Contact Us */}
-                    <div className="flex items-center gap-4 pt-4 md:pt-0 md:pl-6">
-                      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-emerald-400 text-white shadow-md">
-                        <PhoneCall className="h-6 w-6" />
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-bold text-white">Contact Us</h4>
-                        <p className="mt-1 text-xs text-blue-100 leading-tight">
-                          +88 ( 5548 ) 6548 <br />
-                          infoyourgmail.com
-                        </p>
-                      </div>
-                    </div>
-
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* MAIN FOOTER CONTENT GRID */}
-            <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-12 text-xs">
-
-              {/* COLUMN 1: BRANDING & ABOUT */}
-              <div className="lg:col-span-3 space-y-4">
-                <div className="flex items-center gap-2">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600 text-white shadow-md">
-                    <Stethoscope className="h-6 w-6" />
-                  </div>
-                  <div>
-                    <span className="text-lg font-bold text-white block leading-none">MediFast</span>
-                    <span className="text-[10px] font-medium text-slate-400">Health & Medical</span>
-                  </div>
-                </div>
-
-                <p className="text-slate-400 leading-relaxed pt-2">
-                  Lorem Ipsum is simply dummys text of the printing and typesetting industry.
-                  Lorem Ipsum has been the industrys established fact that a reader will be.
-                </p>
-
-                {/* Social Links */}
-                <div className="flex items-center gap-2 pt-2">
-                  <Link
-                    href="#"
-                    className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#03091e] hover:bg-blue-600 hover:text-white transition-colors"
-                  >
-                    {/* <FacebookIcon className="h-4 w-4" /> */}
-                    <span className="sr-only">Facebook</span>
-                  </Link>
-                  <Link
-                    href="#"
-                    className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#03091e] hover:bg-sky-500 hover:text-white transition-colors"
-                  >
-                    {/* <TwitterIcon className="h-4 w-4" /> */}
-                    <span className="sr-only">Twitter</span>
-                  </Link>
-                  <Link
-                    href="#"
-                    className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#03091e] hover:bg-blue-700 hover:text-white transition-colors"
-                  >
-                    {/* <LinkedinIcon className="h-4 w-4" /> */}
-                    <span className="sr-only">LinkedIn</span>
-                  </Link>
-                  <Link
-                    href="#"
-                    className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#03091e] hover:bg-red-600 hover:text-white transition-colors"
-                  >
-                    {/* <YoutubeIcon className="h-4 w-4" /> */}
-                    <span className="sr-only">YouTube</span>
-                  </Link>
-                </div>
-              </div>
-
-              {/* COLUMN 2: OUR SERVICES */}
-              <div className="lg:col-span-3">
-                <h3 className="text-base font-bold text-white mb-4">Our Service</h3>
-                <ul className="space-y-2.5">
-                  {services.map((service, index) => (
-                    <li key={index}>
-                      <Link
-                        href={service.href}
-                        className={`flex items-center gap-2 transition-colors ${service.active
-                          ? "text-blue-500 font-semibold"
-                          : "text-slate-400 hover:text-white"
-                          }`}
-                      >
-                        <ChevronsRight className="h-3.5 w-3.5 shrink-0" />
-                        <span>{service.title}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-
-
-
-              {/* COLUMN 4: OPENING HOURS */}
-              <div className="lg:col-span-3">
-                <h3 className="text-base font-bold text-white mb-4">Opening Hours</h3>
-                <ul className="space-y-2 text-slate-400">
-                  {openingHours.map((item, index) => (
-                    <li key={index} className="flex justify-between items-center border-b border-slate-800/60 pb-1.5">
-                      <div className="flex items-center gap-1.5">
-                        <ChevronsRight className="h-3 w-3 text-slate-500 shrink-0" />
-                        <span>{item.day}</span>
-                      </div>
-                      <span className={item.isClosed ? "text-blue-500 font-bold" : "text-slate-300"}>
-                        {item.hours}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-            </div>
-
-            {/* SCROLL TO TOP FLOATING BUTTON */}
-            <button
-              onClick={scrollToTop}
-              className="fixed bottom-6 right-6 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-blue-600 text-white shadow-xl transition-all hover:bg-blue-700 active:scale-95"
-              aria-label="Scroll to top"
-            >
-              <ArrowUp className="h-5 w-5" />
-            </button>
-
-          </div>
-        </footer>
+        
       </main>
-
-     <FooterComponent/>
-     
     </div>
-  )
+  );
 }
