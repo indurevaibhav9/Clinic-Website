@@ -128,3 +128,7 @@
     @apply font-sans;
   }
 }
+
+.primary_button {
+  @apply w-full rounded bg-blue-600 p-2 text-white hover:bg-blue-700 disabled:opacity-50;
+}

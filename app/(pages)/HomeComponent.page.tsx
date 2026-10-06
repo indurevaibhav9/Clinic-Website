@@ -39,6 +39,7 @@ import {
 } from "lucide-react"
 
 import { Plus, Minus, Pill } from "lucide-react"
+import ProfileMenu from "@/components/profileMenu"
 export default function HomeComponent() {
 
   const doctors = [
@@ -327,6 +328,7 @@ export default function HomeComponent() {
             <Link href="#" className="whitespace-nowrap text-sm font-medium text-gray-700 transition-colors hover:text-blue-600">
               Contact Us
             </Link>
+            
           </nav>
 
           {/* Right Section: Action Buttons */}
@@ -346,7 +348,7 @@ export default function HomeComponent() {
             >
               Appointment
             </Button>
-
+            <ProfileMenu />
             {/* Mobile Navigation Trigger */}
             <Button
               variant="ghost"
