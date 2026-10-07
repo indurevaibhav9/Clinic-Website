@@ -1,38 +1,86 @@
+/* eslint-disable react-hooks/set-state-in-effect */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+
+import { useEffect, useState } from "react";
 import PreviousAppointment from "@/components/appointments/PreviousAppointment";
-import {
-  CalendarDays,
-  Clock,
-  MapPin,
-  Stethoscope,
-} from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+import { CalendarDays, Loader2 } from "lucide-react";
+
+interface AppointmentType {
+  id: string;
+  _id?: string;
+  name?: string;
+  patientName?: string;
+  email?: string;
+  date: string;
+  time: string;
+  service: string;
+  address: string;
+  status: string;
+}
 
 export default function PreviousAppointmentsPage() {
-  const appointments = [
-    {
-      id: "1008",
-      date: "15 September 2026",
-      time: "11:00 AM",
-      service: "General Consultation",
-      address: "Pune, Maharashtra",
-      status: "Completed",
-    },
-    {
-      id: "1002",
-      date: "28 August 2026",
-      time: "3:30 PM",
-      service: "Follow-up Consultation",
-      address: "Pune, Maharashtra",
-      status: "Completed",
-    },
-    {
-      id: "998",
-      date: "10 August 2026",
-      time: "12:00 PM",
-      service: "Health Consultation",
-      address: "Pune, Maharashtra",
-      status: "Completed",
-    },
-  ];
+  const { data: session, isPending: isSessionPending } =
+    authClient.useSession();
+
+  const [appointments, setAppointments] = useState<AppointmentType[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (isSessionPending) return;
+
+    if (!session?.user?.email) {
+      setIsLoading(false);
+      return;
+    }
+
+    const fetchCompletedAppointments = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const response = await fetch(
+          `/api/appointments/completed?email=${encodeURIComponent(session.user.email)}`,
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch completed appointments.");
+        }
+
+        const data = await response.json();
+
+        const formattedAppointments = (data.appointments || []).map(
+          (item: any) => ({
+            id: item._id || item.id,
+            name: item.patientName || item.name || "N/A",
+            email: item.email,
+            date: item.date
+              ? new Date(item.date).toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })
+              : item.date,
+            time: item.time,
+            service: item.service,
+            address: item.address,
+            status: item.status,
+          }),
+        );
+
+        setAppointments(formattedAppointments);
+      } catch (err: any) {
+        console.error("Fetch error:", err);
+        setError(err.message || "An unexpected error occurred.");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchCompletedAppointments();
+  }, [session, isSessionPending]);
 
   return (
     <main className="min-h-screen bg-blue-600 px-6 py-10">
@@ -48,10 +96,27 @@ export default function PreviousAppointmentsPage() {
           </p>
         </div>
 
-        {/* Appointment List */}
+        {/* Appointment List Container */}
         <div className="space-y-4">
-          {appointments.length === 0 ? (
-            <div className="rounded-2xl bg-white p-10 text-center">
+          {isLoading || isSessionPending ? (
+            <div className="flex flex-col items-center justify-center rounded-2xl bg-white p-12 text-center shadow-md">
+              <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
+              <p className="mt-4 text-sm font-medium text-gray-600">
+                Loading your appointment history...
+              </p>
+            </div>
+          ) : error ? (
+            <div className="rounded-2xl bg-white p-10 text-center shadow-md">
+              <p className="font-semibold text-red-500">{error}</p>
+              <button
+                onClick={() => window.location.reload()}
+                className="mt-4 rounded-lg bg-blue-600 px-4 py-2 text-xs font-semibold text-white hover:bg-blue-700"
+              >
+                Retry
+              </button>
+            </div>
+          ) : appointments.length === 0 ? (
+            <div className="rounded-2xl bg-white p-10 text-center shadow-md">
               <CalendarDays className="mx-auto h-12 w-12 text-gray-400" />
 
               <h2 className="mt-4 text-xl font-semibold">
@@ -59,7 +124,7 @@ export default function PreviousAppointmentsPage() {
               </h2>
 
               <p className="mt-2 text-gray-500">
-                Your appointment history will appear here.
+                Your completed appointment history will appear here.
               </p>
             </div>
           ) : (

@@ -1,10 +1,15 @@
+"use client";
+
+import React from "react";
 import {
   CalendarDays,
   Clock,
-  MapPin,
-  Stethoscope,
-  User,
   Mail,
+  MapPin,
+  User,
+  Stethoscope,
+  CheckCircle2,
+  Clock3,
 } from "lucide-react";
 
 export interface UpcomingAppointmentProps {
@@ -28,126 +33,94 @@ export default function UpcomingAppointment({
   address,
   status,
 }: UpcomingAppointmentProps) {
-  return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b pb-4">
-        <div>
-          <p className="text-sm text-gray-500">
-            Appointment #{id}
-          </p>
+  const isConfirmed = status.toLowerCase() === "confirmed";
 
-          <h2 className="mt-1 text-xl font-semibold text-gray-900">
-            {service}
-          </h2>
+  return (
+    <div className="group relative overflow-hidden rounded-2xl bg-white p-6 shadow-md transition-all duration-300 hover:shadow-xl">
+      {/* Top Bar: Service Tag & Status Badge */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 pb-4">
+        <div className="flex items-center gap-2">
+          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600">
+            <Stethoscope className="h-5 w-5" />
+          </div>
+          <div>
+            <span className="text-xs font-semibold uppercase tracking-wider text-blue-600">
+              Appointment #{id}
+            </span>
+            <h3 className="text-lg font-bold text-gray-900">{service}</h3>
+          </div>
         </div>
 
-        <span className="rounded-full bg-green-100 px-4 py-1.5 text-sm font-medium text-green-700">
-          {status}
-        </span>
+        {/* Dynamic Status Badge */}
+        <div
+          className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
+            isConfirmed
+              ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+              : "bg-amber-50 text-amber-700 border border-amber-200"
+          }`}
+        >
+          {isConfirmed ? (
+            <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600" />
+          ) : (
+            <Clock3 className="h-3.5 w-3.5 text-amber-600" />
+          )}
+          <span>{status}</span>
+        </div>
       </div>
 
-      {/* Details */}
-      <div className="grid gap-4 py-5 sm:grid-cols-2">
-        {/* Patient */}
-        <div className="flex items-center gap-3">
-          <User className="h-5 w-5 text-blue-600" />
-
+      {/* Appointment Details Grid */}
+      <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-4">
+        {/* Patient Name */}
+        <div className="flex items-start gap-3">
+          <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-500">
+            <User className="h-4 w-4" />
+          </div>
           <div>
-            <p className="text-xs text-gray-500">
-              Patient
-            </p>
+            <p className="text-xs font-medium text-gray-400">Patient Name</p>
+            <p className="text-sm font-semibold text-gray-800">{name}</p>
+          </div>
+        </div>
 
-            <p className="font-medium">
-              {name}
+        {/* Date & Time */}
+        <div className="flex items-start gap-3">
+          <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-500">
+            <CalendarDays className="h-4 w-4" />
+          </div>
+          <div>
+            <p className="text-xs font-medium text-gray-400">Date & Time</p>
+            <p className="text-sm font-semibold text-gray-800">{date}</p>
+            <p className="flex items-center gap-1 text-xs text-gray-500 mt-0.5">
+              <Clock className="h-3 w-3" /> {time}
             </p>
           </div>
         </div>
 
         {/* Email */}
-        <div className="flex items-center gap-3">
-          <Mail className="h-5 w-5 text-blue-600" />
-
-          <div>
-            <p className="text-xs text-gray-500">
-              Email
-            </p>
-
-            <p className="font-medium">
+        <div className="flex items-start gap-3">
+          <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-500">
+            <Mail className="h-4 w-4" />
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs font-medium text-gray-400">Email</p>
+            <p
+              className="truncate text-sm font-semibold text-gray-800"
+              title={email}
+            >
               {email}
             </p>
           </div>
         </div>
 
-        {/* Date */}
-        <div className="flex items-center gap-3">
-          <CalendarDays className="h-5 w-5 text-blue-600" />
-
+        {/* Location / Address */}
+        <div className="flex items-start gap-3">
+          <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-gray-100 text-gray-500">
+            <MapPin className="h-4 w-4" />
+          </div>
           <div>
-            <p className="text-xs text-gray-500">
-              Date
-            </p>
-
-            <p className="font-medium">
-              {date}
-            </p>
+            <p className="text-xs font-medium text-gray-400">Location</p>
+            <p className="text-sm font-semibold text-gray-800">{address}</p>
           </div>
         </div>
-
-        {/* Time */}
-        <div className="flex items-center gap-3">
-          <Clock className="h-5 w-5 text-blue-600" />
-
-          <div>
-            <p className="text-xs text-gray-500">
-              Time
-            </p>
-
-            <p className="font-medium">
-              {time}
-            </p>
-          </div>
-        </div>
-
-        {/* Service */}
-        <div className="flex items-center gap-3">
-          <Stethoscope className="h-5 w-5 text-blue-600" />
-
-          <div>
-            <p className="text-xs text-gray-500">
-              Service
-            </p>
-
-            <p className="font-medium">
-              {service}
-            </p>
-          </div>
-        </div>
-
-        {/* Address */}
-        <div className="flex items-center gap-3">
-          <MapPin className="h-5 w-5 text-blue-600" />
-
-          <div>
-            <p className="text-xs text-gray-500">
-              Address
-            </p>
-
-            <p className="font-medium">
-              {address}
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Actions */}
-      <div className="flex justify-end border-t pt-4">
-        <button
-          type="button"
-          className="rounded-lg border border-red-500 px-5 py-2.5 text-sm font-medium text-red-500 transition hover:bg-red-50"
-        >
-          Cancel Appointment
-        </button>
       </div>
     </div>
   );

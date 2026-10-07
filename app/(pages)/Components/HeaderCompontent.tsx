@@ -16,6 +16,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import AppointmentForm from "./AppointmentForm";
+import SearchBar from "./SearchBar";
 
 export default function HeaderComponent() {
   const router = useRouter();
@@ -45,16 +46,13 @@ export default function HeaderComponent() {
   };
   return (
     <div className="fixed top-0 left-0 right-0 z-50">
-      <Dialog
-        open={showForm}
-        onOpenChange={setShowForm}
-      >
+      <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>Book an Appointment</DialogTitle>
           </DialogHeader>
 
-          <AppointmentForm setShowForm={setShowForm}/>
+          <AppointmentForm setShowForm={setShowForm} />
         </DialogContent>
       </Dialog>
 
@@ -91,8 +89,16 @@ export default function HeaderComponent() {
             >
               Home
             </Link>
+            {session && session.user.role === "ADMIN" && (
+              <Link
+                href="/admin"
+                className="whitespace-nowrap text-sm font-medium transition-colors hover:text-blue-700"
+              >
+                Admin Dashboard
+              </Link>
+            )}
             <Link
-              href="/about"
+              href="/aboutUs"
               className="whitespace-nowrap text-sm font-medium text-gray-700 transition-colors hover:text-blue-600"
             >
               About
@@ -130,14 +136,15 @@ export default function HeaderComponent() {
           </nav>
           {/* Right Section: Action Buttons */}
           <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-            <Button
+            {/* <Button
               variant="outline"
               size="icon"
               className="h-10 w-10 rounded-md border-blue-500 text-blue-600 hover:bg-blue-50 hover:text-blue-700"
             >
               <Search className="h-5 w-5" />
               <span className="sr-only">Search</span>
-            </Button>
+            </Button> */}
+            <SearchBar />
             <Button
               className="hidden h-10 rounded-md bg-blue-600 px-4 text-sm font-semibold text-white shadow-none hover:bg-blue-700 sm:flex sm:px-6"
               onClick={handleAppointmentClick}
