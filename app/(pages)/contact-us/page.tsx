@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { useState } from "react";
@@ -39,13 +40,18 @@ const locations: LocationInfo[] = [
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
     phone: "",
     subject: "",
     message: "",
   });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [statusMessage, setStatusMessage] = useState<{
+    type: "success" | "error" | null;
+    text: string;
+  }>({ type: null, text: "" });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -53,10 +59,48 @@ export default function ContactPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form Submitted:", formData);
-    // Add your API submission logic here
+    setIsSubmitting(true);
+    setStatusMessage({ type: null, text: "" });
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to submit message");
+      }
+
+      setStatusMessage({
+        type: "success",
+        text: "Thank you! Your message has been sent successfully.",
+      });
+
+      // Reset form after successful submission
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        subject: "",
+        message: "",
+      });
+    } catch (error: any) {
+      setStatusMessage({
+        type: "error",
+        text:
+          error.message || "An unexpected error occurred. Please try again.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -90,7 +134,7 @@ export default function ContactPage() {
                 allowFullScreen={true}
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                />
+              />
             </div>
           </div>
 
@@ -141,28 +185,28 @@ export default function ContactPage() {
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  name="firstName"
-                  placeholder="First Name*"
-                  required
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border border-transparent rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
-                />
-                <input
-                  type="text"
-                  name="lastName"
-                  placeholder="Last Name*"
-                  required
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border border-transparent rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
-                />
-              </div>
+              {statusMessage.text && (
+                <div
+                  className={`p-4 rounded-lg text-sm border ${
+                    statusMessage.type === "success"
+                      ? "bg-green-50 text-green-700 border-green-200"
+                      : "bg-red-50 text-red-700 border-red-200"
+                  }`}
+                >
+                  {statusMessage.text}
+                </div>
+              )}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Name*"
+                  required
+                  value={formData.name}
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-white border border-transparent rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                />
                 <input
                   type="email"
                   name="email"
@@ -172,18 +216,17 @@ export default function ContactPage() {
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-white border border-transparent rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
                 />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <input
                   type="tel"
                   name="phone"
-                  placeholder="Phone Number*"
-                  required
+                  placeholder="Phone Number"
                   value={formData.phone}
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-white border border-transparent rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
                 />
-              </div>
-
-              <div>
                 <input
                   type="text"
                   name="subject"
@@ -198,7 +241,8 @@ export default function ContactPage() {
                 <textarea
                   name="message"
                   rows={5}
-                  placeholder="Your Message here"
+                  placeholder="Your Message here*"
+                  required
                   value={formData.message}
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-white border border-transparent rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm resize-none"
@@ -207,9 +251,10 @@ export default function ContactPage() {
 
               <button
                 type="submit"
-                className="w-full py-3.5 px-6 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow transition duration-200"
+                disabled={isSubmitting}
+                className="w-full py-3.5 px-6 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg shadow transition duration-200 disabled:opacity-50"
               >
-                Send Message
+                {isSubmitting ? "Sending..." : "Send Message"}
               </button>
             </form>
           </div>
@@ -218,12 +263,12 @@ export default function ContactPage() {
           <div className="lg:col-span-5 relative flex justify-center lg:justify-end mt-8 lg:mt-0">
             <div className="relative w-full max-w-md h-[400px] sm:h-[480px]">
               <Image
-                src="/doctors-team2.png" // Place your transparent doctors image in /public folder
+                src="/doctors-team2.png"
                 alt="Medical Team"
                 fill
                 className="object-contain"
                 priority
-                sizes="lg"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
             </div>
           </div>
