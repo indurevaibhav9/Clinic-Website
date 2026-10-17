@@ -42,7 +42,7 @@ export default function PreviousAppointmentsPage() {
         setError(null);
 
         const response = await fetch(
-          `/api/appointments/completed?email=${encodeURIComponent(session.user.email)}`,
+          `/api/appointments/completed?email=${encodeURIComponent(session.user.id)}`,
         );
 
         if (!response.ok) {

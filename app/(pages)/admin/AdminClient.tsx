@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-// --- TYPES ---
+// --- TYPES ALIGNED WITH DB SCHEMAS ---
 interface Appointment {
   _id: string;
   patientName: string;
@@ -25,7 +25,7 @@ interface Appointment {
   service: string;
   date: string;
   time: string;
-  address: string;
+  address?: string;
   status: "PENDING" | "CONFIRMED" | "COMPLETED" | "CANCELLED";
 }
 
@@ -42,8 +42,10 @@ interface Feedback {
 
 interface FAQSubmission {
   _id: string;
-  name?: string;
-  email?: string;
+  name: string;
+  email: string;
+  phone: string;
+  service: string;
   question: string;
   createdAt?: string;
 }
@@ -89,14 +91,11 @@ export default function AdminClient() {
   });
   const [commSubmitting, setCommSubmitting] = useState(false);
 
-  // Search Filter State for Tables
-  const [searchTerm, setSearchTerm] = useState("");
-
   // Role Guard Check
   const isAdmin =
     (session?.user as any)?.role === "admin" ||
     (session?.user as any)?.role === "ADMIN";
-  // const isAdmin = true
+
   // --- FETCH HANDLERS ---
   const fetchAppointments = useCallback(async () => {
     setLoadingData(true);
@@ -117,7 +116,7 @@ export default function AdminClient() {
     }
   }, [statusFilter]);
 
-  const fetchFeedbacks = async () => {
+  const fetchFeedbacks = useCallback(async () => {
     setLoadingData(true);
     try {
       const res = await fetch("http://localhost:3000/api/admin/feedbacks");
@@ -129,9 +128,9 @@ export default function AdminClient() {
     } finally {
       setLoadingData(false);
     }
-  };
+  }, []);
 
-  const fetchFaqs = async () => {
+  const fetchFaqs = useCallback(async () => {
     setLoadingData(true);
     try {
       const res = await fetch("http://localhost:3000/api/admin/faqs");
@@ -143,9 +142,9 @@ export default function AdminClient() {
     } finally {
       setLoadingData(false);
     }
-  };
+  }, []);
 
-  const fetchContacts = async () => {
+  const fetchContacts = useCallback(async () => {
     setLoadingData(true);
     try {
       const res = await fetch("http://localhost:3000/api/admin/contacts");
@@ -157,17 +156,29 @@ export default function AdminClient() {
     } finally {
       setLoadingData(false);
     }
-  };
+  }, []);
 
   // Trigger Data Fetching on Tab/Filter Change
   useEffect(() => {
     if (!isAdmin) return;
 
-    if (activeTab === "appointments") fetchAppointments();
-    if (activeTab === "feedbacks") fetchFeedbacks();
-    if (activeTab === "faqs") fetchFaqs();
-    if (activeTab === "contacts") fetchContacts();
-  }, [activeTab, statusFilter, isAdmin, fetchAppointments]);
+    const loadData = async () => {
+      if (activeTab === "appointments") await fetchAppointments();
+      if (activeTab === "feedbacks") await fetchFeedbacks();
+      if (activeTab === "faqs") await fetchFaqs();
+      if (activeTab === "contacts") await fetchContacts();
+    };
+
+    loadData();
+  }, [
+    activeTab,
+    statusFilter,
+    isAdmin,
+    fetchAppointments,
+    fetchFeedbacks,
+    fetchFaqs,
+    fetchContacts,
+  ]);
 
   // --- ACTIONS ---
   const handleStatusChange = async (
@@ -245,17 +256,31 @@ export default function AdminClient() {
     }
   };
 
-  const fillCommForm = (name: string, phone: string, email: string) => {
-    setCommForm((prev) => ({
-      ...prev,
-      patientName: name,
-      phone: phone,
-      email: email,
-    }));
+  const fillCommForm = ({
+    name,
+    phone = "",
+    email = "",
+    subject = "",
+    type = "email",
+  }: {
+    name: string;
+    phone?: string;
+    email?: string;
+    subject?: string;
+    type?: "whatsapp" | "email";
+  }) => {
+    setCommType(type);
+    setCommForm({
+      patientName: name || "",
+      phone: phone || "",
+      email: email || "",
+      subject:
+        subject || (type === "email" ? "MediFast Healthcare Inquiry" : ""),
+      message: "",
+    });
     setActiveTab("communicate");
   };
 
-  // Session / Role Loading Guard
   if (isPending) {
     return (
       <div className="flex h-screen w-full items-center justify-center bg-gray-50">
@@ -264,7 +289,6 @@ export default function AdminClient() {
     );
   }
 
-  // Access Denied Shield
   if (!session || !isAdmin) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-gray-100 px-4">
@@ -288,7 +312,7 @@ export default function AdminClient() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50/50">
+    <div className="min-h-screen bg-gray-200">
       {/* Header */}
       <header className="sticky top-0 z-20 border-b border-gray-200 bg-white px-6 py-4 shadow-sm">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
@@ -447,13 +471,13 @@ export default function AdminClient() {
                           {apt.service}
                         </td>
                         <td className="p-4 text-gray-600">
-                          <div>{apt.date}</div>
+                          <div>{new Date(apt.date).toLocaleDateString()}</div>
                           <div className="text-xs text-gray-400">
                             {apt.time}
                           </div>
                         </td>
                         <td className="p-4 text-gray-600 max-w-xs truncate">
-                          {apt.address}
+                          {apt.address || "N/A"}
                         </td>
                         <td className="p-4">
                           <span
@@ -496,12 +520,15 @@ export default function AdminClient() {
                                 </button>
                               )}
                               <button
+                                type="button"
                                 onClick={() =>
-                                  fillCommForm(
-                                    apt.patientName,
-                                    apt.phone,
-                                    apt.email,
-                                  )
+                                  fillCommForm({
+                                    name: apt.patientName,
+                                    phone: apt.phone,
+                                    email: apt.email,
+                                    subject: `Regarding your ${apt.service} appointment`,
+                                    type: "whatsapp",
+                                  })
                                 }
                                 className="rounded-lg bg-gray-100 px-2.5 py-1.5 text-xs font-semibold text-gray-700 hover:bg-gray-200"
                               >
@@ -544,23 +571,42 @@ export default function AdminClient() {
                 {feedbacks.map((item) => (
                   <div
                     key={item._id}
-                    className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm"
+                    className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm flex flex-col justify-between"
                   >
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-bold text-gray-900">{item.name}</h3>
-                      <span className="rounded-md bg-yellow-50 px-2 py-0.5 text-xs font-bold text-yellow-700">
-                        {item.rating} ★
-                      </span>
+                    <div>
+                      <div className="flex items-center justify-between">
+                        <h3 className="font-bold text-gray-900">{item.name}</h3>
+                        <span className="rounded-md bg-yellow-50 px-2 py-0.5 text-xs font-bold text-yellow-700">
+                          {item.rating} ★
+                        </span>
+                      </div>
+                      <p className="mt-1 text-xs text-blue-600 font-medium">
+                        Service: {item.service}
+                      </p>
+                      <p className="mt-4 text-sm text-gray-600 leading-relaxed">
+                        &ldquo;{item.message}&rdquo;
+                      </p>
                     </div>
-                    <p className="mt-1 text-xs text-gray-400">
-                      Service: {item.service || "General"}
-                    </p>
-                    <p className="mt-4 text-sm text-gray-600 leading-relaxed">
-                      &ldquo;{item.message}&rdquo;
-                    </p>
-                    <div className="mt-4 border-t border-gray-50 pt-3 text-xs text-gray-400 flex justify-between">
-                      <span>{item.email}</span>
-                      <span>{item.phone}</span>
+                    <div className="mt-6 pt-3 border-t border-gray-50 flex items-center justify-between">
+                      <div className="text-xs text-gray-400">
+                        <p>{item.email}</p>
+                        <p>{item.phone}</p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          fillCommForm({
+                            name: item.name,
+                            email: item.email,
+                            phone: item.phone,
+                            subject: "Thank you for your feedback",
+                            type: "email",
+                          })
+                        }
+                        className="rounded-lg bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600 hover:bg-blue-100"
+                      >
+                        Reply
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -590,18 +636,42 @@ export default function AdminClient() {
                 No FAQ submissions found.
               </div>
             ) : (
-              <div className="space-y-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 {faqs.map((faq) => (
                   <div
                     key={faq._id}
-                    className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100"
+                    className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100 flex flex-col justify-between"
                   >
-                    <p className="text-base font-semibold text-gray-900">
-                      Q: {faq.question}
-                    </p>
-                    <div className="mt-3 flex items-center gap-4 text-xs text-gray-500">
-                      <span>Asked by: {faq.name || "Anonymous"}</span>
-                      {faq.email && <span>Email: {faq.email}</span>}
+                    <div>
+                      <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-gray-100 text-gray-700 mb-2">
+                        {faq.service}
+                      </span>
+                      <p className="text-base font-semibold text-gray-900">
+                        Q: {faq.question}
+                      </p>
+                    </div>
+                    <div className="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between text-xs text-gray-500">
+                      <div>
+                        <p className="font-medium text-gray-800">{faq.name}</p>
+                        <p>
+                          {faq.email} | {faq.phone}
+                        </p>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          fillCommForm({
+                            name: faq.name,
+                            email: faq.email,
+                            phone: faq.phone,
+                            subject: "Regarding your FAQ Inquiry",
+                            type: "email",
+                          })
+                        }
+                        className="rounded-lg bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600 hover:bg-blue-100"
+                      >
+                        Reply
+                      </button>
                     </div>
                   </div>
                 ))}
@@ -635,30 +705,45 @@ export default function AdminClient() {
                 {contacts.map((msg) => (
                   <div
                     key={msg._id}
-                    className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100"
+                    className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100 flex flex-col justify-between"
                   >
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="font-bold text-gray-900">{msg.name}</h3>
-                        <p className="text-xs text-gray-400">{msg.email}</p>
+                    <div>
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="font-bold text-gray-900">
+                            {msg.name}
+                          </h3>
+                          <p className="text-xs text-gray-400">
+                            {msg.email} {msg.phone ? `• ${msg.phone}` : ""}
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            fillCommForm({
+                              name: msg.name,
+                              email: msg.email,
+                              phone: msg.phone ?? "",
+                              subject: msg.subject
+                                ? `Re: ${msg.subject}`
+                                : "MediFast Support Reply",
+                              type: "email",
+                            })
+                          }
+                          className="rounded-lg bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600 hover:bg-blue-100"
+                        >
+                          Reply
+                        </button>
                       </div>
-                      <button
-                        onClick={() =>
-                          fillCommForm(msg.name, msg.phone || "", msg.email)
-                        }
-                        className="rounded-lg bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600 hover:bg-blue-100"
-                      >
-                        Reply
-                      </button>
-                    </div>
-                    {msg.subject && (
-                      <p className="mt-3 text-xs font-semibold uppercase text-blue-600 tracking-wider">
-                        Subject: {msg.subject}
+                      {msg.subject && (
+                        <p className="mt-3 text-xs font-semibold uppercase text-blue-600 tracking-wider">
+                          Subject: {msg.subject}
+                        </p>
+                      )}
+                      <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+                        {msg.message}
                       </p>
-                    )}
-                    <p className="mt-2 text-sm text-gray-600 leading-relaxed">
-                      {msg.message}
-                    </p>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -668,7 +753,7 @@ export default function AdminClient() {
 
         {/* --- TAB 5: SEND COMMUNICATION --- */}
         {activeTab === "communicate" && (
-          <div className="mx-auto max-w-2xl space-y-6">
+          <div className="mx-auto max-w-2xl text-black space-y-6">
             <div>
               <h2 className="text-2xl font-bold text-gray-900">
                 Patient Communication

@@ -4,11 +4,12 @@ import { connectDB } from "@/lib/mongoose";
 import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { Appointment } from "@/models";
+import { IdCard } from "lucide-react";
 
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
-    const email = searchParams.get("email");
+    const id = searchParams.get("id");
 
     await connectDB();
 
@@ -17,7 +18,7 @@ export async function GET(req: Request) {
     };
 
     // If an email query parameter is passed, verify session & authorization
-    if (email) {
+    if (id) {
       const session = await auth.api.getSession({
         headers: await headers(),
       });
@@ -29,14 +30,14 @@ export async function GET(req: Request) {
         );
       }
 
-      if (session.user.email.toLowerCase() !== email.toLowerCase()) {
+      if (session.user.id.toLowerCase() !== id.toLowerCase()) {
         return NextResponse.json(
           { error: "Forbidden: You can only view your own appointments" },
           { status: 403 },
         );
       }
 
-      queryFilter.email = email;
+      queryFilter.id = id;
     }
 
     const appointments = await Appointment.find(queryFilter).sort({

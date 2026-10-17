@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { PhoneCall, CheckCircle2, ChevronRight } from "lucide-react";
@@ -11,9 +11,92 @@ import {
   FaTwitter,
   FaYoutube,
 } from "react-icons/fa";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import AppointmentForm from "../../Components/AppointmentForm";
+import { useParams } from "next/navigation";
 
+type DoctorDetails = {
+  id: string;
+  name: string;
+  specialty: string;
+  image: string;
+  bgColor: string;
+};
+
+type Props = {
+  params: Promise<{ id: string }>;
+};
+const doctorsData: DoctorDetails[] = [
+  {
+    id: "Nishita",
+    name: "Dr. Nishita Raw",
+    specialty: "Cardiologist",
+    image:
+      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop",
+    bgColor: "bg-blue-600",
+  },
+  {
+    id: "Eishita",
+    name: "Dr. Eishita Jery",
+    specialty: "Specialist Heart Surgery",
+    image:
+      "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop",
+    bgColor: "bg-emerald-500",
+  },
+  {
+    id: "dr-christopher",
+    name: "Dr. Christopher",
+    specialty: "Senior Therapist",
+    image:
+      "https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=800&auto=format&fit=crop",
+    bgColor: "bg-blue-600",
+  },
+  {
+    id: "dr-alexander",
+    name: "Dr. Alexander",
+    specialty: "Dermatologist",
+    image:
+      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=800&auto=format&fit=crop",
+    bgColor: "bg-blue-600",
+  },
+  {
+    id: "dr-kenneth",
+    name: "Dr. Kenneth",
+    specialty: "Dermatologist",
+    image:
+      "https://images.unsplash.com/photo-1582750433449-648ed127bb54?q=80&w=800&auto=format&fit=crop",
+    bgColor: "bg-blue-600",
+  },
+  {
+    id: "dr-benjamin",
+    name: "Dr. Benjamin",
+    specialty: "Anesthesiologist",
+    image:
+      "https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=800&auto=format&fit=crop",
+    bgColor: "bg-blue-600",
+  },
+  {
+    id: "dr-nicholas",
+    name: "Dr. Nicholas",
+    specialty: "Medicine Specialist",
+    image:
+      "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop",
+    bgColor: "bg-blue-600",
+  },
+  {
+    id: "dr-christian",
+    name: "Dr. Christian",
+    specialty: "Family Physician",
+    image:
+      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop",
+    bgColor: "bg-blue-600",
+  },
+];
 export default function DoctorDetailsPage() {
   const doctor = {
     name: "Dr. Alexander",
@@ -70,23 +153,29 @@ export default function DoctorDetailsPage() {
       { day: "SUN", time: "02:00PM - 07:30PM" },
     ],
   };
-  const [showForm, setShowForm] = useState(false)
+  const params = useParams<{ id: string }>();
+  const id = params.id;
+  const doctor2: DoctorDetails | undefined = doctorsData.find(
+    (d) => d.id == id,
+  );
+  // console.log(doctor2);
+  const [showForm, setShowForm] = useState(false);
 
-  const handleBookAppointment = () =>{
-    setShowForm(true)
-  }
+  const handleBookAppointment = () => {
+    setShowForm(true);
+  };
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pb-20 text-gray-800">
-       <Dialog open={showForm} onOpenChange={setShowForm}>
-              <DialogContent className="max-w-2xl">
-                <DialogHeader>
-                  <DialogTitle>Book an Appointment</DialogTitle>
-                </DialogHeader>
-      
-                <AppointmentForm setShowForm={setShowForm} />
-              </DialogContent>
-            </Dialog>
+    <div className="min-h-screen bg-blue-400 pb-20 text-gray-800">
+      <Dialog open={showForm} onOpenChange={setShowForm}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Book an Appointment</DialogTitle>
+          </DialogHeader>
+
+          <AppointmentForm setShowForm={setShowForm} />
+        </DialogContent>
+      </Dialog>
       {/* Page Header */}
       <section className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-500 py-16 text-white md:py-20">
         <div className="relative mx-auto max-w-7xl px-6">
@@ -108,7 +197,7 @@ export default function DoctorDetailsPage() {
               Doctor
             </Link>
             <ChevronRight className="h-4 w-4" />
-            <span className="font-semibold text-white">{doctor.name}</span>
+            <span className="font-semibold text-white">{doctor2?.name}</span>
           </nav>
         </div>
       </section>
@@ -122,17 +211,17 @@ export default function DoctorDetailsPage() {
               {/* Doctor Headshot */}
               <div className="relative h-72 w-full rounded-2xl overflow-hidden mb-6 bg-slate-100">
                 <Image
-                  src={doctor.image}
-                  alt={doctor.name}
+                  src={doctor2?.image || ""}
+                  alt={doctor2?.image || ""}
                   fill
                   className="object-cover object-top"
                 />
               </div>
 
               {/* Title Info */}
-              <h2 className="text-xl font-bold text-gray-900">{doctor.name}</h2>
+              <h2 className="text-xl font-bold text-gray-900">{doctor2?.name}</h2>
               <p className="text-xs font-semibold text-blue-600 mt-1">
-                {doctor.title}
+                {doctor2?.specialty}
               </p>
               <p className="text-xs text-gray-400 mt-0.5">{doctor.degrees}</p>
 
@@ -369,7 +458,10 @@ export default function DoctorDetailsPage() {
                         {schedule.time}
                       </span>
                     </div>
-                    <button onClick={()=> handleBookAppointment()} className="w-full sm:w-auto text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors px-6 py-2.5 rounded-xl shadow-sm">
+                    <button
+                      onClick={() => handleBookAppointment()}
+                      className="w-full sm:w-auto text-xs font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors px-6 py-2.5 rounded-xl shadow-sm"
+                    >
                       Now Appointment
                     </button>
                   </div>
