@@ -1,9 +1,8 @@
-
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import ConsultationRecorder from "../../../(pages)/consultations/page";
+import ConsultationRecorder from "../../consultations/page";
 
 type Consultation = {
   id: string;
@@ -41,23 +40,18 @@ export default function PatientPage() {
           {
             cache: "no-store",
             signal,
-          }
+          },
         );
 
         const data = await response.json();
 
         if (!response.ok) {
-          throw new Error(
-            data.message || "Unable to load consultations."
-          );
+          throw new Error(data.message || "Unable to load consultations.");
         }
 
         setConsultations(data.consultations ?? []);
       } catch (err) {
-        if (
-          err instanceof Error &&
-          err.name !== "AbortError"
-        ) {
+        if (err instanceof Error && err.name !== "AbortError") {
           setError(err.message);
         }
       } finally {
@@ -66,7 +60,7 @@ export default function PatientPage() {
         }
       }
     },
-    [patientId]
+    [patientId],
   );
 
   useEffect(() => {
@@ -82,9 +76,7 @@ export default function PatientPage() {
       <header>
         <h1 className="text-2xl font-bold">Patient Details</h1>
 
-        <p className="mt-2 text-sm text-gray-600">
-          Patient ID: {patientId}
-        </p>
+        <p className="mt-2 text-sm text-gray-600">Patient ID: {patientId}</p>
       </header>
 
       {/* Consultation recording */}
@@ -96,9 +88,7 @@ export default function PatientPage() {
 
       {/* Saved consultation history */}
       <section className="space-y-4">
-        <h2 className="text-xl font-semibold">
-          Consultation History
-        </h2>
+        <h2 className="text-xl font-semibold">Consultation History</h2>
 
         {loading && <p>Loading consultations...</p>}
 
@@ -141,9 +131,7 @@ export default function PatientPage() {
 
             <div>
               <h4 className="font-medium">AI Summary — review required</h4>
-              <p className="mt-1 whitespace-pre-wrap">
-                {consultation.summary}
-              </p>
+              <p className="mt-1 whitespace-pre-wrap">{consultation.summary}</p>
             </div>
 
             <div>
@@ -152,9 +140,7 @@ export default function PatientPage() {
               {consultation.keyPoints?.length ? (
                 <ul className="list-disc space-y-1 pl-6">
                   {consultation.keyPoints.map((point, index) => (
-                    <li key={`${consultation.id}-point-${index}`}>
-                      {point}
-                    </li>
+                    <li key={`${consultation.id}-point-${index}`}>{point}</li>
                   ))}
                 </ul>
               ) : (
@@ -168,9 +154,7 @@ export default function PatientPage() {
               {consultation.followUp?.length ? (
                 <ul className="list-disc space-y-1 pl-6">
                   {consultation.followUp.map((item, index) => (
-                    <li key={`${consultation.id}-followup-${index}`}>
-                      {item}
-                    </li>
+                    <li key={`${consultation.id}-followup-${index}`}>{item}</li>
                   ))}
                 </ul>
               ) : (

@@ -23,7 +23,7 @@ export default function PreviousAppointment({
   status,
 }: PreviousAppointmentProps) {
   return (
-    <div className="rounded-2xl bg-white p-6 shadow-sm">
+    <div className="rounded-2xl bg-white text-black p-6 shadow-sm">
       {/* Top */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>

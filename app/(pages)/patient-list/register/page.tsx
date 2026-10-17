@@ -1,4 +1,3 @@
-
 "use client";
 
 import { FormEvent, useState } from "react";
@@ -70,14 +69,14 @@ export default function RegisterPatientPage() {
       // Open the newly registered patient's details page.
       if (data.patient?.id) {
         setTimeout(() => {
-          router.push(`/PatientsList`);
+          router.push(`/patient-list`);
         }, 1000);
       }
     } catch (err) {
       setError(
         err instanceof Error
           ? err.message
-          : "Something went wrong. Please try again."
+          : "Something went wrong. Please try again.",
       );
     } finally {
       setLoading(false);
