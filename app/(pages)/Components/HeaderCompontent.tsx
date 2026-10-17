@@ -17,6 +17,8 @@ import {
 } from "@/components/ui/dialog";
 import AppointmentForm from "./AppointmentForm";
 import SearchBar from "./SearchBar";
+import PatientsList from "../patient-list/page";
+import PatientsDropdown from "./PatientsDropdown";
 
 export default function HeaderComponent() {
   const router = useRouter();
@@ -45,7 +47,7 @@ export default function HeaderComponent() {
     setShowLoginDialog(false);
   };
   return (
-    <div className="fixed top-0 left-0 right-0 z-50">
+    <div className="fixed top-0 left-0  right-0 z-50">
       <Dialog open={showForm} onOpenChange={setShowForm}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
@@ -64,7 +66,7 @@ export default function HeaderComponent() {
 
       {/* HEADER */}
       <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between pl-0 pr-4 sm:pr-6 lg:pr-8">
+        <div className="mx-auto flex h-20 max-w-7xl items-center justify-around pl-0 pr-4 sm:pr-6 lg:pr-8">
           {/* Left Section: Logo Badge */}
           <div className="flex h-full shrink-0 items-center bg-blue-600 px-4 sm:px-6 py-3 text-white">
             <Link href="/home" className="flex items-center gap-3">
@@ -82,7 +84,7 @@ export default function HeaderComponent() {
             </Link>
           </div>
           {/* Middle Section: Navigation Links */}
-          <nav className="hidden items-center space-x-3 lg:flex lg:space-x-8">
+          <nav className="hidden px-2 items-center space-x-3 lg:flex lg:space-x-8">
             <Link
               href="/home"
               className="whitespace-nowrap text-sm font-medium text-blue-600 transition-colors hover:text-blue-700"
@@ -92,10 +94,14 @@ export default function HeaderComponent() {
             {session && session.user.role === "ADMIN" && (
               <Link
                 href="/admin"
-                className="whitespace-nowrap text-sm font-medium transition-colors hover:text-blue-700"
+                className=" text-black whitespace-nowrap text-sm font-medium transition-colors hover:text-blue-700"
               >
                 Admin Dashboard
               </Link>
+            )}
+
+            {session && session.user.role != "NORMAL_USER" && (
+              <PatientsDropdown />
             )}
             <Link
               href="/aboutUs"
@@ -152,7 +158,7 @@ export default function HeaderComponent() {
               Appointment
             </Button>
             {isPending ? (
-              "Loading ..."
+              <p className="text-black">Loading ...</p>
             ) : !session || !session.user ? (
               <Button onClick={hanldeLogin} className="bg-blue-600">
                 Login

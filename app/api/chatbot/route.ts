@@ -4,6 +4,7 @@ import type { ChatMessage, ChatbotRequest, ChatbotResponse } from "@/lib/chatbot
 import { success } from "zod";
 import { PartialProjectOptions } from "next/dist/build/swc/types";
 export const runtime = "nodejs";
+
 export async function GET() {
     return NextResponse.json({
         success: true,

@@ -2,9 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import {
-  ChevronRight,
-} from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { FaFacebook, FaLinkedin, FaTwitter, FaYoutube } from "react-icons/fa";
 
@@ -18,7 +16,7 @@ interface Doctor {
 
 const doctorsData: Doctor[] = [
   {
-    id: "dr-nishita-raw",
+    id: "Nishita",
     name: "Dr. Nishita Raw",
     specialty: "Cardiologist",
     image:
@@ -26,7 +24,7 @@ const doctorsData: Doctor[] = [
     bgColor: "bg-blue-600",
   },
   {
-    id: "dr-eishita-jery",
+    id: "Eishita",
     name: "Dr. Eishita Jery",
     specialty: "Specialist Heart Surgery",
     image:
