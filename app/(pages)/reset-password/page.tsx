@@ -90,7 +90,7 @@ export default function ResetPasswordPage() {
 
   if (!token) {
     return (
-      <div className="flex min-h-screen items-center justify-center p-4">
+      <div className="flex min-h-screen items-center justify-center px-3 py-6 sm:p-4">
         <Card className="w-full sm:max-w-md">
           <CardHeader>
             <CardTitle>Invalid Request</CardTitle>
@@ -109,7 +109,7 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4">
+    <div className="flex min-h-screen items-center justify-center px-3 py-6 sm:p-4">
       <Card className="w-full sm:max-w-md">
         <CardHeader>
           <CardTitle>Reset Your Password</CardTitle>

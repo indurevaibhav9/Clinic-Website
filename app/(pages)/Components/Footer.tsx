@@ -120,7 +120,7 @@ const Footer = () => {
       <div className="relative bg-[#0b0809] text-slate-300 pt-32 pb-12 overflow-hidden z-10">
         <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {/* MAIN FOOTER CONTENT GRID */}
-          <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4 text-xs">
+          <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 xl:grid-cols-4 text-xs">
             {/* COLUMN 1: BRANDING & ABOUT */}
             <div className="space-y-4">
               <div className="flex items-center gap-2">

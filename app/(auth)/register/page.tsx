@@ -253,7 +253,7 @@ export default function SignUpForm() {
 
   
   return (
-  <div className="flex min-h-screen w-full items-center justify-center bg-background px-4 py-8">
+  <div className="flex min-h-screen w-full items-center justify-center bg-background px-3 py-5 sm:px-4 sm:py-8">
     {/* Main Card */}
     <Card className="w-full max-w-lg overflow-hidden border border-border bg-card shadow-xl">
 
@@ -261,7 +261,7 @@ export default function SignUpForm() {
           HEADER
       ================================================= */}
 
-      <CardHeader className="space-y-4 border-b bg-card px-6 py-7 sm:px-8">
+      <CardHeader className="space-y-4 border-b bg-card px-4 py-6 sm:px-8 sm:py-7">
 
         {/* Logo / Brand */}
 
@@ -336,7 +336,7 @@ export default function SignUpForm() {
           CONTENT
       ================================================= */}
 
-      <CardContent className="px-6 py-7 sm:px-8">
+      <CardContent className="px-4 py-6 sm:px-8 sm:py-7">
 
         {step === "REGISTER" ? (
 
@@ -770,7 +770,7 @@ export default function SignUpForm() {
           FOOTER
       ================================================= */}
 
-      <CardFooter className="flex flex-col gap-4 border-t bg-muted/30 px-6 py-5 sm:px-8">
+      <CardFooter className="flex flex-col gap-4 border-t bg-muted/30 px-4 py-5 sm:px-8">
 
         {step === "REGISTER" ? (
 

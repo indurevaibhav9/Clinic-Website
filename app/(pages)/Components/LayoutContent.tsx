@@ -17,7 +17,7 @@ export default function LayoutContent({
     <>
       {!isChatbotPage && <HeaderComponent />}
 
-      <div className={!isChatbotPage ? "mt-19" : "flex-1"}>
+      <div className={!isChatbotPage ? "pt-16 sm:pt-20" : "flex-1"}>
         {children}
       </div>
 

@@ -314,14 +314,14 @@ export default function AdminClient() {
   return (
     <div className="min-h-screen bg-gray-200">
       {/* Header */}
-      <header className="sticky top-0 z-20 border-b border-gray-200 bg-white px-6 py-4 shadow-sm">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <div className="flex items-center gap-3">
+      <header className="sticky top-0 z-20 border-b border-gray-200 bg-white px-4 py-3 shadow-sm sm:px-6 sm:py-4">
+        <div className="mx-auto flex max-w-7xl flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex min-w-0 items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-600 font-bold text-white shadow-md shadow-blue-500/20">
               M
             </div>
             <div>
-              <h1 className="text-xl font-bold text-gray-900">
+              <h1 className="text-lg font-bold text-gray-900 sm:text-xl">
                 MediFast Admin
               </h1>
               <p className="text-xs text-gray-500">
@@ -330,8 +330,8 @@ export default function AdminClient() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700 border border-blue-200">
+          <div className="flex max-w-full items-center gap-3">
+            <span className="max-w-full break-all rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">
               Admin: {session.user.name || session.user.email}
             </span>
           </div>
@@ -339,12 +339,12 @@ export default function AdminClient() {
       </header>
 
       {/* Main Container */}
-      <main className="mx-auto max-w-7xl px-6 py-8">
+      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
         {/* Nav Tabs */}
-        <div className="mb-8 flex flex-wrap items-center gap-2 border-b border-gray-200 pb-4">
+        <div className="mb-6 flex flex-wrap items-center gap-2 border-b border-gray-200 pb-4 sm:mb-8">
           <button
             onClick={() => setActiveTab("appointments")}
-            className={`flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-all ${
+            className={`flex items-center gap-2 rounded-lg px-3 py-2.5 text-xs font-medium transition-all sm:px-4 sm:text-sm ${
               activeTab === "appointments"
                 ? "bg-blue-600 text-white shadow-md shadow-blue-600/20"
                 : "bg-white text-gray-600 hover:bg-gray-100"
@@ -442,8 +442,41 @@ export default function AdminClient() {
                 No appointments found for the selected status.
               </div>
             ) : (
-              <div className="overflow-x-auto rounded-2xl bg-white shadow-sm border border-gray-100">
-                <table className="w-full border-collapse text-left text-sm">
+              <>
+              <div className="space-y-3 lg:hidden">
+                {appointments.map((apt) => (
+                  <article key={apt._id} className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div className="min-w-0">
+                        <h3 className="break-words font-semibold text-gray-900">{apt.patientName}</h3>
+                        <p className="break-all text-xs text-gray-500">{apt.email}</p>
+                        <p className="text-xs text-gray-500">{apt.phone}</p>
+                      </div>
+                      <span className="rounded-full bg-gray-100 px-2.5 py-1 text-xs font-semibold text-gray-700">
+                        {apt.status}
+                      </span>
+                    </div>
+                    <dl className="mt-4 grid grid-cols-1 gap-3 border-t border-gray-100 pt-3 text-sm sm:grid-cols-2">
+                      <div><dt className="text-xs text-gray-500">Service</dt><dd className="font-medium text-gray-800">{apt.service}</dd></div>
+                      <div><dt className="text-xs text-gray-500">Date &amp; Time</dt><dd className="text-gray-700">{new Date(apt.date).toLocaleDateString()} · {apt.time}</dd></div>
+                      <div className="sm:col-span-2"><dt className="text-xs text-gray-500">Location</dt><dd className="break-words text-gray-700">{apt.address || "N/A"}</dd></div>
+                    </dl>
+                    <div className="mt-4 flex flex-wrap gap-2 border-t border-gray-100 pt-3">
+                      {updatingId === apt._id ? (
+                        <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+                      ) : (
+                        <>
+                          {apt.status !== "CONFIRMED" && <button onClick={() => handleStatusChange(apt._id, "CONFIRMED")} className="rounded-lg bg-emerald-50 px-3 py-2 text-xs font-semibold text-emerald-700 hover:bg-emerald-100">Confirm</button>}
+                          {apt.status !== "COMPLETED" && <button onClick={() => handleStatusChange(apt._id, "COMPLETED")} className="rounded-lg bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 hover:bg-blue-100">Complete</button>}
+                          <button type="button" onClick={() => fillCommForm({ name: apt.patientName, phone: apt.phone, email: apt.email, subject: `Regarding your ${apt.service} appointment`, type: "whatsapp" })} className="rounded-lg bg-gray-100 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-200">Notify</button>
+                        </>
+                      )}
+                    </div>
+                  </article>
+                ))}
+              </div>
+              <div className="hidden overflow-x-auto overscroll-x-contain rounded-2xl border border-gray-100 bg-white shadow-sm lg:block">
+                <table className="w-full min-w-[950px] border-collapse text-left text-sm">
                   <thead className="bg-gray-50/50 text-xs font-semibold uppercase text-gray-500 border-b border-gray-100">
                     <tr>
                       <th className="p-4">Patient</th>
@@ -542,6 +575,7 @@ export default function AdminClient() {
                   </tbody>
                 </table>
               </div>
+              </>
             )}
           </div>
         )}

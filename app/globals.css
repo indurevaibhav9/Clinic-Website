@@ -86,8 +86,17 @@
   * {
     @apply border-border outline-ring/50;
   }
+  html {
+    overflow-x: clip;
+  }
   body {
     @apply bg-background text-foreground;
+    min-width: 320px;
+    overflow-x: clip;
+  }
+  body,
+  html {
+    min-height: 100%;
   }
   html {
     @apply font-sans;

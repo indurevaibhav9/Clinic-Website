@@ -184,7 +184,7 @@ export default function AboutUsComponent() {
         {/* =========================================================================
                   SECTION 1: ABOUT HEALTH & MEDICINE
                  ========================================================================= */}
-        <section className="relative mx-auto max-w-7xl px-6 py-16 md:py-24">
+        <section className="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
             {/* Left Collage Images */}
             <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
@@ -299,7 +299,7 @@ export default function AboutUsComponent() {
                   SECTION 2: WHY CHOOSE US / SPECIALTY
                  ========================================================================= */}
         <section className="bg-gradient-to-b from-blue-50/50 to-blue-50/20 py-16 md:py-24">
-          <div className="mx-auto max-w-7xl px-6">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="grid grid-cols-1 gap-12 lg:grid-cols-12 lg:items-center">
               {/* Specialty Cards Grid (Left 6 Columns) */}
               <div className="lg:col-span-6 space-y-6">
@@ -391,7 +391,7 @@ export default function AboutUsComponent() {
                   SECTION 3: STATS COUNTER BAR
                  ========================================================================= */}
         <section className="bg-blue-600 py-10 text-white shadow-xl">
-          <div className="mx-auto max-w-7xl px-6">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
               {/* Stat 1 */}
               <div className="flex flex-col items-center text-center">
@@ -448,7 +448,7 @@ export default function AboutUsComponent() {
                   SECTION 4: OUR PROFESSIONAL DOCTORS
                  ========================================================================= */}
         <section className="py-16 md:py-24 bg-gray-50/50">
-          <div className="mx-auto max-w-7xl px-6">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6">
             <div className="text-center max-w-xl mx-auto mb-12">
               <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600">
                 <span className="h-2 w-2 rounded-full bg-blue-600"></span>

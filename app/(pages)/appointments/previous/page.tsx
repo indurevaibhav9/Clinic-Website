@@ -83,11 +83,11 @@ export default function PreviousAppointmentsPage() {
   }, [session, isSessionPending]);
 
   return (
-    <main className="min-h-screen bg-blue-600 px-6 py-10">
+    <main className="min-h-screen bg-blue-600 px-4 py-6 sm:px-6 sm:py-10">
       <div className="mx-auto max-w-5xl">
         {/* Heading */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white">
+          <h1 className="text-2xl font-bold text-white sm:text-3xl">
             Previous Appointments
           </h1>
 

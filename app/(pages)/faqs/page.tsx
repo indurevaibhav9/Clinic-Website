@@ -116,7 +116,7 @@ export default function FaqPage() {
           <Dna className="h-20 w-20 -rotate-12 text-white" />
         </div>
 
-        <div className="relative mx-auto flex h-full max-w-7xl items-center px-6 lg:px-8">
+        <div className="relative mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
           <div className="text-white">
             <div className="mb-3 flex items-center gap-2">
               <span className="h-1 w-10 rounded-full bg-cyan-300" />
@@ -141,7 +141,7 @@ export default function FaqPage() {
       {/* =========================================================
           FAQ SECTION
       ========================================================= */}
-      <section className="relative overflow-hidden bg-white py-20 lg:py-24">
+      <section className="relative overflow-hidden bg-white py-12 sm:py-16 lg:py-24">
         <div className="absolute left-8 top-20 hidden opacity-[0.12] lg:block">
           <FlaskConical className="h-20 w-20 rotate-12 text-blue-500" />
         </div>
@@ -154,16 +154,16 @@ export default function FaqPage() {
           <Stethoscope className="h-24 w-24 -rotate-12 text-blue-500" />
         </div>
 
-        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
           {/* LEFT - DOCTOR IMAGE */}
           <div className="relative flex items-center justify-center">
-            <div className="absolute h-[380px] w-[380px] rounded-full bg-blue-50" />
+            <div className="absolute h-[min(78vw,380px)] w-[min(78vw,380px)] rounded-full bg-blue-50" />
 
             <div className="absolute bottom-5 left-4 hidden opacity-10 sm:block">
               <FlaskConical className="h-36 w-36 rotate-45 text-blue-500" />
             </div>
 
-            <div className="relative h-[430px] w-full max-w-[500px]">
+            <div className="relative h-[min(90vw,430px)] w-full max-w-[500px] sm:h-[430px]">
               <Image
                 src="/images/faq-doctors.jpg"
                 alt="Healthcare doctors ready to answer questions"
@@ -256,16 +256,16 @@ export default function FaqPage() {
       {/* =========================================================
           ASK ANY QUESTION FORM
       ========================================================= */}
-      <section className="relative overflow-hidden bg-blue-50 py-20 lg:py-24">
+      <section className="relative overflow-hidden bg-blue-50 py-12 sm:py-16 lg:py-24">
         <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full bg-blue-100" />
         <div className="absolute -bottom-40 -left-40 h-96 w-96 rounded-full bg-blue-100/70" />
 
-        <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-14 px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
+        <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
           {/* LEFT IMAGE */}
           <div className="relative">
             <div className="absolute -bottom-4 -right-4 h-full w-full rounded-2xl bg-blue-600/10" />
 
-            <div className="relative h-[360px] w-full overflow-hidden rounded-2xl shadow-xl sm:h-[420px]">
+            <div className="relative h-[min(90vw,360px)] w-full overflow-hidden rounded-2xl shadow-xl sm:h-[420px]">
               <Image
                 src="/images/ask-question-doctors.webp"
                 alt="Healthcare professionals"
@@ -334,7 +334,7 @@ export default function FaqPage() {
             ) : (
               <form onSubmit={handleSubmit} className="mt-8 space-y-4">
                 {/* Name + Email */}
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
                     <label
                       htmlFor="name"
@@ -375,7 +375,7 @@ export default function FaqPage() {
                 </div>
 
                 {/* Phone + Service */}
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
                     <label
                       htmlFor="phone"

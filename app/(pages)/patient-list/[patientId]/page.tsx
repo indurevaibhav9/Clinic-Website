@@ -72,9 +72,9 @@ export default function PatientPage() {
   }, [loadConsultations, refreshKey]);
 
   return (
-    <main className="mx-auto max-w-4xl space-y-8 p-6">
+    <main className="mx-auto max-w-4xl space-y-6 p-4 sm:space-y-8 sm:p-6">
       <header>
-        <h1 className="text-2xl font-bold">Patient Details</h1>
+        <h1 className="text-xl font-bold sm:text-2xl">Patient Details</h1>
 
         <p className="mt-2 text-sm text-gray-600">Patient ID: {patientId}</p>
       </header>
@@ -115,7 +115,7 @@ export default function PatientPage() {
         {consultations.map((consultation) => (
           <article
             key={consultation.id}
-            className="space-y-4 rounded-lg border p-5"
+            className="min-w-0 space-y-4 rounded-lg border p-4 sm:p-5"
           >
             <div className="flex flex-wrap items-center justify-between gap-2">
               <h3 className="font-semibold">Consultation</h3>
@@ -167,7 +167,7 @@ export default function PatientPage() {
                 View full transcript
               </summary>
 
-              <p className="mt-3 whitespace-pre-wrap">
+              <p className="mt-3 whitespace-pre-wrap break-words">
                 {consultation.transcript}
               </p>
             </details>

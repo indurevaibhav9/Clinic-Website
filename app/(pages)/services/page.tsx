@@ -99,7 +99,7 @@ export default function ServicesPage() {
           </svg>
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-6">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
           <h1 className="text-3xl font-extrabold sm:text-4xl lg:text-5xl">
             Services
           </h1>
@@ -119,7 +119,7 @@ export default function ServicesPage() {
       {/* =========================================================================
           SECTION 2: FACILITIES WE HAVE
          ========================================================================= */}
-      <section className="mx-auto max-w-7xl px-6 py-16 md:py-24">
+      <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16 md:py-24">
         <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
           {/* Left Content Column */}
           <div className="space-y-8">

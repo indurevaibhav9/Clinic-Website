@@ -378,7 +378,7 @@ export default function ContactPage() {
                               </p>
                               <a
                                 href={`mailto:${location.email}`}
-                                className="text-sm text-blue-600 hover:underline"
+                                className="break-all text-sm text-blue-600 hover:underline"
                               >
                                 {location.email}
                               </a>
@@ -437,18 +437,18 @@ export default function ContactPage() {
       </section>
 
       {/* 3. Contact Form Section */}
-      <section className="relative bg-gradient-to-b from-blue-50 to-indigo-50/50 py-16 px-6 md:px-16 overflow-hidden">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <section className="relative overflow-hidden bg-gradient-to-b from-blue-50 to-indigo-50/50 px-4 py-12 sm:px-6 sm:py-16 lg:px-16">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12">
           {/* Left Side: Form */}
           <div className="lg:col-span-7 z-10">
-            <h2 className="text-3xl font-bold text-gray-900 mb-2">
+            <h2 className="mb-2 text-2xl font-bold text-gray-900 sm:text-3xl">
               Contact With Us
             </h2>
             <p className="text-sm text-gray-500 mb-8">
               Send us a message and we&apos;ll respond as soon as possible
             </p>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="min-w-0 space-y-4">
               {statusMessage.text && (
                 <div
                   className={`p-4 rounded-lg text-sm border ${
@@ -461,7 +461,7 @@ export default function ContactPage() {
                 </div>
               )}
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <input
                   type="text"
                   name="name"
@@ -482,7 +482,7 @@ export default function ContactPage() {
                 />
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <input
                   type="tel"
                   name="phone"
@@ -509,7 +509,7 @@ export default function ContactPage() {
                   required
                   value={formData.message}
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border border-transparent rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm resize-none"
+                  className="w-full min-w-0 resize-none rounded-lg border border-transparent bg-white px-4 py-3 text-sm text-gray-800 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
 

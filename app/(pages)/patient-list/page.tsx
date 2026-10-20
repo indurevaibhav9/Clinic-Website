@@ -249,8 +249,57 @@ export default function PatientsList({
             </div>
           )}
 
+          <div className="space-y-3 p-4 lg:hidden">
+            {patients.map((patient) => (
+              <article
+                key={patient._id}
+                className="rounded-xl border border-slate-200 bg-white p-4"
+              >
+                <div className="flex min-w-0 items-start gap-3">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50 text-sm font-semibold text-blue-700">
+                    {getInitials(patient.name) || <UserRound size={18} />}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="break-words font-semibold text-slate-900">
+                      {patient.name}
+                    </h3>
+                    <p className="mt-1 text-xs text-slate-500">
+                      Patient ID: {patient._id.slice(-6).toUpperCase()}
+                    </p>
+                  </div>
+                </div>
+                <div className="mt-4 space-y-2 text-sm text-slate-600">
+                  <p className="break-all">{patient.email || "Not provided"}</p>
+                  <p>{patient.phone || "Not provided"}</p>
+                </div>
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-3">
+                  <span className="text-xs text-slate-500">
+                    Registered {formatDate(patient.createdAt)}
+                  </span>
+                  <Link
+                    href={`/patient-list/${patient._id}`}
+                    className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700"
+                  >
+                    <Eye size={15} />
+                    View
+                  </Link>
+                </div>
+              </article>
+            ))}
+            {loading && patients.length === 0 && (
+              <p className="rounded-xl border border-slate-200 bg-white p-4 text-sm text-slate-500">
+                Loading patients...
+              </p>
+            )}
+            {!loading && !error && patients.length === 0 && (
+              <p className="rounded-xl border border-slate-200 bg-white p-6 text-center text-sm text-slate-500">
+                {search ? "No matching patients." : "No patients yet."}
+              </p>
+            )}
+          </div>
+
           {/* Responsive table */}
-          <div className="overflow-x-auto">
+          <div className="hidden overflow-x-auto overscroll-x-contain lg:block">
             <table className="w-full min-w-[760px] text-left text-sm">
               <thead>
                 <tr className="bg-slate-50/80 text-xs font-semibold uppercase tracking-wider text-slate-500">

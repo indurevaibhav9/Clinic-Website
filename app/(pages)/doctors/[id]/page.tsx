@@ -196,8 +196,8 @@ export default function DoctorDetailsPage() {
         </DialogContent>
       </Dialog>
       {/* Page Header */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-500 py-16 text-white md:py-20">
-        <div className="relative mx-auto max-w-7xl px-6">
+      <section className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-500 py-10 text-white sm:py-16 md:py-20">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6">
           <h1 className="text-3xl font-extrabold sm:text-4xl lg:text-5xl">
             Doctor Details
           </h1>
@@ -222,7 +222,7 @@ export default function DoctorDetailsPage() {
       </section>
 
       {/* Main Content Layout */}
-      <section className="mx-auto max-w-7xl px-6 pt-12">
+      <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 sm:pt-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           {/* ================= LEFT SIDEBAR ================= */}
           <div className="lg:col-span-4 space-y-6">

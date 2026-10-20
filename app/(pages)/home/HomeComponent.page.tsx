@@ -51,6 +51,9 @@ export default function HomeComponent() {
       name: "Dr. Alexander",
       specialty: "Dermatologist",
       image: "/Assets/doctor-alexander.png",
+      linkedin: "",
+      facebook: "",
+      twitter: ""
     },
     {
       id: 2,
@@ -59,18 +62,27 @@ export default function HomeComponent() {
       image: "/Assets/doctor-nishita.png",
       // Initially expanded in the UI preview design
       defaultOpen: true,
+      linkedin: "",
+      facebook: "",
+      twitter: ""
     },
     {
       id: 3,
       name: "Dr. Christopher",
       specialty: "Senior Therapist",
       image: "/Assets/doctor-christopher.png",
+      linkedin: "",
+      facebook: "",
+      twitter: ""
     },
     {
       id: 4,
       name: "Dr. Eishita Jery",
       specialty: "Heart Surgery Specialist",
       image: "/Assets/doctor-eishita.png",
+      linkedin: "",
+      facebook: "",
+      twitter: ""
     },
   ];
 
@@ -78,7 +90,8 @@ export default function HomeComponent() {
   const [expandedDoctorId, setExpandedDoctorId] = useState<number | null>(2);
   const [isHeroExpanded, setIsHeroExpanded] = useState(false);
   const [isAboutExpanded, setIsAboutExpanded] = useState(false);
-
+  const [showForm, setShowForm] = useState(false)
+  
   const HandleReadMore=()=>{
     setIsAboutExpanded(!isAboutExpanded);
   }
@@ -451,7 +464,7 @@ export default function HomeComponent() {
                   Apply For Appointment
                 </h3>
 
-                <AppointmentForm />
+                <AppointmentForm setShowForm={setShowForm} />
                 
               </div>
             </div>
@@ -483,7 +496,7 @@ export default function HomeComponent() {
                 <p className="mt-4 text-xs sm:text-sm text-gray-500 leading-relaxed">
                   There are many variations of passages of Lorem Ipsum
                   available, but the majority have suffered alteration in some
-                  form, by injected humour, or randomised word which don't look
+                  form, by injected humour, or randomised word which don&apos;t look
                   even slightly believable. If you are going to use a passage.
                 </p>
 
@@ -709,7 +722,7 @@ export default function HomeComponent() {
                         </ul>
                       </div>
                     </div>
-center
+
                     {/* Card CTA Button */}
                     <div className="p-6 pt-0 text-center">
                       <Link
@@ -805,7 +818,7 @@ center
             </div>
 
             {/* MOBILE & TABLET VIEW: Responsive Grid Layout (Visible on Small/Medium Screens) */}
-            <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:hidden">
+            <div className="mt-10 grid grid-cols-1 gap-4 min-[480px]:grid-cols-2 sm:grid-cols-3 lg:hidden">
               {nservices.map((service) => {
                 const Icon = service.icon;
                 const isSelected = activeService === service.id;
@@ -857,7 +870,7 @@ center
                 </Badge>
 
                 <h2 className="mt-3 text-2xl font-extrabold tracking-tight sm:text-3xl lg:text-4xl text-gray-900">
-                  What's Our Specialty
+                  What&apos;s Our Specialty
                 </h2>
 
                 {/* 2x2 Features Grid */}

@@ -96,7 +96,7 @@ export default function AppointmentForm({ setShowForm }: AppointmentFormProps) {
       <LoginRequiredDialog open={open} onOpenChange={setOpen} onLogin={handleLogin} />
       <form
         onSubmit={handleAppointmentBook}
-        className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2"
+        className="mt-5 grid min-w-0 grid-cols-1 gap-3 md:grid-cols-2"
       >
         {/* Full Name */}
         <div>

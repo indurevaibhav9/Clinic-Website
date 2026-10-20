@@ -17,7 +17,7 @@ export default function ConditionalLayout({
     <>
       {!isChatbotPage && <HeaderComponent />}
 
-      <div className={!isChatbotPage ? "mt-19" : ""}>
+      <div className={!isChatbotPage ? "pt-16 sm:pt-20" : ""}>
         {children}
       </div>
 

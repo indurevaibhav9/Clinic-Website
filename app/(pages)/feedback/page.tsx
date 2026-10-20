@@ -123,7 +123,7 @@ export default function FeedbackPage() {
           <Dna className="h-20 w-20 -rotate-12 text-white" />
         </div>
 
-        <div className="relative mx-auto flex h-full max-w-7xl items-center px-6 lg:px-8">
+        <div className="relative mx-auto flex h-full max-w-7xl items-center px-4 sm:px-6 lg:px-8">
           <div className="text-white">
             <div className="mb-3 flex items-center gap-3">
               <span className="h-1.5 w-10 rounded-full bg-cyan-300" />
@@ -146,7 +146,7 @@ export default function FeedbackPage() {
       </section>
 
       {/* FEEDBACK INTRO + RATING */}
-      <section className="relative overflow-hidden bg-white py-20 lg:py-24">
+      <section className="relative overflow-hidden bg-white py-12 sm:py-16 lg:py-24">
         <div className="absolute left-8 top-20 hidden opacity-[0.10] lg:block">
           <HeartPulse className="h-24 w-24 text-blue-500" />
         </div>
@@ -155,7 +155,7 @@ export default function FeedbackPage() {
           <MessageSquareHeart className="h-24 w-24 text-blue-500" />
         </div>
 
-        <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-16 px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
+        <div className="mx-auto grid max-w-7xl grid-cols-1 items-start gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:gap-20 lg:px-8">
           {/* LEFT CONTENT */}
           <div className="relative">
             <div className="absolute -left-6 -top-6 h-24 w-24 rounded-full bg-blue-50" />
@@ -274,7 +274,7 @@ export default function FeedbackPage() {
             ) : (
               <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Name + Email */}
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
                     <label
                       htmlFor="name"
@@ -317,7 +317,7 @@ export default function FeedbackPage() {
                 </div>
 
                 {/* Phone + Service */}
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                   <div>
                     <label
                       htmlFor="phone"
@@ -441,7 +441,7 @@ export default function FeedbackPage() {
       </section>
 
       {/* PATIENT TESTIMONIALS */}
-      <section className="relative overflow-hidden bg-gray-50 py-20 lg:py-24">
+      <section className="relative overflow-hidden bg-gray-50 py-12 sm:py-16 lg:py-24">
         <div className="absolute -left-12 top-10 hidden opacity-[0.06] lg:block">
           <Dna className="h-52 w-52 rotate-12 text-blue-600" />
         </div>
@@ -450,7 +450,7 @@ export default function FeedbackPage() {
           <Dna className="h-52 w-52 -rotate-12 text-blue-600" />
         </div>
 
-        <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <div className="mb-3 flex items-center justify-center gap-3">
               <span className="h-1.5 w-10 rounded-full bg-blue-600" />
@@ -517,8 +517,8 @@ export default function FeedbackPage() {
 
       {/* FINAL CTA */}
       <section className="bg-white py-16">
-        <div className="mx-auto max-w-5xl px-6 lg:px-8">
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-700 to-blue-500 px-8 py-12 text-center shadow-xl sm:px-12">
+        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-700 to-blue-500 px-5 py-10 text-center shadow-xl sm:px-12 sm:py-12">
             <div className="absolute -left-20 -top-20 h-48 w-48 rounded-full bg-white/10" />
             <div className="absolute -bottom-24 -right-10 h-56 w-56 rounded-full bg-white/10" />
 

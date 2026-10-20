@@ -14,7 +14,7 @@ export default function ChatbotWidget() {
   }
 
   return (
-    <div className="fixed bottom-5 right-5 z-[9999]">
+    <div className="fixed bottom-4 right-4 z-[9999] sm:bottom-5 sm:right-5">
       {isOpen && (
         <div className="mb-4 flex h-[min(650px,calc(100dvh-110px))] w-[min(420px,calc(100vw-32px))] flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl">
           <div className="flex items-center justify-between bg-blue-600 px-4 py-3 text-white">
@@ -48,7 +48,7 @@ export default function ChatbotWidget() {
         onClick={() => setIsOpen((open) => !open)}
         aria-label={isOpen ? "Close medical chatbot" : "Open medical chatbot"}
         aria-expanded={isOpen}
-        className="ml-auto flex h-16 w-16 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition hover:scale-105 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
+        className="ml-auto flex h-14 w-14 items-center justify-center rounded-full bg-blue-600 text-white shadow-lg transition hover:scale-105 hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 sm:h-16 sm:w-16"
       >
         {isOpen ? (
           <svg

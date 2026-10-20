@@ -84,7 +84,7 @@ export default function RegisterPatientPage() {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50 px-4 py-10">
+    <main className="min-h-screen bg-gray-50 px-4 py-6 sm:py-10">
       <div className="mx-auto max-w-xl">
         <button
           type="button"
@@ -94,13 +94,13 @@ export default function RegisterPatientPage() {
           ← Back
         </button>
 
-        <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm sm:p-8">
+        <section className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm sm:p-8">
           <div className="mb-6">
             <p className="text-sm font-medium text-blue-600">
               Patient Management
             </p>
 
-            <h1 className="mt-2 text-2xl font-bold text-gray-900">
+            <h1 className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl">
               Register New Patient
             </h1>
 
