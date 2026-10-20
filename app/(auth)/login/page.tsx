@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 import { authClient } from "@/lib/auth-client"
@@ -9,7 +9,7 @@ import {Eye, EyeOff} from "lucide-react"
 
 type AuthMode = "SIGN_IN" | "VERIFY_OTP"
 
-export default function AuthPage() {
+function AuthPageContent() {
   const router = useRouter()
 
   useEffect(() => {
@@ -373,5 +373,13 @@ export default function AuthPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function AuthPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
+      <AuthPageContent />
+    </Suspense>
   )
 }

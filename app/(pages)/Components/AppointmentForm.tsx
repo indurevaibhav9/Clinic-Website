@@ -2,7 +2,7 @@
 
 import { authClient } from "@/lib/auth-client";
 import { ChevronDown, Loader2 } from "lucide-react";
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, Suspense, useState } from "react";
 import { toast } from "sonner";
 import { LoginRequiredDialog } from "./LoginRequiredDialogue";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
@@ -11,7 +11,7 @@ type AppointmentFormProps = {
   setShowForm: Dispatch<SetStateAction<boolean>>;
 };
 
-export default function AppointmentForm({ setShowForm }: AppointmentFormProps) {
+function AppointmentFormContent({ setShowForm }: AppointmentFormProps) {
   const { data: session } = authClient.useSession();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -218,5 +218,17 @@ export default function AppointmentForm({ setShowForm }: AppointmentFormProps) {
         </div>
       </form>
     </div>
+  );
+}
+
+export default function AppointmentForm(props: AppointmentFormProps) {
+  return (
+    <Suspense
+      fallback={
+        <div className="mt-5 text-sm text-slate-500">Loading appointment form...</div>
+      }
+    >
+      <AppointmentFormContent {...props} />
+    </Suspense>
   );
 }

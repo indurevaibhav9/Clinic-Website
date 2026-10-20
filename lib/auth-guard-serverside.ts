@@ -3,12 +3,31 @@ import { auth } from "@/lib/auth"; // Adjust import to match your better-auth se
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 
-export async function verifyAdmin() {
+type VerifyAdminResult =
+  | {
+      authorized: true;
+      user: {
+        role?: string | null;
+        [key: string]: unknown;
+      };
+      response: null;
+    }
+  | {
+      authorized: false;
+      user: {
+        role?: string | null;
+        [key: string]: unknown;
+      } | null;
+      response: Response;
+    };
+
+export async function verifyAdmin(): Promise<VerifyAdminResult> {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
+  const user = session?.user ?? null;
 
-  if (!session || !session.user) {
+  if (!user) {
     return {
       authorized: false,
       response: NextResponse.json(
@@ -19,17 +38,16 @@ export async function verifyAdmin() {
     };
   }
 
-  // Verify role field attached to better-auth user object
-  if (session.user.role !== "ADMIN") {
+  if (user.role !== "ADMIN") {
     return {
       authorized: false,
       response: NextResponse.json(
         { error: "Forbidden. Admin privileges required." },
         { status: 403 },
       ),
-      user: session.user,
+      user,
     };
   }
 
-  return { authorized: true, user: session.user, response: null };
+  return { authorized: true, user, response: null };
 }

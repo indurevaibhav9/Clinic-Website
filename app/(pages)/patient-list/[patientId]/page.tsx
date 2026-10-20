@@ -83,7 +83,6 @@ export default function PatientPage() {
       <ConsultationRecorder
         patientId={patientId}
         doctorId={doctorId}
-        onSaved={() => setRefreshKey((previous) => previous + 1)}
       />
 
       {/* Saved consultation history */}

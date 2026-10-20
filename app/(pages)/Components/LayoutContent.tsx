@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import { usePathname } from "next/navigation";
 import HeaderComponent from "./HeaderCompontent";
 import Footer from "./Footer";
@@ -15,7 +16,11 @@ export default function LayoutContent({
 
   return (
     <>
-      {!isChatbotPage && <HeaderComponent />}
+      {!isChatbotPage && (
+        <Suspense fallback={<div className="h-16 sm:h-20" />}>
+          <HeaderComponent />
+        </Suspense>
+      )}
 
       <div className={!isChatbotPage ? "pt-16 sm:pt-20" : "flex-1"}>
         {children}

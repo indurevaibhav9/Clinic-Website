@@ -11,7 +11,7 @@ interface AppointmentType {
   id: string;
   _id?: string;
   patientName?: string;
-  name?: string;
+  name: string;
   email: string;
   date: string;
   time: string;
@@ -53,22 +53,22 @@ export default function UpcomingAppointmentsPage() {
         const data = await response.json();
 
         // Map fields to guarantee compatibility with your UpcomingAppointment component
-        const formattedAppointments = (data.appointments || []).map(
+        const formattedAppointments: AppointmentType[] = (data.appointments || []).map(
           (item: any) => ({
-            id: item._id || item.id,
-            name: item.patientName || item.name || "N/A",
-            email: item.email,
+            id: String(item._id || item.id),
+            name: String(item.patientName || item.name || "N/A"),
+            email: String(item.email || ""),
             date: item.date
               ? new Date(item.date).toLocaleDateString("en-GB", {
                   day: "numeric",
                   month: "long",
                   year: "numeric",
                 })
-              : item.date,
-            time: item.time,
-            service: item.service,
-            address: item.address,
-            status: item.status,
+              : String(item.date || ""),
+            time: String(item.time || ""),
+            service: String(item.service || ""),
+            address: String(item.address || ""),
+            status: String(item.status || ""),
           }),
         );
 

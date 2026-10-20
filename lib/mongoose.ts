@@ -34,6 +34,10 @@ if (!cached) {
 }
 
 export async function connectDB() {
+  if (!MONGODB_URI) {
+    throw new Error("Please define the MONGODB_URI environment variable inside .env.local");
+  }
+
   // Check if Mongoose is already connected
   if (mongoose.connection.readyState >= 1) {
     return mongoose.connection;

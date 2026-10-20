@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 type Props = {
   patientId: string;
   doctorId: string;
+  onSaved?: () => void;
 };
 
 type ConsultationResult = {
@@ -17,6 +18,7 @@ type ConsultationResult = {
 export default function ConsultationRecorder({
   patientId,
   doctorId,
+  onSaved,
 }: Props) {
   const recorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
@@ -84,6 +86,7 @@ export default function ConsultationRecorder({
           }
 
           setResult(data.consultation);
+          onSaved?.();
         } catch (err) {
           setError(
             err instanceof Error ? err.message : "Something went wrong."
