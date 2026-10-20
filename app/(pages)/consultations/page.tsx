@@ -110,7 +110,7 @@ export default function ConsultationRecorder({
   }
 
   return (
-    <section className="space-y-4 rounded-lg border p-4">
+    <section className="min-w-0 space-y-4 rounded-lg border p-3 sm:p-4">
       <h2 className="text-lg font-semibold">Consultation recording</h2>
 
       {!recording ? (
@@ -144,19 +144,19 @@ export default function ConsultationRecorder({
         <div className="space-y-3">
           <div>
             <h3 className="font-semibold">Transcript</h3>
-            <p className="whitespace-pre-wrap">{result.transcript}</p>
+            <p className="break-words whitespace-pre-wrap">{result.transcript}</p>
           </div>
 
           <div>
             <h3 className="font-semibold">AI summary — review required</h3>
-            <p>{result.summary}</p>
+            <p className="break-words">{result.summary}</p>
           </div>
 
           <div>
             <h3 className="font-semibold">Key points</h3>
             <ul className="list-disc pl-6">
               {result.keyPoints.map((point, index) => (
-                <li key={index}>{point}</li>
+                <li key={index} className="break-words">{point}</li>
               ))}
             </ul>
           </div>
@@ -165,7 +165,7 @@ export default function ConsultationRecorder({
             <h3 className="font-semibold">Follow-up</h3>
             <ul className="list-disc pl-6">
               {result.followUp.map((item, index) => (
-                <li key={index}>{item}</li>
+                <li key={index} className="break-words">{item}</li>
               ))}
             </ul>
           </div>

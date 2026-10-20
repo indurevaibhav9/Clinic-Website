@@ -129,7 +129,9 @@ export default function PreviousAppointmentsPage() {
             </div>
           ) : (
             appointments.map((appointment) => (
-              <PreviousAppointment key={appointment.id} {...appointment} />
+              <div key={appointment.id} className="min-w-0 [overflow-wrap:anywhere]">
+                <PreviousAppointment {...appointment} />
+              </div>
             ))
           )}
         </div>

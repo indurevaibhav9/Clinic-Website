@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import ProfileMenu from "@/components/profileMenu";
 import { authClient } from "@/lib/auth-client";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { toast } from "sonner";
 import { LoginRequiredDialog } from "./LoginRequiredDialogue";
 import { useState } from "react";
 import {
@@ -71,7 +70,10 @@ export default function HeaderComponent() {
       />
 
       <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu}>
-        <SheetContent side="right" className="w-[min(20rem,90vw)] overflow-y-auto">
+        <SheetContent
+          side="right"
+          className="w-[min(20rem,90vw)] overflow-y-auto"
+        >
           <SheetHeader className="border-b pr-12">
             <SheetTitle>MediFast navigation</SheetTitle>
           </SheetHeader>
@@ -84,7 +86,10 @@ export default function HeaderComponent() {
                 : []),
               ...(session?.user && session.user.role !== "NORMAL_USER"
                 ? [
-                    { href: "/patient-list/todays-patients", label: "Today's Patients" },
+                    {
+                      href: "/patient-list/todays-patients",
+                      label: "Today's Patients",
+                    },
                     { href: "/patient-list", label: "All Patients" },
                     { href: "/patient-list/register", label: "Register Patient" },
                   ]

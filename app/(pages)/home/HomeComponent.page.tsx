@@ -321,7 +321,7 @@ export default function HomeComponent() {
             <div className="relative mx-auto w-full max-w-5xl overflow-hidden rounded-2xl bg-gradient-to-r from-[#eef5ff] via-[#e6f0fa] to-[#d8e8f8] p-6 text-gray-900 shadow-xl sm:p-8 lg:p-12">
               <div className="grid grid-cols-1 gap-6 lg:grid-cols-12 lg:items-center">
                 {/* Left Content Column */}
-                <div className="z-10 text-center lg:col-span-6 lg:text-left">
+                <div className="z-10 min-w-0 text-center lg:col-span-6 lg:text-left">
                   <span className="text-xs font-bold uppercase tracking-widest text-gray-600">
                     Great Experience in Building
                   </span>
@@ -338,7 +338,7 @@ export default function HomeComponent() {
                   </p>
 
        
-<div className="mt-6 flex flex-col items-start gap-4">
+<div className="mt-6 flex flex-col items-center gap-4 lg:items-start">
   <button
     type="button"
     onClick={HandleReadMore}
@@ -424,7 +424,7 @@ export default function HomeComponent() {
             <div className="mx-auto mt-6 grid w-full max-w-5xl grid-cols-1 gap-5 lg:grid-cols-12 lg:items-stretch">
               {/* Left Blue Contact Card */}
               <div className="flex flex-col justify-between rounded-xl border border-blue-400/20 bg-[#0d5cff] p-6 shadow-lg lg:col-span-4">
-                <div>
+                <div className="min-w-0">
                   {/* Phone Icon & Info */}
                   <div className="flex items-center gap-4">
                     <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white text-[#0d5cff]">

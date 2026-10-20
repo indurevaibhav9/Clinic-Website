@@ -83,7 +83,7 @@ export default function ServicesPage() {
       {/* =========================================================================
           SECTION 1: HERO HEADER WITH BREADCRUMB
          ========================================================================= */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-500 py-16 text-white md:py-24">
+      <section className="relative overflow-hidden bg-gradient-to-r from-blue-600 to-blue-500 py-12 text-white sm:py-16 md:py-24">
         {/* Subtle background SVG pattern element */}
         <div className="pointer-events-none absolute inset-0 opacity-10">
           <svg
@@ -235,8 +235,8 @@ export default function ServicesPage() {
       {/* =========================================================================
           SECTION 3: COMPLETED SERVICES GRID
          ========================================================================= */}
-      <section className="bg-slate-50/70 py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-6">
+      <section className="bg-slate-50/70 py-12 sm:py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6">
           <div className="mb-12 text-center">
             <div className="inline-flex items-center gap-2 rounded-full bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600">
               <span className="h-2 w-2 rounded-full bg-blue-600"></span>

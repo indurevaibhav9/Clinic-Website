@@ -107,7 +107,7 @@ export default function Privacy() {
   return (
     <main className="min-h-screen overflow-hidden bg-white text-slate-800">
       {/* Page banner */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-[#2455f5] via-[#0865ff] to-[#08b6d8] px-5 py-12 text-white sm:py-14">
+      <section className="relative overflow-hidden bg-gradient-to-r from-[#2455f5] via-[#0865ff] to-[#08b6d8] px-4 py-10 text-white sm:px-5 sm:py-14">
         <MedicalDecoration className="absolute -right-3 -top-8 h-40 w-40 rotate-45 text-white/15 sm:right-8 sm:h-48 sm:w-48" />
 
         <div className="relative mx-auto max-w-6xl">
@@ -116,7 +116,7 @@ export default function Privacy() {
             MEDIFAST
           </div>
 
-          <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+          <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-5xl">
             Privacy Policy
           </h1>
 
@@ -134,7 +134,7 @@ export default function Privacy() {
       </section>
 
       {/* Policy content */}
-      <section className="relative px-5 py-14 sm:py-20">
+      <section className="relative px-4 py-10 sm:px-5 sm:py-20">
         <MedicalDecoration className="pointer-events-none absolute left-5 top-12 hidden h-14 w-14 -rotate-12 text-blue-100 sm:block lg:left-12" />
 
         <svg
@@ -156,7 +156,7 @@ export default function Privacy() {
               YOUR PRIVACY MATTERS
             </div>
 
-            <h2 className="text-3xl font-bold leading-tight text-slate-900 sm:text-4xl">
+            <h2 className="text-2xl font-bold leading-tight text-slate-900 sm:text-4xl">
               Your Privacy, <span className="text-blue-600">Our Priority</span>
             </h2>
 
@@ -173,7 +173,7 @@ export default function Privacy() {
           </div>
 
           {/* Privacy commitment */}
-          <div className="mb-8 flex gap-4 rounded-xl border border-blue-100 bg-blue-50/70 p-5 sm:p-6">
+          <div className="mb-8 flex gap-3 rounded-xl border border-blue-100 bg-blue-50/70 p-4 sm:gap-4 sm:p-6">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white">
               <ShieldIcon />
             </div>
@@ -196,10 +196,10 @@ export default function Privacy() {
               <article
                 key={section.title}
                 id={`privacy-${index + 1}`}
-                className="group rounded-xl border border-slate-200 bg-white p-5 transition duration-200 hover:border-blue-200 hover:shadow-[0_8px_30px_rgba(37,99,235,0.07)] sm:p-6"
+                className="group rounded-xl border border-slate-200 bg-white p-4 transition duration-200 hover:border-blue-200 hover:shadow-[0_8px_30px_rgba(37,99,235,0.07)] sm:p-6"
               >
-                <div className="flex items-start gap-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-sm font-bold text-blue-600 transition group-hover:bg-blue-600 group-hover:text-white">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-xs font-bold text-blue-600 transition group-hover:bg-blue-600 group-hover:text-white sm:h-10 sm:w-10 sm:text-sm">
                     {String(index + 1).padStart(2, "0")}
                   </div>
 
@@ -218,7 +218,7 @@ export default function Privacy() {
           </div>
 
           {/* Contact card */}
-          <section className="mt-10 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 p-7 text-white sm:p-9">
+          <section className="mt-10 rounded-2xl bg-gradient-to-r from-blue-600 to-cyan-500 p-5 text-white sm:p-9">
             <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
               <div>
                 <p className="mb-2 text-xs font-bold uppercase tracking-widest text-blue-100">

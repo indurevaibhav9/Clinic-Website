@@ -6,7 +6,7 @@ export default function ReadMoreSection() {
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <section className="mx-auto max-w-3xl rounded-xl border border-blue-100 bg-white p-6 shadow-sm">
+    <section className="mx-auto max-w-3xl rounded-xl border border-blue-100 bg-white p-4 shadow-sm sm:p-6">
       <h2 className="text-2xl font-bold text-slate-900">
         About MediFast
       </h2>

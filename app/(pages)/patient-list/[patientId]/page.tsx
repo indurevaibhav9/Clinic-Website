@@ -76,7 +76,7 @@ export default function PatientPage() {
       <header>
         <h1 className="text-xl font-bold sm:text-2xl">Patient Details</h1>
 
-        <p className="mt-2 text-sm text-gray-600">Patient ID: {patientId}</p>
+        <p className="mt-2 break-all text-sm text-gray-600">Patient ID: {patientId}</p>
       </header>
 
       {/* Consultation recording */}

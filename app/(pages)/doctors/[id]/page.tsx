@@ -187,7 +187,7 @@ export default function DoctorDetailsPage() {
   return (
     <div className="min-h-screen bg-blue-400 pb-20 text-gray-800">
       <Dialog open={showForm} onOpenChange={setShowForm}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-h-[90dvh] w-[calc(100%-2rem)] max-w-2xl overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Book an Appointment</DialogTitle>
           </DialogHeader>
@@ -223,10 +223,10 @@ export default function DoctorDetailsPage() {
 
       {/* Main Content Layout */}
       <section className="mx-auto max-w-7xl px-4 pt-8 sm:px-6 sm:pt-12">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <div className="grid min-w-0 grid-cols-1 items-start gap-6 sm:gap-8 lg:grid-cols-12">
           {/* ================= LEFT SIDEBAR ================= */}
-          <div className="lg:col-span-4 space-y-6">
-            <div className="bg-white rounded-3xl p-6 border border-gray-100 shadow-sm">
+          <div className="min-w-0 space-y-6 lg:col-span-4">
+            <div className="rounded-3xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6">
               {/* Doctor Headshot */}
               <div className="relative h-72 w-full rounded-2xl overflow-hidden mb-6 bg-slate-100">
                 <Image
@@ -309,9 +309,9 @@ export default function DoctorDetailsPage() {
           </div>
 
           {/* ================= RIGHT MAIN DETAILS ================= */}
-          <div className="lg:col-span-8 space-y-8">
+          <div className="min-w-0 space-y-8 lg:col-span-8">
             {/* About Doctor, Education, Experience, Skills & Benefits */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm space-y-8">
+            <div className="space-y-8 rounded-3xl border border-gray-100 bg-white p-4 shadow-sm sm:p-8">
               {/* About Section */}
               <div>
                 <h2 className="text-xl font-extrabold text-gray-900 mb-4">
@@ -459,7 +459,7 @@ export default function DoctorDetailsPage() {
             </div>
 
             {/* Appointment Schedule Card */}
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-sm">
+            <div className="rounded-3xl border border-gray-100 bg-white p-4 shadow-sm sm:p-8">
               <h2 className="text-xl font-extrabold text-gray-900 mb-6">
                 Appointment Schedules:
               </h2>

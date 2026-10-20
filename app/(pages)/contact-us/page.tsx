@@ -133,8 +133,8 @@ export default function ContactPage() {
       {/* Page Header */}
       <section className="bg-blue-600 px-4 py-16 text-white">
         <div className="mx-auto max-w-7xl text-center">
-          <h1 className="mb-4 text-4xl font-bold md:text-5xl">Contact Us</h1>
-          <p className="mx-auto max-w-2xl text-lg text-blue-100">
+          <h1 className="mb-4 text-3xl font-bold sm:text-4xl md:text-5xl">Contact Us</h1>
+          <p className="mx-auto max-w-2xl text-base text-blue-100 sm:text-lg">
             We are here to help you with your healthcare needs. Reach out to us
             or visit one of our locations in Pune.
           </p>
@@ -157,7 +157,7 @@ export default function ContactPage() {
           <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-2">
             {/* Google Map Card */}
             <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-md">
-              <div className="relative h-[350px] w-full md:h-[450px]">
+              <div className="relative h-64 w-full sm:h-[350px] md:h-[450px]">
                 <iframe
                   key={`${selectedLocation.lat}-${selectedLocation.lng}`}
                   title={`${selectedLocation.city} location on Google Maps`}
@@ -196,7 +196,7 @@ export default function ContactPage() {
             </div>
 
             {/* Locations List with Inline Accordions */}
-            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-md md:p-8">
+            <div className="rounded-2xl border border-gray-200 bg-white p-4 shadow-md sm:p-6 md:p-8">
               <div className="mb-6 flex items-center gap-4">
                 <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-600">
                   <svg
@@ -221,7 +221,7 @@ export default function ContactPage() {
                 </div>
 
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900">
+                  <h3 className="text-xl font-bold text-gray-900 sm:text-2xl">
                     Find Our Locations
                   </h3>
                   <p className="mt-1 text-sm text-gray-500">

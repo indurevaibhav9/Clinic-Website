@@ -30,8 +30,8 @@ function SearchResultsContent() {
   }, [query, fuse]);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8">
-      <h1 className="text-2xl font-bold text-slate-900">
+    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+      <h1 className="break-words text-2xl font-bold text-slate-900">
         Search Results {query && <span>for &ldquo;{query}&rdquo;</span>}
       </h1>
       <p className="mt-1 text-sm text-slate-500">
@@ -45,22 +45,22 @@ function SearchResultsContent() {
             <Link
               key={result.id}
               href={result.href}
-              className="block rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:border-blue-500 hover:shadow-md"
+              className="block min-w-0 rounded-xl border border-slate-200 bg-white p-4 shadow-sm transition-all hover:border-blue-500 hover:shadow-md sm:p-5"
             >
               <span className="inline-block rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-semibold text-blue-600">
                 {result.category}
               </span>
-              <h2 className="mt-2 text-base font-semibold text-slate-900">
+              <h2 className="mt-2 break-words text-base font-semibold text-slate-900">
                 {result.title}
               </h2>
-              <p className="mt-1 text-xs text-slate-600 leading-relaxed">
+              <p className="mt-1 break-words text-xs leading-relaxed text-slate-600">
                 {result.description}
               </p>
             </Link>
           ))}
         </div>
       ) : (
-        <div className="mt-12 rounded-2xl border border-dashed border-slate-300 p-12 text-center">
+        <div className="mt-12 rounded-2xl border border-dashed border-slate-300 p-6 text-center sm:p-12">
           <p className="text-base font-medium text-slate-700">
             No results found
           </p>

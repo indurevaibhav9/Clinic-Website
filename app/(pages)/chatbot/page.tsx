@@ -273,8 +273,8 @@ export default function ChatbotPage() {
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 px-3 py-4 text-slate-900 sm:px-6 sm:py-8">
-      <div className="">
+    <main className="flex h-[100dvh] min-h-0 flex-col overflow-hidden bg-slate-50 px-0 py-0 text-slate-900 sm:px-6 sm:py-8">
+      <div className="mx-auto flex min-h-0 w-full max-w-6xl flex-1 flex-col overflow-hidden bg-white sm:rounded-2xl sm:border sm:border-slate-200 sm:shadow-sm">
         {/* Header */}
         <header className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-4 sm:px-6">
           <div className="flex min-w-0 items-center gap-3">
@@ -310,7 +310,7 @@ export default function ChatbotPage() {
 
         {/* Conversation */}
         <section
-          className="flex-1 overflow-y-auto bg-slate-50 px-3 py-5 sm:px-6 sm:py-6"
+          className="min-h-0 flex-1 overflow-y-auto bg-slate-50 px-3 py-5 sm:px-6 sm:py-6"
           aria-label="Chat conversation"
           aria-live="polite"
         >
@@ -404,7 +404,7 @@ export default function ChatbotPage() {
                 Suggested questions
               </p>
 
-              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
+              <div className="grid grid-cols-2 gap-2">
                 {SUGGESTED_QUESTIONS.map((question) => (
                   <button
                     key={question}

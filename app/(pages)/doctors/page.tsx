@@ -110,7 +110,7 @@ export default function DoctorsPage() {
             <Link
               key={doc.id}
               href={`/doctors/${doc.id}`}
-              className="group relative flex flex-col items-center bg-slate-50/70 rounded-2xl p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1"
+              className="group relative flex min-w-0 flex-col items-center rounded-2xl bg-slate-50/70 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg sm:p-6"
             >
               {/* Arch Image Wrapper */}
               <div className="relative w-full aspect-[4/5] max-w-[220px] mb-6">
@@ -146,7 +146,7 @@ export default function DoctorsPage() {
               </div>
 
               {/* Details */}
-              <h3 className="text-base font-bold text-gray-900 group-hover:text-blue-600 transition-colors">
+              <h3 className="text-center text-base font-bold text-gray-900 transition-colors group-hover:text-blue-600">
                 {doc.name}
               </h3>
               <p className="text-xs font-medium text-blue-500 mt-1">

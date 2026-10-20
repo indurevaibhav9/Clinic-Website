@@ -341,10 +341,10 @@ export default function AdminClient() {
       {/* Main Container */}
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-8">
         {/* Nav Tabs */}
-        <div className="mb-6 flex flex-wrap items-center gap-2 border-b border-gray-200 pb-4 sm:mb-8">
+        <div className="-mx-4 mb-6 flex flex-nowrap items-center gap-2 overflow-x-auto overscroll-x-contain border-b border-gray-200 px-4 pb-4 sm:mx-0 sm:mb-8 sm:flex-wrap sm:overflow-visible sm:px-0">
           <button
             onClick={() => setActiveTab("appointments")}
-            className={`flex items-center gap-2 rounded-lg px-3 py-2.5 text-xs font-medium transition-all sm:px-4 sm:text-sm ${
+            className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2.5 text-xs font-medium transition-all sm:px-4 sm:text-sm ${
               activeTab === "appointments"
                 ? "bg-blue-600 text-white shadow-md shadow-blue-600/20"
                 : "bg-white text-gray-600 hover:bg-gray-100"
@@ -356,7 +356,7 @@ export default function AdminClient() {
 
           <button
             onClick={() => setActiveTab("feedbacks")}
-            className={`flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-all ${
+            className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2.5 text-xs font-medium transition-all sm:px-4 sm:text-sm ${
               activeTab === "feedbacks"
                 ? "bg-blue-600 text-white shadow-md shadow-blue-600/20"
                 : "bg-white text-gray-600 hover:bg-gray-100"
@@ -368,7 +368,7 @@ export default function AdminClient() {
 
           <button
             onClick={() => setActiveTab("faqs")}
-            className={`flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-all ${
+            className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2.5 text-xs font-medium transition-all sm:px-4 sm:text-sm ${
               activeTab === "faqs"
                 ? "bg-blue-600 text-white shadow-md shadow-blue-600/20"
                 : "bg-white text-gray-600 hover:bg-gray-100"
@@ -380,7 +380,7 @@ export default function AdminClient() {
 
           <button
             onClick={() => setActiveTab("contacts")}
-            className={`flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-all ${
+            className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2.5 text-xs font-medium transition-all sm:px-4 sm:text-sm ${
               activeTab === "contacts"
                 ? "bg-blue-600 text-white shadow-md shadow-blue-600/20"
                 : "bg-white text-gray-600 hover:bg-gray-100"
@@ -392,7 +392,7 @@ export default function AdminClient() {
 
           <button
             onClick={() => setActiveTab("communicate")}
-            className={`flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-all ${
+            className={`flex shrink-0 items-center gap-2 rounded-lg px-3 py-2.5 text-xs font-medium transition-all sm:px-4 sm:text-sm ${
               activeTab === "communicate"
                 ? "bg-blue-600 text-white shadow-md shadow-blue-600/20"
                 : "bg-white text-gray-600 hover:bg-gray-100"
@@ -417,12 +417,12 @@ export default function AdminClient() {
               </div>
 
               {/* Status Filter */}
-              <div className="flex items-center gap-2 rounded-xl bg-white p-1.5 shadow-sm border border-gray-200">
+              <div className="flex w-full items-center gap-2 rounded-xl border border-gray-200 bg-white p-1.5 shadow-sm sm:w-auto">
                 <Filter className="ml-2 h-4 w-4 text-gray-400" />
                 <select
                   value={statusFilter}
                   onChange={(e) => setStatusFilter(e.target.value)}
-                  className="bg-transparent text-sm font-medium text-gray-700 outline-none"
+                  className="min-w-0 flex-1 bg-transparent px-1 py-2 text-sm font-medium text-gray-700 outline-none sm:flex-none"
                 >
                   <option value="ALL">All Statuses</option>
                   <option value="PENDING">PENDING</option>
@@ -438,7 +438,7 @@ export default function AdminClient() {
                 <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
               </div>
             ) : appointments.length === 0 ? (
-              <div className="rounded-2xl bg-white p-12 text-center text-gray-500 border border-gray-100">
+              <div className="rounded-2xl border border-gray-100 bg-white p-6 text-center text-gray-500 sm:p-12">
                 No appointments found for the selected status.
               </div>
             ) : (
@@ -597,7 +597,7 @@ export default function AdminClient() {
                 <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
               </div>
             ) : feedbacks.length === 0 ? (
-              <div className="rounded-2xl bg-white p-12 text-center text-gray-500">
+              <div className="rounded-2xl bg-white p-6 text-center text-gray-500 sm:p-12">
                 No feedback records found.
               </div>
             ) : (
@@ -605,10 +605,10 @@ export default function AdminClient() {
                 {feedbacks.map((item) => (
                   <div
                     key={item._id}
-                    className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm flex flex-col justify-between"
+                    className="flex min-w-0 flex-col justify-between rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6"
                   >
                     <div>
-                      <div className="flex items-center justify-between">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
                         <h3 className="font-bold text-gray-900">{item.name}</h3>
                         <span className="rounded-md bg-yellow-50 px-2 py-0.5 text-xs font-bold text-yellow-700">
                           {item.rating} ★
@@ -617,13 +617,13 @@ export default function AdminClient() {
                       <p className="mt-1 text-xs text-blue-600 font-medium">
                         Service: {item.service}
                       </p>
-                      <p className="mt-4 text-sm text-gray-600 leading-relaxed">
+                      <p className="mt-4 break-words text-sm leading-relaxed text-gray-600">
                         &ldquo;{item.message}&rdquo;
                       </p>
                     </div>
-                    <div className="mt-6 pt-3 border-t border-gray-50 flex items-center justify-between">
-                      <div className="text-xs text-gray-400">
-                        <p>{item.email}</p>
+                    <div className="mt-6 flex flex-wrap items-start justify-between gap-3 border-t border-gray-50 pt-3">
+                      <div className="min-w-0 text-xs text-gray-400">
+                        <p className="break-all">{item.email}</p>
                         <p>{item.phone}</p>
                       </div>
                       <button
@@ -666,7 +666,7 @@ export default function AdminClient() {
                 <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
               </div>
             ) : faqs.length === 0 ? (
-              <div className="rounded-2xl bg-white p-12 text-center text-gray-500">
+              <div className="rounded-2xl bg-white p-6 text-center text-gray-500 sm:p-12">
                 No FAQ submissions found.
               </div>
             ) : (
@@ -674,21 +674,21 @@ export default function AdminClient() {
                 {faqs.map((faq) => (
                   <div
                     key={faq._id}
-                    className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100 flex flex-col justify-between"
+                    className="flex min-w-0 flex-col justify-between rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6"
                   >
                     <div>
                       <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-gray-100 text-gray-700 mb-2">
                         {faq.service}
                       </span>
-                      <p className="text-base font-semibold text-gray-900">
+                      <p className="break-words text-base font-semibold text-gray-900">
                         Q: {faq.question}
                       </p>
                     </div>
-                    <div className="mt-4 pt-3 border-t border-gray-50 flex items-center justify-between text-xs text-gray-500">
-                      <div>
+                    <div className="mt-4 flex flex-wrap items-start justify-between gap-3 border-t border-gray-50 pt-3 text-xs text-gray-500">
+                      <div className="min-w-0">
                         <p className="font-medium text-gray-800">{faq.name}</p>
                         <p>
-                          {faq.email} | {faq.phone}
+                          <span className="break-all">{faq.email}</span> | {faq.phone}
                         </p>
                       </div>
                       <button
@@ -731,7 +731,7 @@ export default function AdminClient() {
                 <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
               </div>
             ) : contacts.length === 0 ? (
-              <div className="rounded-2xl bg-white p-12 text-center text-gray-500">
+              <div className="rounded-2xl bg-white p-6 text-center text-gray-500 sm:p-12">
                 No contact messages found.
               </div>
             ) : (
@@ -739,15 +739,15 @@ export default function AdminClient() {
                 {contacts.map((msg) => (
                   <div
                     key={msg._id}
-                    className="rounded-2xl bg-white p-6 shadow-sm border border-gray-100 flex flex-col justify-between"
+                    className="flex min-w-0 flex-col justify-between rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-6"
                   >
                     <div>
-                      <div className="flex justify-between items-start">
-                        <div>
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
                           <h3 className="font-bold text-gray-900">
                             {msg.name}
                           </h3>
-                          <p className="text-xs text-gray-400">
+                          <p className="break-all text-xs text-gray-400">
                             {msg.email} {msg.phone ? `• ${msg.phone}` : ""}
                           </p>
                         </div>
@@ -774,7 +774,7 @@ export default function AdminClient() {
                           Subject: {msg.subject}
                         </p>
                       )}
-                      <p className="mt-2 text-sm text-gray-600 leading-relaxed">
+                      <p className="mt-2 break-words text-sm leading-relaxed text-gray-600">
                         {msg.message}
                       </p>
                     </div>
@@ -798,13 +798,13 @@ export default function AdminClient() {
               </p>
             </div>
 
-            <div className="rounded-2xl bg-white p-8 shadow-sm border border-gray-100">
+            <div className="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm sm:p-8">
               {/* Type Switcher */}
-              <div className="mb-6 flex rounded-xl bg-gray-100 p-1">
+              <div className="mb-6 flex flex-col gap-1 rounded-xl bg-gray-100 p-1 sm:flex-row">
                 <button
                   type="button"
                   onClick={() => setCommType("whatsapp")}
-                  className={`flex-1 rounded-lg py-2 text-sm font-bold transition-all ${
+                  className={`min-w-0 flex-1 rounded-lg px-2 py-2 text-xs font-bold transition-all sm:text-sm ${
                     commType === "whatsapp"
                       ? "bg-emerald-600 text-white shadow-md"
                       : "text-gray-600 hover:text-gray-900"
@@ -815,7 +815,7 @@ export default function AdminClient() {
                 <button
                   type="button"
                   onClick={() => setCommType("email")}
-                  className={`flex-1 rounded-lg py-2 text-sm font-bold transition-all ${
+                  className={`min-w-0 flex-1 rounded-lg px-2 py-2 text-xs font-bold transition-all sm:text-sm ${
                     commType === "email"
                       ? "bg-blue-600 text-white shadow-md"
                       : "text-gray-600 hover:text-gray-900"

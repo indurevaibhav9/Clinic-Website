@@ -22,18 +22,18 @@ const DashboardClient = () => {
   }
 
   return (
-    <div className="p-5">
+    <main className="min-h-screen p-4 sm:p-5">
       <button
-        className="bg-primary rounded-2xl p-1 pl-2 pr-2 text-primary-foreground hover:bg-primary/90"
+        className="min-h-10 rounded-2xl bg-primary px-3 py-2 text-primary-foreground hover:bg-primary/90"
         onClick={logoutClick}
       >
         Log out
       </button>
 
-      <div className="mt-5">
+      <div className="mt-5 break-words">
         dashboard
       </div>
-    </div>
+    </main>
   )
 }
 

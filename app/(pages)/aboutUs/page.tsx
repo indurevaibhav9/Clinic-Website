@@ -74,7 +74,7 @@ export default function AboutUsComponent() {
 
         {/* OVERLAY CARDS SECTION */}
         <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 -mt-20 sm:-mt-28 lg:-mt-32">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4 items-stretch">
             {/* CARD 1: Working Time */}
             <Card className="border border-gray-100 bg-white shadow-xl rounded-2xl flex flex-col justify-between">
               <CardContent className="p-6 sm:p-8 flex flex-col justify-between h-full">
@@ -87,7 +87,7 @@ export default function AboutUsComponent() {
                     {schedule.map((item, index) => (
                       <li
                         key={index}
-                        className="flex justify-between items-center text-gray-600"
+                        className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 text-gray-600"
                       >
                         <span className="font-medium">{item.days}</span>
                         <span
@@ -188,7 +188,7 @@ export default function AboutUsComponent() {
           <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
             {/* Left Collage Images */}
             <div className="relative mx-auto w-full max-w-lg lg:max-w-none">
-              <div className="relative grid grid-cols-2 gap-4">
+              <div className="relative grid grid-cols-2 gap-3 sm:gap-4">
                 {/* Doctor consulting patient */}
                 <div className="relative h-64 sm:h-80 w-full overflow-hidden rounded-3xl shadow-lg col-span-2 sm:col-span-1">
                   <Image
@@ -392,7 +392,7 @@ export default function AboutUsComponent() {
                  ========================================================================= */}
         <section className="bg-blue-600 py-10 text-white shadow-xl">
           <div className="mx-auto max-w-7xl px-4 sm:px-6">
-            <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+            <div className="grid grid-cols-2 gap-4 sm:gap-8 md:grid-cols-4">
               {/* Stat 1 */}
               <div className="flex flex-col items-center text-center">
                 <div className="mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-400 text-slate-900">

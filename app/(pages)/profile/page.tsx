@@ -253,7 +253,7 @@ export default function ProfilePage() {
       <div className="mx-auto max-w-4xl">
 
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-6 sm:mb-8">
           <h1 className="text-2xl font-bold text-white sm:text-3xl">
             Profile
           </h1>
@@ -264,7 +264,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Profile Card */}
-        <div className="rounded-2xl bg-white p-4 shadow-sm sm:p-8">
+        <div className="min-w-0 rounded-2xl bg-white p-4 shadow-sm sm:p-8">
 
           {/* Profile Header */}
           <div className="flex flex-col items-start gap-4 border-b pb-6 sm:flex-row sm:items-center sm:gap-5">
@@ -311,9 +311,9 @@ export default function ProfilePage() {
               {/* =========================
                   Name
               ========================= */}
-              <div className="rounded-xl border p-4">
+              <div className="min-w-0 rounded-xl border p-3 sm:p-4">
                 <div className="flex min-w-0 items-center gap-3">
-                  <User className="h-5 w-5 text-blue-600" />
+                  <User className="h-5 w-5 shrink-0 text-blue-600" />
 
                   <div className="min-w-0 flex-1">
                     <p className="text-sm text-gray-500">
@@ -331,7 +331,7 @@ export default function ProfilePage() {
                         onChange={(e) =>
                           setName(e.target.value)
                         }
-                        className="mt-1 w-full rounded-lg border px-3 py-2 outline-none focus:border-blue-600"
+                        className="mt-1 min-w-0 w-full rounded-lg border px-3 py-2 outline-none focus:border-blue-600"
                       />
                     )}
                   </div>
@@ -344,7 +344,7 @@ export default function ProfilePage() {
                         setMessage("");
                         setEditingName(true);
                       }}
-                      className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:underline"
+                      className="flex shrink-0 items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium text-blue-600 hover:underline"
                     >
                       <Pencil className="h-4 w-4" />
                       Edit
@@ -379,9 +379,9 @@ export default function ProfilePage() {
               {/* =========================
                   Email
               ========================= */}
-              <div className="rounded-xl border p-4">
+              <div className="min-w-0 rounded-xl border p-3 sm:p-4">
                 <div className="flex min-w-0 items-center gap-3">
-                  <Mail className="h-5 w-5 text-blue-600" />
+                  <Mail className="h-5 w-5 shrink-0 text-blue-600" />
 
                   <div className="min-w-0 flex-1">
                     <p className="text-sm text-gray-500">
@@ -456,9 +456,9 @@ export default function ProfilePage() {
               {/* =========================
                   Phone
               ========================= */}
-              <div className="rounded-xl border p-4">
+              <div className="min-w-0 rounded-xl border p-3 sm:p-4">
                 <div className="flex min-w-0 items-center gap-3">
-                  <Phone className="h-5 w-5 text-blue-600" />
+                  <Phone className="h-5 w-5 shrink-0 text-blue-600" />
 
                   <div className="min-w-0 flex-1">
                     <p className="text-sm text-gray-500">
@@ -477,7 +477,7 @@ export default function ProfilePage() {
                           setPhoneInput(e.target.value)
                         }
                         placeholder="Enter phone number"
-                        className="mt-1 w-full rounded-lg border px-3 py-2 outline-none focus:border-blue-600"
+                        className="mt-1 min-w-0 w-full rounded-lg border px-3 py-2 outline-none focus:border-blue-600"
                       />
                     )}
                   </div>
@@ -492,7 +492,7 @@ export default function ProfilePage() {
                         setMessage("");
                         setEditingPhone(true);
                       }}
-                      className="flex items-center gap-2 text-sm font-medium text-blue-600 hover:underline"
+                      className="flex shrink-0 items-center gap-2 rounded-lg px-2 py-2 text-sm font-medium text-blue-600 hover:underline"
                     >
                       <Pencil className="h-4 w-4" />
                       Edit
@@ -564,7 +564,7 @@ export default function ProfilePage() {
               <div className="flex items-start gap-3">
                 <Lock className="mt-1 h-5 w-5 text-blue-600" />
 
-                <div className="flex-1">
+                <div className="min-w-0 flex-1">
                   <p className="text-sm text-gray-500">
                     Password
                   </p>
@@ -596,7 +596,7 @@ export default function ProfilePage() {
                         onChange={(e) =>
                           setCurrentPassword(e.target.value)
                         }
-                        className="w-full rounded-lg border px-3 py-2 outline-none focus:border-blue-600"
+                        className="min-w-0 w-full rounded-lg border px-3 py-2 outline-none focus:border-blue-600"
                       />
 
                       <input
@@ -606,7 +606,7 @@ export default function ProfilePage() {
                         onChange={(e) =>
                           setNewPassword(e.target.value)
                         }
-                        className="w-full rounded-lg border px-3 py-2 outline-none focus:border-blue-600"
+                        className="min-w-0 w-full rounded-lg border px-3 py-2 outline-none focus:border-blue-600"
                       />
 
                       <input
@@ -616,7 +616,7 @@ export default function ProfilePage() {
                         onChange={(e) =>
                           setConfirmPassword(e.target.value)
                         }
-                        className="w-full rounded-lg border px-3 py-2 outline-none focus:border-blue-600"
+                        className="min-w-0 w-full rounded-lg border px-3 py-2 outline-none focus:border-blue-600"
                       />
 
                       <div className="flex flex-col gap-2 pt-2 sm:flex-row sm:gap-3">
