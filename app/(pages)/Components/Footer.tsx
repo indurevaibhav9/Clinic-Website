@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+ 
 import Image from "next/image";
 import {
   FaFacebookF,
@@ -75,8 +76,8 @@ const Footer = () => {
                     Office Address
                   </h4>
                   <p className="mt-1 text-xs text-blue-100 leading-tight">
-                    259 Hilton Street, MK 256 <br />
-                    North, United State
+                   Shivajinagar, Pune, Maharashtra, India
+                  
                   </p>
                 </div>
               </div>
@@ -105,8 +106,8 @@ const Footer = () => {
                 <div>
                   <h4 className="text-sm font-bold text-white">Contact Us</h4>
                   <p className="mt-1 text-xs text-blue-100 leading-tight">
-                    +88 ( 5548 ) 6548 <br />
-                    infoyourgmail.com
+                      +91 7932157891 <br />
+                    Clinicone@gmail.com
                   </p>
                 </div>
               </div>
@@ -270,11 +271,11 @@ const Footer = () => {
             2023 © All rights reserved by Devsnest-llc
           </p>
           <div className="flex items-center gap-4 text-white/90">
-            <Link href="#" className="hover:text-white">
+            <Link href="/Privacy" className="hover:text-white">
               Privacy Policy
             </Link>
             <span className="h-3 w-[1px] bg-white/40" aria-hidden="true" />
-            <Link href="#" className="hover:text-white">
+            <Link href="/Terms" className="hover:text-white">
               Terms & Conditions
             </Link>
           </div>
