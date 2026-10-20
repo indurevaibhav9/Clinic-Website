@@ -32,127 +32,146 @@ type Props = {
   params: Promise<{ id: string }>;
 };
 const doctorsData: DoctorDetails[] = [
-  {
-    id: "Nishita",
-    name: "Dr. Nishita Raw",
-    specialty: "Cardiologist",
-    image:
-      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop",
-    bgColor: "bg-blue-600",
-  },
-  {
-    id: "Eishita",
-    name: "Dr. Eishita Jery",
-    specialty: "Specialist Heart Surgery",
-    image:
-      "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop",
-    bgColor: "bg-emerald-500",
-  },
-  {
-    id: "dr-christopher",
-    name: "Dr. Christopher",
-    specialty: "Senior Therapist",
-    image:
-      "https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=800&auto=format&fit=crop",
-    bgColor: "bg-blue-600",
-  },
-  {
-    id: "dr-alexander",
-    name: "Dr. Alexander",
-    specialty: "Dermatologist",
-    image:
-      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=800&auto=format&fit=crop",
-    bgColor: "bg-blue-600",
-  },
-  {
-    id: "dr-kenneth",
-    name: "Dr. Kenneth",
-    specialty: "Dermatologist",
-    image:
-      "https://images.unsplash.com/photo-1582750433449-648ed127bb54?q=80&w=800&auto=format&fit=crop",
-    bgColor: "bg-blue-600",
-  },
-  {
-    id: "dr-benjamin",
-    name: "Dr. Benjamin",
-    specialty: "Anesthesiologist",
-    image:
-      "https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=800&auto=format&fit=crop",
-    bgColor: "bg-blue-600",
-  },
-  {
-    id: "dr-nicholas",
-    name: "Dr. Nicholas",
-    specialty: "Medicine Specialist",
-    image:
-      "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop",
-    bgColor: "bg-blue-600",
-  },
-  {
-    id: "dr-christian",
-    name: "Dr. Christian",
-    specialty: "Family Physician",
-    image:
-      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop",
-    bgColor: "bg-blue-600",
-  },
+ 
+ {
+  id: "Nishita",
+  name: "Dr. Nishita Sharma",
+  specialty: "Cardiologist",
+  image:
+    "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop",
+  bgColor: "bg-blue-600",
+},
+{
+  id: "Eishita",
+  name: "Dr. Eshita Deshmukh",
+  specialty: "Specialist Heart Surgery",
+  image:
+    "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop",
+  bgColor: "bg-emerald-500",
+},
+{
+  id: "dr-christopher",
+  name: "Dr. Rohan Kulkarni",
+  specialty: "Senior Therapist",
+  image:
+    "https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=800&auto=format&fit=crop",
+  bgColor: "bg-blue-600",
+},
+{
+  id: "dr-alexander",
+  name: "Dr. Arjun Patel",
+  specialty: "Dermatologist",
+  image:
+    "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=800&auto=format&fit=crop",
+  bgColor: "bg-blue-600",
+},
+{
+  id: "dr-kenneth",
+  name: "Dr. Sneha Joshi",
+  specialty: "Dermatologist",
+  image:
+    "https://images.unsplash.com/photo-1582750433449-648ed127bb54?q=80&w=800&auto=format&fit=crop",
+  bgColor: "bg-blue-600",
+},
+{
+  id: "dr-benjamin",
+  name: "Dr. Vikram Mehta",
+  specialty: "Anesthesiologist",
+  image:
+    "https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=800&auto=format&fit=crop",
+  bgColor: "bg-blue-600",
+},
+{
+  id: "dr-nicholas",
+  name: "Dr. Aditya Desai",
+  specialty: "Medicine Specialist",
+  image:
+    "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop",
+  bgColor: "bg-blue-600",
+},
+{
+  id: "dr-christian",
+  name: "Dr. Priya Nair",
+  specialty: "Family Physician",
+  image:
+    "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop",
+  bgColor: "bg-blue-600",
+},
+ 
+
 ];
 export default function DoctorDetailsPage() {
-  const doctor = {
-    name: "Dr. Alexander",
-    title: "MBBS of Dermatologist",
-    degrees: "BDS, FCPS (Hons), PhD (Japan)",
-    phone: "+(123) 1800-567",
-    officePhone: "+(123) 1800-567",
-    email: "mediinfo@tiprt.com",
-    emergencyPhone: "+001236540256",
-    image:
-      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=800&auto=format&fit=crop",
-    education: [
-      { year: "2014", degree: "MBBS", institute: "Medical University UK" },
-      { year: "2018", degree: "B.Med, MB", institute: "Dhaka Medical College" },
-      {
-        year: "2022",
-        degree: "B.Med, MB",
-        institute: "California USA University",
-      },
-    ],
-    experience: [
-      {
-        year: "2015 - 18",
-        department: "MBChB, MBCh",
-        hospital: "Medical University UK",
-      },
-      {
-        year: "2018 - 23",
-        department: "MB, BM",
-        hospital: "Dhaka Medical College",
-      },
-      {
-        year: "2023",
-        department: "B.S, B.Surg",
-        hospital: "Rajdhani University",
-      },
-    ],
-    skills: [
-      { name: "Client Satisfaction", percentage: 80 },
-      { name: "Medic Success", percentage: 90 },
-      { name: "Client Referral", percentage: 70 },
-    ],
-    benefits: [
-      "Routine and medical care",
-      "Excellence in Healthcare every",
-      "Building a healthy environment",
-      "Routine and medical care",
-      "Excellence in Healthcare every",
-      "Routine and medical care",
-    ],
-    schedules: [
-      { day: "SUN", time: "11:30AM - 02:30PM" },
-      { day: "THU", time: "12:00PM - 05:00PM" },
-      { day: "SUN", time: "02:00PM - 07:30PM" },
-    ],
-  };
+ const doctor = {
+  name: "Dr. Arjun Patel",
+  title: "MBBS, Dermatologist",
+  degrees: "MBBS, MD (Dermatology), DVD",
+  phone: "+91 98765 43210",
+  officePhone: "+91 98765 43211",
+  email: "arjun.patel@example.com",
+  emergencyPhone: "+91 98765 43212",
+
+  image:
+    "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=800&auto=format&fit=crop",
+
+  education: [
+    {
+      year: "2014",
+      degree: "MBBS",
+      institute: "Seth GS Medical College, Mumbai",
+    },
+    {
+      year: "2018",
+      degree: "MD (Dermatology)",
+      institute: "King Edward Memorial Hospital, Mumbai",
+    },
+    {
+      year: "2022",
+      degree: "Advanced Dermatology Training",
+      institute: "AIIMS, New Delhi",
+    },
+  ],
+
+  experience: [
+    {
+      year: "2015 - 18",
+      department: "Junior Resident",
+      hospital: "KEM Hospital, Mumbai",
+    },
+    {
+      year: "2018 - 23",
+      department: "Consultant Dermatologist",
+      hospital: "Ruby Hall Clinic, Pune",
+    },
+    {
+      year: "2023 - Present",
+      department: "Senior Dermatologist",
+      hospital: "Deenanath Mangeshkar Hospital, Pune",
+    },
+  ],
+
+  skills: [
+    { name: "Patient Satisfaction", percentage: 80 },
+    { name: "Treatment Success", percentage: 90 },
+    { name: "Patient Referrals", percentage: 70 },
+  ],
+
+  benefits: [
+    "Comprehensive skin and hair care",
+    "Personalized dermatology treatments",
+    "Advanced skin health assessments",
+    "Acne and scar management",
+    "Preventive skin care guidance",
+    "Patient-focused consultations",
+  ],
+
+  schedules: [
+    { day: "MON", time: "11:30 AM - 02:30 PM" },
+    { day: "WED", time: "12:00 PM - 05:00 PM" },
+    { day: "SAT", time: "02:00 PM - 07:30 PM" },
+  ],
+};
+ 
+
   const params = useParams<{ id: string }>();
   const id = params.id;
   const doctor2: DoctorDetails | undefined = doctorsData.find(

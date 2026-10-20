@@ -15,70 +15,70 @@ interface Doctor {
 }
 
 const doctorsData: Doctor[] = [
-  {
-    id: "Nishita",
-    name: "Dr. Nishita Raw",
-    specialty: "Cardiologist",
-    image:
-      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop",
-    bgColor: "bg-blue-600",
-  },
-  {
-    id: "Eishita",
-    name: "Dr. Eishita Jery",
-    specialty: "Specialist Heart Surgery",
-    image:
-      "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop",
-    bgColor: "bg-emerald-500",
-  },
-  {
-    id: "dr-christopher",
-    name: "Dr. Christopher",
-    specialty: "Senior Therapist",
-    image:
-      "https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=800&auto=format&fit=crop",
-    bgColor: "bg-blue-600",
-  },
-  {
-    id: "dr-alexander",
-    name: "Dr. Alexander",
-    specialty: "Dermatologist",
-    image:
-      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=800&auto=format&fit=crop",
-    bgColor: "bg-blue-600",
-  },
-  {
-    id: "dr-kenneth",
-    name: "Dr. Kenneth",
-    specialty: "Dermatologist",
-    image:
-      "https://images.unsplash.com/photo-1582750433449-648ed127bb54?q=80&w=800&auto=format&fit=crop",
-    bgColor: "bg-blue-600",
-  },
-  {
-    id: "dr-benjamin",
-    name: "Dr. Benjamin",
-    specialty: "Anesthesiologist",
-    image:
-      "https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=800&auto=format&fit=crop",
-    bgColor: "bg-blue-600",
-  },
-  {
-    id: "dr-nicholas",
-    name: "Dr. Nicholas",
-    specialty: "Medicine Specialist",
-    image:
-      "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop",
-    bgColor: "bg-blue-600",
-  },
-  {
-    id: "dr-christian",
-    name: "Dr. Christian",
-    specialty: "Family Physician",
-    image:
-      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop",
-    bgColor: "bg-blue-600",
-  },
+ {
+   id: "Nishita",
+   name: "Dr. Nishita Sharma",
+   specialty: "Cardiologist",
+   image:
+     "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop",
+   bgColor: "bg-blue-600",
+ },
+ {
+   id: "Eishita",
+   name: "Dr. Eshita Deshmukh",
+   specialty: "Cardiac Surgeon",
+   image:
+     "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop",
+   bgColor: "bg-emerald-500",
+ },
+ {
+   id: "dr-christopher",
+   name: "Dr. Rohan Kulkarni",
+   specialty: "Senior Therapist",
+   image:
+     "https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=800&auto=format&fit=crop",
+   bgColor: "bg-blue-600",
+ },
+ {
+   id: "dr-alexander",
+   name: "Dr. Arjun Patel",
+   specialty: "Dermatologist",
+   image:
+     "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?q=80&w=800&auto=format&fit=crop",
+   bgColor: "bg-blue-600",
+ },
+ {
+   id: "dr-kenneth",
+   name: "Dr. Sneha Joshi",
+   specialty: "Dermatologist",
+   image:
+     "https://images.unsplash.com/photo-1582750433449-648ed127bb54?q=80&w=800&auto=format&fit=crop",
+   bgColor: "bg-blue-600",
+ },
+ {
+   id: "dr-benjamin",
+   name: "Dr. Vikram Mehta",
+   specialty: "Anesthesiologist",
+   image:
+     "https://images.unsplash.com/photo-1537368910025-700350fe46c7?q=80&w=800&auto=format&fit=crop",
+   bgColor: "bg-blue-600",
+ },
+ {
+   id: "dr-nicholas",
+   name: "Dr. Aditya Desai",
+   specialty: "Internal Medicine Specialist",
+   image:
+     "https://images.unsplash.com/photo-1622253692010-333f2da6031d?q=80&w=800&auto=format&fit=crop",
+   bgColor: "bg-blue-600",
+ },
+ {
+   id: "dr-christian",
+   name: "Dr. Priya Nair",
+   specialty: "Family Physician",
+   image:
+     "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?q=80&w=800&auto=format&fit=crop",
+   bgColor: "bg-blue-600",
+ },
 ];
 
 export default function DoctorsPage() {

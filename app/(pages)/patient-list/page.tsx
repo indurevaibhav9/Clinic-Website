@@ -65,7 +65,7 @@ export default function PatientsList({
         setPatients((previous) =>
           append ? [...previous, ...data.patients] : data.patients,
         );
-        setHasMore(data.hasMore);
+        setHasMore(data.pagination?.hasMore ?? data.hasMore ?? false);
         setPage(pageNumber);
       } catch (err) {
         setError(
@@ -115,6 +115,29 @@ export default function PatientsList({
       .join("")
       .toUpperCase();
 
+
+      useEffect(() => {
+  if (!doctorId) return;
+
+  const eventSource = new EventSource(
+    `/api/patients/events?doctorId=${encodeURIComponent(doctorId)}`
+  );
+
+  eventSource.addEventListener("patient-registered", () => {
+    // Fetch the latest list without a page refresh.
+    void loadPatients(1, false, search);
+  });
+
+  eventSource.onerror = (error) => {
+    console.error("Patient SSE connection error:", error);
+    // EventSource automatically attempts to reconnect.
+  };
+
+  return () => {
+    eventSource.close();
+  };
+}, [doctorId, loadPatients, search]);
+
   return (
     <main className="min-h-screen bg-slate-50/80 px-4 py-6 text-slate-800 sm:px-6 lg:px-8 dark:bg-slate-950 dark:text-slate-100">
       <div className="mx-auto max-w-7xl space-y-6">
@@ -140,7 +163,7 @@ export default function PatientsList({
           </div>
 
           <Link
-            href="/patients/register"
+            href="/patient-list/register"
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950"
           >
             <UserPlus size={18} />
@@ -179,15 +202,7 @@ export default function PatientsList({
               </p>
             </div>
 
-            <button
-              type="button"
-              onClick={() => setRefreshKey((key) => key + 1)}
-              disabled={loading}
-              className="inline-flex items-center justify-center gap-2 self-start rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 sm:self-auto dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-            >
-              <RefreshCw size={15} className={loading ? "animate-spin" : ""} />
-              Refresh
-            </button>
+      
           </div>
 
           {/* Search */}

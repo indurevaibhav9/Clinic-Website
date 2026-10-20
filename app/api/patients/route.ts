@@ -2,7 +2,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { clientPromise } from "@/lib/db";
 import { ObjectId } from "mongodb";
-
+import { publishPatientRegistered } from "@/lib/patient-events";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -55,6 +55,13 @@ export async function POST(request: NextRequest) {
     const result = await db
       .collection("patients")
       .insertOne(patient);
+
+      // Notify connected patient-list pages after the insert succeeds.
+publishPatientRegistered({
+  patientId: result.insertedId.toString(),
+  doctorId: patient.doctorId,
+});
+
 
     return NextResponse.json(
       {
