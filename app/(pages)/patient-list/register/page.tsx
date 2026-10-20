@@ -105,7 +105,7 @@ export default function RegisterPatientPage() {
             </h1>
 
             <p className="mt-2 text-sm text-gray-500">
-              Enter the patient's details to create a patient record.
+              Enter the patient&apos;s details to create a patient record.
             </p>
           </div>
 
@@ -191,27 +191,6 @@ export default function RegisterPatientPage() {
                 maxLength={20}
                 className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
-            </div>
-
-            <div>
-              <label
-                htmlFor="doctorId"
-                className="mb-2 block text-sm font-medium text-gray-700"
-              >
-                Assigned Doctor ID
-              </label>
-
-              <input
-                id="doctorId"
-                type="text"
-                value={doctorId}
-                readOnly
-                className="w-full cursor-not-allowed rounded-lg border border-gray-200 bg-gray-100 px-4 py-3 text-gray-600"
-              />
-
-              <p className="mt-1 text-xs text-gray-500">
-                This patient will be associated with the configured doctor ID.
-              </p>
             </div>
 
             <button

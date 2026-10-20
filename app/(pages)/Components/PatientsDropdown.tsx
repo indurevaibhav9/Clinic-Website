@@ -53,15 +53,14 @@ export default function PatientsDropdown() {
   }
 
   return (
-    <div className="relative " ref={dropdownRef}>
+    <div className="relative hover:bg-gray-200 rounded-2xl" ref={dropdownRef}>
       <button
         type="button"
         onClick={() => setIsOpen((prev) => !prev)}
         aria-expanded={isOpen}
         aria-haspopup="menu"
         className=" flex items-center gap-2 rounded-lg px-3 py-2
-          text-sm font-medium text-black transition
-          dark:hover:bg-gray-300"
+          text-sm font-medium text-black transition"
       >
         Patients
         <ChevronDown
@@ -77,7 +76,7 @@ export default function PatientsDropdown() {
           role="menu"
           className="absolute left-0 top-full z-50 mt-2 w-64
             rounded-xl border border-gray-200 bg-white p-2
-            shadow-lg dark:border-gray-700 dark:bg-gray-900"
+            shadow-lg"
         >
           {menuItems.map((item) => {
             const Icon = item.icon;
@@ -90,14 +89,12 @@ export default function PatientsDropdown() {
                 onClick={() => handleNavigation(item.href)}
                 className="flex w-full items-center gap-3
                   rounded-lg px-3 py-3 text-left
-                  transition hover:bg-gray-100
-                  dark:hover:bg-gray-800"
+                  transition hover:bg-gray-100"
               >
                 <span
                   className="flex h-10 w-10 shrink-0
                   items-center justify-center rounded-lg
-                  bg-blue-50 text-blue-600
-                  dark:bg-blue-950 dark:text-blue-400"
+                  bg-blue-50 text-blue-600"
                 >
                   <Icon size={20} />
                 </span>
@@ -105,14 +102,13 @@ export default function PatientsDropdown() {
                 <span className="flex flex-col gap-1">
                   <span
                     className="text-sm font-medium
-                    text-gray-900 dark:text-gray-100"
+                    text-gray-900"
                   >
                     {item.label}
                   </span>
 
                   <span
-                    className="text-xs text-gray-500
-                    dark:text-gray-400"
+                    className="text-xs text-gray-500"
                   >
                     {item.description}
                   </span>

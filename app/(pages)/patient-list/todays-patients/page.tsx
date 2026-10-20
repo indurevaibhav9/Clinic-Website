@@ -145,16 +145,16 @@ export default function PatientsList({
 
 
   return (
-    <main className="min-h-screen bg-slate-50/80 px-4 py-6 text-slate-800 sm:px-6 lg:px-8 dark:bg-slate-950 dark:text-slate-100">
+    <main className="min-h-screen bg-slate-50/80 px-4 py-6 text-slate-800 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl space-y-6">
         {/* Page heading */}
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <div className="mb-2 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400">
+            <div className="mb-2 flex items-center gap-2 text-sm text-slate-500">
               <Users size={16} />
               <span>Patient Management</span>
               <ChevronRight size={14} />
-              <span className="text-slate-700 dark:text-slate-200">
+              <span className="text-slate-700">
                 All Patients
               </span>
             </div>
@@ -163,14 +163,14 @@ export default function PatientsList({
               All Patients
             </h1>
 
-            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+            <p className="mt-2 text-sm text-slate-500">
               View, search and manage your registered patients.
             </p>
           </div>
 
           <Link
             href="/patients/register"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-slate-950"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           >
             <UserPlus size={18} />
             Register Patient
@@ -178,14 +178,14 @@ export default function PatientsList({
         </div>
 
         {/* Summary card */}
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
           <div className="flex items-center gap-4">
-            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950 dark:text-blue-400">
+            <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
               <Users size={24} />
             </div>
 
             <div>
-              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+              <p className="text-sm font-medium text-slate-500">
                 Patients loaded
               </p>
               <p className="mt-1 text-2xl font-bold tabular-nums">
@@ -197,13 +197,13 @@ export default function PatientsList({
         </div>
 
         {/* Patient table card */}
-        <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <div className="flex flex-col gap-4 border-b border-slate-200 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5 dark:border-slate-800">
+        <section className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+          <div className="flex flex-col gap-4 border-b border-slate-200 p-4 sm:flex-row sm:items-center sm:justify-between sm:p-5">
             <div>
-              <h2 className="font-semibold text-slate-900 dark:text-slate-100">
+              <h2 className="font-semibold text-slate-900">
                 Patient Directory
               </h2>
-              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+              <p className="mt-1 text-sm text-slate-500">
                 Search patient details and open their profiles.
               </p>
             </div>
@@ -213,7 +213,7 @@ export default function PatientsList({
           </div>
 
           {/* Search */}
-          <div className="border-b border-slate-100 p-4 sm:p-5 dark:border-slate-800">
+          <div className="border-b border-slate-100 p-4 sm:p-5">
             <div className="relative max-w-lg">
               <Search
                 size={18}
@@ -226,7 +226,7 @@ export default function PatientsList({
                 onChange={(event) => setSearch(event.target.value)}
                 placeholder="Search by name, email or phone..."
                 aria-label="Search patients"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-10 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100 dark:focus:bg-slate-950"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-10 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10"
               />
 
               {search && (
@@ -234,7 +234,7 @@ export default function PatientsList({
                   type="button"
                   onClick={() => setSearch("")}
                   aria-label="Clear search"
-                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-400 hover:bg-slate-200 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-400 hover:bg-slate-200 hover:text-slate-700"
                 >
                   <X size={15} />
                 </button>
@@ -244,7 +244,7 @@ export default function PatientsList({
 
           {/* Error */}
           {error && (
-            <div className="m-4 flex flex-col gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 sm:flex-row sm:items-center sm:justify-between dark:border-red-900 dark:bg-red-950/30 dark:text-red-300">
+            <div className="m-4 flex flex-col gap-3 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700 sm:flex-row sm:items-center sm:justify-between">
               <p>{error}</p>
               <button
                 type="button"
@@ -260,7 +260,7 @@ export default function PatientsList({
           <div className="overflow-x-auto">
             <table className="w-full min-w-[760px] text-left text-sm">
               <thead>
-                <tr className="bg-slate-50/80 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:bg-slate-950/60 dark:text-slate-400">
+                <tr className="bg-slate-50/80 text-xs font-semibold uppercase tracking-wider text-slate-500">
                   <th className="px-5 py-4">Patient</th>
                   <th className="px-5 py-4">Contact Information</th>
                   <th className="px-5 py-4">Registered On</th>
@@ -268,23 +268,23 @@ export default function PatientsList({
                 </tr>
               </thead>
 
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
+              <tbody className="divide-y divide-slate-100">
                 {patients.map((patient) => (
                   <tr
                     key={patient._id}
-                    className="transition-colors hover:bg-slate-50/80 dark:hover:bg-slate-800/40"
+                    className="transition-colors hover:bg-slate-50/80"
                   >
                     <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50 text-sm font-semibold text-blue-700 dark:bg-blue-950 dark:text-blue-300">
+                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-50 text-sm font-semibold text-blue-700">
                           {getInitials(patient.name) || <UserRound size={18} />}
                         </div>
 
                         <div className="min-w-0">
-                          <p className="font-semibold text-slate-900 dark:text-slate-100">
+                          <p className="font-semibold text-slate-900">
                             {patient.name}
                           </p>
-                          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                          <p className="mt-1 text-xs text-slate-500">
                             Patient ID: {patient._id.slice(-6).toUpperCase()}
                           </p>
                         </div>
@@ -293,11 +293,11 @@ export default function PatientsList({
 
                     <td className="px-5 py-4">
                       <div className="space-y-2">
-                        <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                        <div className="flex items-center gap-2 text-slate-600">
                           <Mail size={14} className="shrink-0 text-slate-400" />
                           <span>{patient.email || "Not provided"}</span>
                         </div>
-                        <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                        <div className="flex items-center gap-2 text-slate-600">
                           <Phone
                             size={14}
                             className="shrink-0 text-slate-400"
@@ -308,7 +308,7 @@ export default function PatientsList({
                     </td>
 
                     <td className="px-5 py-4">
-                      <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+                      <div className="flex items-center gap-2 text-slate-600">
                         <CalendarDays
                           size={16}
                           className="shrink-0 text-slate-400"
@@ -320,7 +320,7 @@ export default function PatientsList({
                     <td className="px-5 py-4 text-right">
                       <Link
                         href={`/patient-list/${patient._id}`}
-                        className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:border-slate-700 dark:text-slate-200 dark:hover:border-blue-900 dark:hover:bg-blue-950/40 dark:hover:text-blue-300"
+                        className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-blue-200 hover:bg-blue-50 hover:text-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                       >
                         <Eye size={15} />
                         View
@@ -335,7 +335,7 @@ export default function PatientsList({
                     <tr key={`skeleton-${index}`}>
                       {Array.from({ length: 4 }).map((__, cellIndex) => (
                         <td key={cellIndex} className="px-5 py-5">
-                          <div className="h-4 animate-pulse rounded-md bg-slate-100 dark:bg-slate-800" />
+                          <div className="h-4 animate-pulse rounded-md bg-slate-100" />
                         </td>
                       ))}
                     </tr>
@@ -344,13 +344,13 @@ export default function PatientsList({
                 {!loading && !error && patients.length === 0 && (
                   <tr>
                     <td colSpan={4} className="px-5 py-16 text-center">
-                      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-400 dark:bg-slate-800">
+                      <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-400">
                         <Users size={26} />
                       </div>
-                      <h3 className="mt-4 font-semibold text-slate-800 dark:text-slate-100">
+                      <h3 className="mt-4 font-semibold text-slate-800">
                         {search ? "No matching patients" : "No patients yet"}
                       </h3>
-                      <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+                      <p className="mt-2 text-sm text-slate-500">
                         {search
                           ? "Try another name, email or phone number."
                           : "Registered patients will appear here."}
@@ -359,7 +359,7 @@ export default function PatientsList({
                         <button
                           type="button"
                           onClick={() => setSearch("")}
-                          className="mt-3 text-sm font-semibold text-blue-600 hover:text-blue-700 dark:text-blue-400"
+                          className="mt-3 text-sm font-semibold text-blue-600 hover:text-blue-700"
                         >
                           Clear search
                         </button>
@@ -372,10 +372,10 @@ export default function PatientsList({
           </div>
 
           {/* Footer and pagination */}
-          <div className="flex flex-col gap-3 border-t border-slate-200 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5 dark:border-slate-800">
-            <p className="text-sm text-slate-500 dark:text-slate-400">
+          <div className="flex flex-col gap-3 border-t border-slate-200 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+            <p className="text-sm text-slate-500">
               Showing{" "}
-              <span className="font-semibold text-slate-700 dark:text-slate-200">
+              <span className="font-semibold text-slate-700">
                 {patients.length}
               </span>{" "}
               {patients.length === 1 ? "patient" : "patients"} loaded
@@ -386,7 +386,7 @@ export default function PatientsList({
                 type="button"
                 onClick={() => void loadPatients(page + 1, true, search)}
                 disabled={loading}
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {loading ? "Loading..." : "Load More Patients"}
                 {!loading && <ChevronRight size={16} />}
