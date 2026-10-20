@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ApiResponse } from "../Types/userTableTypes";
 
-const BASE_URL = "http://localhost:3000/api/table";
+const BASE_URL = "/api/table";
 
 export const fetchEmployeesApi = async (): Promise<ApiResponse> => {
   const response = await axios.get<ApiResponse>(BASE_URL);

@@ -102,8 +102,8 @@ export default function AdminClient() {
     try {
       const url =
         statusFilter && statusFilter !== "ALL"
-          ? `http://localhost:3000/api/admin/appointments?status=${statusFilter}`
-          : "http://localhost:3000/api/admin/appointments";
+          ? `/api/admin/appointments?status=${statusFilter}`
+          : "/api/admin/appointments";
 
       const res = await fetch(url);
       if (!res.ok) throw new Error("Failed to fetch appointments");
@@ -119,7 +119,7 @@ export default function AdminClient() {
   const fetchFeedbacks = useCallback(async () => {
     setLoadingData(true);
     try {
-      const res = await fetch("http://localhost:3000/api/admin/feedbacks");
+      const res = await fetch("/api/admin/feedbacks");
       if (!res.ok) throw new Error("Failed to fetch feedbacks");
       const data = await res.json();
       setFeedbacks(data.feedbacks || data || []);
@@ -133,7 +133,7 @@ export default function AdminClient() {
   const fetchFaqs = useCallback(async () => {
     setLoadingData(true);
     try {
-      const res = await fetch("http://localhost:3000/api/admin/faqs");
+      const res = await fetch("/api/admin/faqs");
       if (!res.ok) throw new Error("Failed to fetch FAQs");
       const data = await res.json();
       setFaqs(data.faqs || data || []);
@@ -147,7 +147,7 @@ export default function AdminClient() {
   const fetchContacts = useCallback(async () => {
     setLoadingData(true);
     try {
-      const res = await fetch("http://localhost:3000/api/admin/contacts");
+      const res = await fetch("/api/admin/contacts");
       if (!res.ok) throw new Error("Failed to fetch contacts");
       const data = await res.json();
       setContacts(data.contacts || data || []);
@@ -187,7 +187,7 @@ export default function AdminClient() {
   ) => {
     setUpdatingId(appointmentId);
     try {
-      const res = await fetch("http://localhost:3000/api/admin/appointments", {
+      const res = await fetch("/api/admin/appointments", {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ appointmentId, status: newStatus }),
@@ -225,7 +225,7 @@ export default function AdminClient() {
               message: commForm.message,
             };
 
-      const res = await fetch("http://localhost:3000/api/admin/communicate", {
+      const res = await fetch("/api/admin/communicate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

@@ -71,7 +71,7 @@ export default function FaqPage() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch("http://localhost:3000/api/faq", {
+      const response = await fetch("/api/faq", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
