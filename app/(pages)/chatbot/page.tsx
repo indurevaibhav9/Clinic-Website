@@ -63,7 +63,7 @@ const markdownComponents: Components = {
     <p className="mb-3 last:mb-0">{children}</p>
   ),
   ul: ({ children }) => (
-    <ul className="mb-4 mt-2 space-y-2 pl-0">
+    <ul className="mb-4 mt-2 list-disc space-y-2 pl-5 marker:text-blue-500">
       {children}
     </ul>
   ),
@@ -72,18 +72,11 @@ const markdownComponents: Components = {
       {children}
     </ol>
   ),
-  li: ({ children, ...props }) => {
-    const isOrdered = "ordered" in props && typeof props.ordered === "boolean" ? props.ordered : false;
-
-    return (
-      <li {...props} className={isOrdered ? "pl-1" : "flex items-start gap-2"}>
-        {!isOrdered && (
-          <span className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-blue-500" />
-        )}
-        <div className="min-w-0 flex-1">{children}</div>
-      </li>
-    );
-  },
+  li: ({ children, ...props }) => (
+    <li {...props} className="pl-1">
+      {children}
+    </li>
+  ),
   strong: ({ children }) => (
     <strong className="font-semibold text-slate-900">
       {children}

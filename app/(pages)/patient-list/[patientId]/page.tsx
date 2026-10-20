@@ -30,9 +30,13 @@ export default function PatientPage() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const loadConsultations = useCallback(
-    async (signal?: AbortSignal) => {
+    async (signal?: AbortSignal, isRefresh = false) => {
       try {
-        setLoading(true);
+        // Only set loading to true on manual refreshes/updates
+        // since initial state is already true on first mount
+        if (isRefresh) {
+          setLoading(true);
+        }
         setError("");
 
         const response = await fetch(
@@ -66,7 +70,8 @@ export default function PatientPage() {
   useEffect(() => {
     const controller = new AbortController();
 
-    void loadConsultations(controller.signal);
+    // Pass 'true' if refreshKey > 0 to avoid cascading renders on initial mount
+    void loadConsultations(controller.signal, refreshKey > 0);
 
     return () => controller.abort();
   }, [loadConsultations, refreshKey]);
@@ -76,13 +81,16 @@ export default function PatientPage() {
       <header>
         <h1 className="text-xl font-bold sm:text-2xl">Patient Details</h1>
 
-        <p className="mt-2 break-all text-sm text-gray-600">Patient ID: {patientId}</p>
+        <p className="mt-2 break-all text-sm text-gray-600">
+          Patient ID: {patientId}
+        </p>
       </header>
 
       {/* Consultation recording */}
       <ConsultationRecorder
         patientId={patientId}
         doctorId={doctorId}
+        onSaved={() => setRefreshKey((previous) => previous + 1)}
       />
 
       {/* Saved consultation history */}

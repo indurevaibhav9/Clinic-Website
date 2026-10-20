@@ -10,7 +10,7 @@ export default function ChatbotWidget() {
 
   // Prevent the chatbot from appearing inside its own iframe.
   if (pathname === "/chatbot") {
-    return null;
+    return <div> not found </div>;
   }
 
   return (

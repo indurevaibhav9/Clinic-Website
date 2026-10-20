@@ -13,7 +13,7 @@ if (!MONGODB_URI) {
 // ==========================================
 // 1. MongoClient Instance (For Better Auth)
 // ==========================================
-export const client = new MongoClient(MONGODB_URI);
+export const client = new MongoClient(MONGODB_URI!);
 export const db = client.db(); // Used by better-auth adapter
 
 // ==========================================
@@ -52,7 +52,7 @@ export async function connectDB() {
       bufferCommands: false,
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, opts).then((m) => {
+    cached.promise = mongoose.connect(MONGODB_URI!, opts).then((m) => {
       console.log("MongoDB (Mongoose) Connected Successfully");
       return m;
     });
