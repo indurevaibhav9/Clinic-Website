@@ -169,7 +169,7 @@ export default function PatientsList({
           </div>
 
           <Link
-            href="/patients/register"
+            href="/patient-list/register"
             className="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
           >
             <UserPlus size={18} />
