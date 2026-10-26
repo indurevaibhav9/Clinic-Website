@@ -315,7 +315,7 @@ export default function SignUpForm() {
                       <Input
                         {...field}
                         id="signup-username"
-                        placeholder="Vaibhav Indure"
+                        placeholder="full name"
                         aria-invalid={fieldState.invalid}
                         autoComplete="name"
                         className="h-11 border-input bg-background transition focus:border-primary focus:ring-primary"
@@ -377,7 +377,7 @@ export default function SignUpForm() {
                         {...field}
                         id="signup-phone"
                         type="tel"
-                        placeholder="9876543210"
+                        placeholder="98765...."
                         aria-invalid={fieldState.invalid}
                         autoComplete="tel"
                         className="h-11 border-input bg-background transition focus:border-primary focus:ring-primary"
@@ -419,8 +419,6 @@ export default function SignUpForm() {
                           <SelectItem value="NORMAL_USER">
                             Normal User
                           </SelectItem>
-
-                          <SelectItem value="ADMIN">Administrator</SelectItem>
                         </SelectContent>
                       </Select>
 
