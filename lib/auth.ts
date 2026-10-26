@@ -24,6 +24,12 @@ export const auth = betterAuth({
     enabled: true,
     requireEmailVerification: true,
     uniqueEmail: true,
+    onExistingUserSignUp: async () => {
+      throw new APIError("UNPROCESSABLE_ENTITY", {
+        message:
+          "An account with this email already exists. Sign in with your existing password or reset it.",
+      });
+    },
 
     async sendResetPassword({ user, url }) {
       await sendTransactionalEmail({

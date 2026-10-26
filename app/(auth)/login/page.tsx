@@ -1,78 +1,100 @@
-"use client"
+"use client";
 
-import { Suspense, useEffect, useState } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
-import Link from "next/link"
-import { authClient } from "@/lib/auth-client"
-import { toast } from "sonner"
-import {Eye, EyeOff} from "lucide-react"
+import { Suspense, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "sonner";
+import { Eye, EyeOff } from "lucide-react";
 
-type AuthMode = "SIGN_IN" | "VERIFY_OTP"
+type AuthMode = "SIGN_IN" | "VERIFY_OTP";
 
 function AuthPageContent() {
-  const router = useRouter()
+  const router = useRouter();
 
   useEffect(() => {
     const checkSession = async () => {
       try {
-        const session = await authClient.getSession()
+        const session = await authClient.getSession();
 
         if (session.data?.user) {
-          router.replace("/dashboard")
+          router.replace("/home");
         }
       } catch (error) {
-        console.error("Session check error:", error)
+        console.error("Session check error:", error);
       }
-    }
+    };
 
-    checkSession()
-  }, [router])
+    checkSession();
+  }, [router]);
 
-  const [authMode, setAuthMode] = useState<AuthMode>("SIGN_IN")
-  const [isLoading, setIsLoading] = useState(false)
+  const [authMode, setAuthMode] = useState<AuthMode>("SIGN_IN");
+  const [isLoading, setIsLoading] = useState(false);
 
   // Form state
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [otp, setOtp] = useState("")
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [otp, setOtp] = useState("");
 
-  const [showPassword, setShowPassword] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => {
-    setShowPassword((prev) => !prev)
-  }
+    setShowPassword((prev) => !prev);
+  };
 
   // =========================================================
   // SIGN IN
   // =========================================================
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
   async function handleSignIn(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!email || !password) {
-      toast.error("Please enter email and password.")
-      return
+      toast.error("Please enter email and password.");
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       const { error } = await authClient.signIn.email({
         email,
         password,
-      })
+      });
 
       if (error) {
-        toast.error(error.message || "Invalid email or password.")
-        return
+        if (error.status === 403) {
+          setAuthMode("VERIFY_OTP");
+
+          const { error: otpError } =
+            await authClient.emailOtp.sendVerificationOtp({
+              email,
+              type: "email-verification",
+            });
+
+          if (otpError) {
+            toast.error(
+              otpError.message || "Failed to send a verification code.",
+            );
+          } else {
+            toast.info("Your email is not verified. A verification code was sent.");
+          }
+        } else if (error.status === 401) {
+          toast.error(
+            "Invalid email or password. If you already registered with this email, use your original password or reset it.",
+          );
+        } else {
+          toast.error(error.message || "Unable to sign in.");
+        }
+        return;
       }
 
-      toast.success("Signed in successfully!")
-      const callback = searchParams.get("callbackUrl") || "/"
-      router.push(callback)
+      toast.success("Signed in successfully!");
+      const callback = searchParams.get("callbackUrl") || "/";
+      router.push(callback);
     } catch (error) {
-      toast.error("Something went wrong. Please try again.")
+      toast.error("Something went wrong. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -81,39 +103,39 @@ function AuthPageContent() {
   // =========================================================
 
   async function handleVerifyOtp(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!email) {
-      toast.error("Email address is missing.")
-      return
+      toast.error("Email address is missing.");
+      return;
     }
 
     if (!otp || otp.length < 6) {
-      toast.error("Please enter the OTP.")
-      return
+      toast.error("Please enter the OTP.");
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       const { error } = await authClient.emailOtp.verifyEmail({
         email,
         otp,
-      })
+      });
 
       if (error) {
-        toast.error(error.message || "Invalid or expired OTP.")
-        return
+        toast.error(error.message || "Invalid or expired OTP.");
+        return;
       }
 
-      toast.success("Email verified successfully!")
-      setAuthMode("SIGN_IN")
-      setPassword("")
-      setOtp("")
+      toast.success("Email verified successfully!");
+      setAuthMode("SIGN_IN");
+      setPassword("");
+      setOtp("");
     } catch (error) {
-      toast.error("Something went wrong. Please try again.")
+      toast.error("Something went wrong. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -123,28 +145,28 @@ function AuthPageContent() {
 
   async function handleResendOtp() {
     if (!email) {
-      toast.error("Email address is missing.")
-      return
+      toast.error("Email address is missing.");
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       const { error } = await authClient.emailOtp.sendVerificationOtp({
         email,
         type: "email-verification",
-      })
+      });
 
       if (error) {
-        toast.error(error.message || "Failed to resend OTP.")
-        return
+        toast.error(error.message || "Failed to resend OTP.");
+        return;
       }
 
-      toast.success("A new OTP has been sent to your email.")
+      toast.success("A new OTP has been sent to your email.");
     } catch (error) {
-      toast.error("Something went wrong. Please try again.")
+      toast.error("Something went wrong. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -154,30 +176,28 @@ function AuthPageContent() {
 
   async function handleForgotPassword() {
     if (!email) {
-      toast.error("Please enter your email address first.")
-      return
+      toast.error("Please enter your email address first.");
+      return;
     }
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       const { error } = await authClient.requestPasswordReset({
         email,
         redirectTo: "/reset-password",
-      })
+      });
 
       if (error) {
-        toast.error(
-          error.message || "Failed to send password reset email."
-        )
-        return
+        toast.error(error.message || "Failed to send password reset email.");
+        return;
       }
 
-      toast.success("Password reset link sent to your email!")
+      toast.success("Password reset link sent to your email!");
     } catch (error) {
-      toast.error("Something went wrong. Please try again.")
+      toast.error("Something went wrong. Please try again.");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
@@ -188,7 +208,6 @@ function AuthPageContent() {
   return (
     <div className="flex min-h-screen items-center justify-center px-3 py-6 sm:p-4">
       <div className="w-full max-w-md rounded-lg border p-4 shadow-md sm:p-6">
-
         {/* ================= HEADER ================= */}
 
         <h2 className="mb-2 text-center text-2xl font-bold">
@@ -250,31 +269,30 @@ function AuthPageContent() {
 
               <div className="relative *:mt-1">
                 <input
-                id="signin-password"
-                type={ showPassword ? "text" : "password"}
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                autoComplete="current-password"
-                className="mt-1 w-full rounded border p-2"
-                placeholder="••••••••"
-              />
-              {/* Toggle Button */}
-              <button
-                type="button" // Always specify type="button" so it doesn't accidentally submit forms
-                onClick={togglePasswordVisibility}
-                className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 select-none"
-                aria-label={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? (
-                  <EyeOff className="w-5 h-5" />
-                ) : (
-                  <Eye className="w-5 h-5" />
-                )}
-              </button>
+                  id="signin-password"
+                  type={showPassword ? "text" : "password"}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  autoComplete="current-password"
+                  className="mt-1 w-full rounded border p-2"
+                  placeholder="••••••••"
+                />
+                {/* Toggle Button */}
+                <button
+                  type="button" // Always specify type="button" so it doesn't accidentally submit forms
+                  onClick={togglePasswordVisibility}
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 select-none"
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
+                </button>
               </div>
             </div>
-            
 
             {/* Sign In Button */}
             <button
@@ -295,10 +313,7 @@ function AuthPageContent() {
           <form onSubmit={handleVerifyOtp} className="space-y-4">
             {/* OTP Input */}
             <div>
-              <label
-                htmlFor="otp"
-                className="block text-sm font-medium"
-              >
+              <label htmlFor="otp" className="block text-sm font-medium">
                 Verification Code
               </label>
 
@@ -360,9 +375,9 @@ function AuthPageContent() {
             <button
               type="button"
               onClick={() => {
-                setAuthMode("SIGN_IN")
-                setPassword("")
-                setOtp("")
+                setAuthMode("SIGN_IN");
+                setPassword("");
+                setOtp("");
               }}
               className="font-semibold text-blue-600 hover:underline"
             >
@@ -372,13 +387,19 @@ function AuthPageContent() {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default function AuthPage() {
   return (
-    <Suspense fallback={<div className="flex min-h-screen items-center justify-center">Loading...</div>}>
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          Loading...
+        </div>
+      }
+    >
       <AuthPageContent />
     </Suspense>
-  )
+  );
 }

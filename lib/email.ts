@@ -41,7 +41,9 @@ export async function sendTransactionalEmail({
     }),
   });
 
+  console.log(response)
   if (!response.ok) {
+    
     const details = await response.text();
     throw new Error(
       `Brevo API error (${response.status}): ${details || response.statusText}`,

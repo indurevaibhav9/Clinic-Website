@@ -82,10 +82,11 @@ export async function POST(req: Request) {
     console.error("Registration route error:", e);
 
     const errorMessage = e?.message || "Registration or server error occurred.";
+    const statusCode = e?.statusCode === 422 ? 409 : 500;
 
     return NextResponse.json(
       { success: false, message: errorMessage },
-      { status: 500 },
+      { status: statusCode },
     );
   }
 }
