@@ -73,7 +73,6 @@ export async function PATCH(req: Request) {
       { status: 200 },
     );
   } catch (error) {
-    console.log(error);
     return NextResponse.json(
       { error: "Failed to update status" },
       { status: 500 },

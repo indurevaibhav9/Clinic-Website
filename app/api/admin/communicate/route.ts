@@ -12,11 +12,8 @@ const communicateSchema = z.object({
   subject: z.string().optional(),
 });
 
-import { Resend } from "resend";
+import { sendTransactionalEmail } from "@/lib/email";
 import { verifyAdmin } from "@/lib/auth-guard-serverside";
-
-// Initialize Resend with your API key
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
@@ -66,7 +63,7 @@ export async function POST(req: Request) {
       );
     }
 
-    // EMAIL COMMUNICATION ROUTE (via Resend)
+    // EMAIL COMMUNICATION ROUTE (via Brevo)
     if (type === "email") {
       if (!email) {
         return NextResponse.json(
@@ -75,16 +72,15 @@ export async function POST(req: Request) {
         );
       }
 
-      const senderEmail =
-        process.env.RESEND_FROM_EMAIL || "MediFast <onboarding@resend.dev>";
       const emailSubject = subject || "Notification from MediFast";
 
-      // Send Email via Resend
-      const { data, error } = await resend.emails.send({
-        from: senderEmail,
-        to: [email],
-        subject: emailSubject,
-        html: `
+      let messageId: string | undefined;
+      try {
+        ({ messageId } = await sendTransactionalEmail({
+          senderName: "MediFast",
+          to: email,
+          subject: emailSubject,
+          html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
             <div style="background-color: #2563eb; color: #ffffff; padding: 20px; text-align: center;">
               <h1 style="margin: 0; font-size: 24px;">MediFast</h1>
@@ -99,13 +95,17 @@ export async function POST(req: Request) {
               </p>
             </div>
           </div>
-        `,
-      });
-
-      if (error) {
-        console.error("Resend API Error:", error);
+          `,
+        }));
+      } catch (error) {
         return NextResponse.json(
-          { error: "Failed to send email via Resend", details: error.message },
+          {
+            error: "Failed to send email via Brevo",
+            details:
+              error instanceof Error
+                ? error.message
+                : "Unknown email delivery error.",
+          },
           { status: 500 },
         );
       }
@@ -115,7 +115,7 @@ export async function POST(req: Request) {
           success: true,
           method: "email",
           recipient: email,
-          resendId: data?.id,
+          messageId,
           message: `Email sent successfully to ${email}.`,
         },
         { status: 200 },
@@ -127,7 +127,6 @@ export async function POST(req: Request) {
       { status: 400 },
     );
   } catch (error: any) {
-    console.error("Communication API Error:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },

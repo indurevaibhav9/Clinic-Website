@@ -16,7 +16,6 @@ const DashboardClient = () => {
         toast.error("No active session found. Already logged out.")
       }
     } catch (error) {
-      console.log("logout error:", error)
       toast.error("Failed to log out.")
     }
   }

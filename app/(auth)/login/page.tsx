@@ -71,7 +71,6 @@ function AuthPageContent() {
       router.push(callback)
     } catch (error) {
       toast.error("Something went wrong. Please try again.")
-      console.log(error)
     } finally {
       setIsLoading(false)
     }

@@ -13,7 +13,6 @@ export async function GET(req,{params}) {
   })
   }
   catch(err){
-   console.log("Error",err);
    return NextResponse.json({
     "message":"Data Fetched Failed",
    })
@@ -31,7 +30,6 @@ return NextResponse.json({
 
   }
   catch(err){
-    console.log("Error",err);
     return NextResponse.json({
       message:"Delete Failed"
     })
@@ -54,7 +52,6 @@ export async function PUT(req,{params}) {
   })
   }
   catch(err){
-    console.log("Error",err);
     return NextResponse.json({
       message:"Failed to update"
     })

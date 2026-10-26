@@ -2,6 +2,6 @@ import { authClient } from "@/lib/auth-client"; // Adjust path to your auth clie
 
 declare module "better-auth/client" {
   interface User {
-    role: "ADMIN" | "NORMAL_USER" | string;
+    role: "ADMIN" | "NORMAL_USER" | "ASSISTENT" | string;
   }
 }

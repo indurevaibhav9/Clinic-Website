@@ -137,9 +137,6 @@ export default function SignUpForm() {
         body: JSON.stringify(data),
       })
 
-      
-      console.log("Registration Response:", res)
-
       const resData = await res.json()
 
       if (!res.ok || !resData.success) {

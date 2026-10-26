@@ -5,10 +5,8 @@
 import { APIError, betterAuth } from "better-auth";
 import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { emailOTP } from "better-auth/plugins";
-import { Resend } from "resend";
 import { db } from "./db";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import { sendTransactionalEmail } from "./email";
 
 export const auth = betterAuth({
   baseURL:
@@ -28,8 +26,8 @@ export const auth = betterAuth({
     uniqueEmail: true,
 
     async sendResetPassword({ user, url }) {
-      await resend.emails.send({
-        from: "Clinic <onboarding@resend.dev>",
+      await sendTransactionalEmail({
+        senderName: "Clinic",
         to: user.email,
         subject: "Reset your password",
         html: `
@@ -77,8 +75,8 @@ export const auth = betterAuth({
   // --------------------------------
   emailVerification: {
     sendVerificationEmail: async ({ user, url }) => {
-      await resend.emails.send({
-        from: "Clinic <onboarding@resend.dev>",
+      await sendTransactionalEmail({
+        senderName: "Clinic",
         to: user.email,
         subject: "Verify your email address",
 
@@ -112,16 +110,13 @@ export const auth = betterAuth({
     emailOTP({
       async sendVerificationOTP({ email, otp, type }) {
         try {
-          const { data, error } = await resend.emails.send({
-            from: "Clinic Auth <onboarding@resend.dev>",
-
+          const { messageId } = await sendTransactionalEmail({
+            senderName: "Clinic Auth",
             to: email,
-
             subject:
               type === "sign-in"
                 ? "Sign-in OTP"
                 : "Verify your account - OTP Code",
-
             html: `
                 <p>
                   Your verification code is:
@@ -134,19 +129,7 @@ export const auth = betterAuth({
               `,
           });
 
-          // Resend returns an error object on failure
-          // instead of always throwing.
-          if (error) {
-            console.error("Resend API Error:", error);
-
-            throw new APIError("BAD_REQUEST", {
-              message: `Failed to send email: ${error.message}`,
-            });
-          }
-
-          console.log("OTP Email Sent Successfully:", data?.id);
         } catch (err: any) {
-          console.error("Failed to deliver OTP email:", err);
 
           throw new APIError("INTERNAL_SERVER_ERROR", {
             message: err?.message || "Email delivery failed.",

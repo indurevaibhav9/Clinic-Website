@@ -12,7 +12,6 @@ export async function GET() {
   })
   }
   catch(err){
-    console.log("Error",err);
     return NextResponse.json({
       message:"Falied to Fetch Data ",
      
@@ -32,7 +31,6 @@ export async function POST(req) {
   })
   }
   catch(err){
-   console.log("Error",err);
    return NextResponse.json({
     message:"Failed to create Data",
    

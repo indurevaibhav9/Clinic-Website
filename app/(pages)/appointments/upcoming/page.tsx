@@ -41,7 +41,6 @@ export default function UpcomingAppointmentsPage() {
       try {
         setIsLoading(true);
         setError(null);
-        console.log(session.user)
         const response = await fetch(
           `/api/appointments/active?email=${encodeURIComponent(session.user.id)}`,
         );

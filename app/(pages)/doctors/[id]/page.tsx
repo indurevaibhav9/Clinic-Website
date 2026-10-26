@@ -177,7 +177,6 @@ export default function DoctorDetailsPage() {
   const doctor2: DoctorDetails | undefined = doctorsData.find(
     (d) => d.id == id,
   );
-  // console.log(doctor2);
   const [showForm, setShowForm] = useState(false);
 
   const handleBookAppointment = () => {

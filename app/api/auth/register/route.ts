@@ -20,7 +20,6 @@ export async function POST(req: Request) {
     }
 
     const { name, email, password, role, phone_no } = validation.data;
-    console.log("password is : ", password)
     const userResponse = await auth.api.signUpEmail({
       body: {
         email,
@@ -33,7 +32,6 @@ export async function POST(req: Request) {
     });
 
     const user = await auth.api.getSession({ headers: req.headers});
-    console.log("got user: ", user)
     if(user?.user.emailVerified === true){
       return NextResponse.json(
         {

@@ -53,7 +53,6 @@ export async function connectDB() {
     };
 
     cached.promise = mongoose.connect(MONGODB_URI!, opts).then((m) => {
-      console.log("MongoDB (Mongoose) Connected Successfully");
       return m;
     });
   }
