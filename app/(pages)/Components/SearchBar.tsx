@@ -9,13 +9,22 @@ export default function SearchBar() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [query, setQuery] = useState(searchParams.get("q") || "");
+  const [error, setError] = useState("");
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!query.trim()) return;
+    const searchTerm = query.trim();
+    if (searchTerm.length < 2) {
+      setError(searchTerm ? "Enter at least 2 characters to search." : "Enter a search term.");
+      return;
+    }
+    if (searchTerm.length > 100) {
+      setError("Search terms cannot exceed 100 characters.");
+      return;
+    }
 
-    // Redirect to search results page with query parameter
-    router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+    setError("");
+    router.push(`/search?q=${encodeURIComponent(searchTerm)}`);
   };
 
   return (
@@ -26,7 +35,13 @@ export default function SearchBar() {
       <input
         type="text"
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          setError("");
+        }}
+        maxLength={100}
+        aria-invalid={Boolean(error)}
+        aria-describedby={error ? "search-error" : undefined}
         placeholder="Search services, doctors, articles..."
         className="w-full rounded-full border border-slate-200 bg-slate-50 py-2 pl-4 pr-10 text-xs focus:border-blue-500 focus:bg-white focus:outline-none text-slate-800"
       />
@@ -37,6 +52,11 @@ export default function SearchBar() {
       >
         <Search className="h-3.5 w-3.5" />
       </button>
+      {error && (
+        <p id="search-error" className="absolute left-3 top-full mt-1 text-xs text-red-600" role="alert">
+          {error}
+        </p>
+      )}
     </form>
   );
 }

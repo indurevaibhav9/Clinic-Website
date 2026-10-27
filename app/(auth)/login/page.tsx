@@ -6,6 +6,7 @@ import Link from "next/link";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { Eye, EyeOff } from "lucide-react";
+import { signInSchema, verifyOtpSchema } from "@/lib/validations/auth";
 
 type AuthMode = "SIGN_IN" | "VERIFY_OTP";
 
@@ -35,6 +36,7 @@ function AuthPageContent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [otp, setOtp] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => {
@@ -45,20 +47,48 @@ function AuthPageContent() {
   // SIGN IN
   // =========================================================
   const searchParams = useSearchParams();
+  async function checkAccount(emailAddress: string) {
+    const response = await fetch("/api/auth/account-status", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: emailAddress }),
+    });
+    const result = await response.json();
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Unable to check this account.");
+    }
+
+    return result as { success: true; registered: boolean; verified: boolean };
+  }
+
   async function handleSignIn(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (!email || !password) {
-      toast.error("Please enter email and password.");
+    const validation = signInSchema.safeParse({ email, password });
+    if (!validation.success) {
+      const errors = Object.fromEntries(
+        validation.error.issues.map((issue) => [String(issue.path[0]), issue.message]),
+      );
+      setFieldErrors(errors);
+      toast.error(validation.error.issues[0]?.message || "Check the form fields.");
       return;
     }
 
     setIsLoading(true);
 
     try {
+      setFieldErrors({});
+      const account = await checkAccount(validation.data.email);
+      if (!account.registered) {
+        setFieldErrors({ email: "No account is registered with this email. Please create an account first." });
+        toast.error("User not registered. Please create an account first.");
+        return;
+      }
+
       const { error } = await authClient.signIn.email({
-        email,
-        password,
+        email: validation.data.email,
+        password: validation.data.password,
       });
 
       if (error) {
@@ -73,14 +103,14 @@ function AuthPageContent() {
 
           if (otpError) {
             toast.error(
-              otpError.message || "Failed to send a verification code.",
+              "Your email is not verified, but we couldn't send the verification email. Please try again.",
             );
           } else {
             toast.info("Your email is not verified. A verification code was sent.");
           }
         } else if (error.status === 401) {
           toast.error(
-            "Invalid email or password. If you already registered with this email, use your original password or reset it.",
+            "Incorrect password. Try again or use Forgot password to reset it.",
           );
         } else {
           toast.error(error.message || "Unable to sign in.");
@@ -92,7 +122,7 @@ function AuthPageContent() {
       const callback = searchParams.get("callbackUrl") || "/";
       router.push(callback);
     } catch (error) {
-      toast.error("Something went wrong. Please try again.");
+      toast.error(error instanceof Error ? error.message : "Unable to sign in. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -105,22 +135,23 @@ function AuthPageContent() {
   async function handleVerifyOtp(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (!email) {
-      toast.error("Email address is missing.");
-      return;
-    }
-
-    if (!otp || otp.length < 6) {
-      toast.error("Please enter the OTP.");
+    const validation = verifyOtpSchema.safeParse({ email, otp });
+    if (!validation.success) {
+      const errors = Object.fromEntries(
+        validation.error.issues.map((issue) => [String(issue.path[0]), issue.message]),
+      );
+      setFieldErrors(errors);
+      toast.error(validation.error.issues[0]?.message || "Check the verification code.");
       return;
     }
 
     setIsLoading(true);
 
     try {
+      setFieldErrors({});
       const { error } = await authClient.emailOtp.verifyEmail({
-        email,
-        otp,
+        email: validation.data.email,
+        otp: validation.data.otp,
       });
 
       if (error) {
@@ -132,8 +163,9 @@ function AuthPageContent() {
       setAuthMode("SIGN_IN");
       setPassword("");
       setOtp("");
+      setFieldErrors({});
     } catch (error) {
-      toast.error("Something went wrong. Please try again.");
+      toast.error(error instanceof Error ? error.message : "Verification failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -144,27 +176,27 @@ function AuthPageContent() {
   // =========================================================
 
   async function handleResendOtp() {
-    if (!email) {
-      toast.error("Email address is missing.");
-      return;
-    }
-
     setIsLoading(true);
 
     try {
+      const account = await checkAccount(email);
+      if (!account.registered) {
+        toast.error("User not registered. Please create an account first.");
+        return;
+      }
       const { error } = await authClient.emailOtp.sendVerificationOtp({
         email,
         type: "email-verification",
       });
 
       if (error) {
-        toast.error(error.message || "Failed to resend OTP.");
+        toast.error("We couldn't send the verification email. Please try again.");
         return;
       }
 
       toast.success("A new OTP has been sent to your email.");
     } catch (error) {
-      toast.error("Something went wrong. Please try again.");
+      toast.error(error instanceof Error ? error.message : "Unable to resend the verification email.");
     } finally {
       setIsLoading(false);
     }
@@ -175,27 +207,38 @@ function AuthPageContent() {
   // =========================================================
 
   async function handleForgotPassword() {
-    if (!email) {
-      toast.error("Please enter your email address first.");
+    const emailValidation = signInSchema.shape.email.safeParse(email);
+    if (!emailValidation.success) {
+      const message = emailValidation.error.issues[0]?.message || "Enter a valid email address.";
+      setFieldErrors({ email: message });
+      toast.error(message);
       return;
     }
 
     setIsLoading(true);
 
     try {
+      setFieldErrors({});
+      const account = await checkAccount(emailValidation.data);
+      if (!account.registered) {
+        setFieldErrors({ email: "No account is registered with this email. Please create an account first." });
+        toast.error("User not registered. Please create an account first.");
+        return;
+      }
+
       const { error } = await authClient.requestPasswordReset({
-        email,
+        email: emailValidation.data,
         redirectTo: "/reset-password",
       });
 
       if (error) {
-        toast.error(error.message || "Failed to send password reset email.");
+        toast.error("We couldn't send the password reset email. Please try again.");
         return;
       }
 
       toast.success("Password reset link sent to your email!");
     } catch (error) {
-      toast.error("Something went wrong. Please try again.");
+      toast.error(error instanceof Error ? error.message : "Unable to send the password reset email.");
     } finally {
       setIsLoading(false);
     }
@@ -240,11 +283,23 @@ function AuthPageContent() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                onBlur={() => {
+                  const result = signInSchema.shape.email.safeParse(email);
+                  setFieldErrors((previous) => ({
+                    ...previous,
+                    email: result.success ? "" : result.error.issues[0]?.message || "",
+                  }));
+                }}
                 required
                 autoComplete="email"
+                aria-invalid={Boolean(fieldErrors.email)}
+                aria-describedby={fieldErrors.email ? "signin-email-error" : undefined}
                 className="mt-1 w-full rounded border p-2"
                 placeholder="name@example.com"
               />
+              {fieldErrors.email && (
+                <p id="signin-email-error" className="mt-1 text-sm text-red-600" role="alert">{fieldErrors.email}</p>
+              )}
             </div>
 
             {/* Password */}
@@ -273,8 +328,15 @@ function AuthPageContent() {
                   type={showPassword ? "text" : "password"}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  onBlur={() => {
+                    if (!password) {
+                      setFieldErrors((previous) => ({ ...previous, password: "Password is required." }));
+                    }
+                  }}
                   required
                   autoComplete="current-password"
+                  aria-invalid={Boolean(fieldErrors.password)}
+                  aria-describedby={fieldErrors.password ? "signin-password-error" : undefined}
                   className="mt-1 w-full rounded border p-2"
                   placeholder="••••••••"
                 />
@@ -292,6 +354,9 @@ function AuthPageContent() {
                   )}
                 </button>
               </div>
+              {fieldErrors.password && (
+                <p id="signin-password-error" className="mt-1 text-sm text-red-600" role="alert">{fieldErrors.password}</p>
+              )}
             </div>
 
             {/* Sign In Button */}
@@ -326,11 +391,23 @@ function AuthPageContent() {
                 onChange={(e) =>
                   setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))
                 }
+                onBlur={() => {
+                  const result = verifyOtpSchema.shape.otp.safeParse(otp);
+                  setFieldErrors((previous) => ({
+                    ...previous,
+                    otp: result.success ? "" : result.error.issues[0]?.message || "",
+                  }));
+                }}
                 required
                 maxLength={6}
+                aria-invalid={Boolean(fieldErrors.otp)}
+                aria-describedby={fieldErrors.otp ? "otp-error" : undefined}
                 className="mt-1 w-full rounded border p-2 text-center text-lg tracking-widest"
                 placeholder="123456"
               />
+              {fieldErrors.otp && (
+                <p id="otp-error" className="mt-1 text-sm text-red-600" role="alert">{fieldErrors.otp}</p>
+              )}
             </div>
 
             {/* Verify Button */}

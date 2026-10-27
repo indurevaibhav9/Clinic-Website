@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import {
   Dna,
   Stethoscope,
@@ -12,6 +11,9 @@ import {
   Quote,
   CheckCircle2,
 } from "lucide-react";
+import { toast } from "sonner";
+import { feedbackSchema } from "@/lib/validation";
+import { InlineError } from "@/components/ui/inline-error";
 
 const testimonials = [
   {
@@ -51,6 +53,7 @@ export default function FeedbackPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -59,13 +62,19 @@ export default function FeedbackPage() {
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setFieldErrors((previous) => ({ ...previous, [name]: "" }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (rating === 0) {
-      alert("Please select a rating before submitting.");
+    const validation = feedbackSchema.safeParse({ ...formData, rating });
+    if (!validation.success) {
+      const errors = Object.fromEntries(
+        validation.error.issues.map((issue) => [String(issue.path[0]), issue.message]),
+      );
+      setFieldErrors(errors);
+      toast.error(validation.error.issues[0]?.message || "Please correct the highlighted fields.");
       return;
     }
 
@@ -78,20 +87,18 @@ export default function FeedbackPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          service: formData.service,
-          rating: rating,
-          message: formData.message,
+          ...validation.data,
         }),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to submit feedback.");
+        const result = await response.json();
+        throw new Error(result.error || "Failed to submit feedback. Please try again.");
       }
 
       setIsSubmitted(true);
+      setFieldErrors({});
+      toast.success("Thank you! Your feedback has been submitted.");
       setFormData({
         name: "",
         email: "",
@@ -102,7 +109,7 @@ export default function FeedbackPage() {
       setRating(0);
     } catch (error) {
       console.error("Submission error:", error);
-      alert("Failed to submit feedback. Please try again.");
+      toast.error(error instanceof Error ? error.message : "Failed to submit feedback. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -291,8 +298,11 @@ export default function FeedbackPage() {
                       onChange={handleChange}
                       placeholder="Enter your name"
                       required
+                      aria-invalid={Boolean(fieldErrors.name)}
+                      aria-describedby={fieldErrors.name ? "feedback-name-error" : undefined}
                       className="h-12 w-full rounded-lg border border-gray-200 bg-gray-50 px-4 text-sm text-gray-800 outline-none transition-all placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
                     />
+                    <InlineError id="feedback-name-error" message={fieldErrors.name} />
                   </div>
 
                   <div>
@@ -311,8 +321,11 @@ export default function FeedbackPage() {
                       onChange={handleChange}
                       placeholder="Enter your email"
                       required
+                      aria-invalid={Boolean(fieldErrors.email)}
+                      aria-describedby={fieldErrors.email ? "feedback-email-error" : undefined}
                       className="h-12 w-full rounded-lg border border-gray-200 bg-gray-50 px-4 text-sm text-gray-800 outline-none transition-all placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
                     />
+                    <InlineError id="feedback-email-error" message={fieldErrors.email} />
                   </div>
                 </div>
 
@@ -329,13 +342,16 @@ export default function FeedbackPage() {
                     <input
                       id="phone"
                       name="phone"
-                      type="text"
+                      type="tel"
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="985262..."
                       required
+                      aria-invalid={Boolean(fieldErrors.phone)}
+                      aria-describedby={fieldErrors.phone ? "feedback-phone-error" : undefined}
                       className="h-12 w-full rounded-lg border border-gray-200 bg-gray-50 px-4 text-sm text-gray-800 outline-none transition-all placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
                     />
+                    <InlineError id="feedback-phone-error" message={fieldErrors.phone} />
                   </div>
 
                   <div>
@@ -352,6 +368,8 @@ export default function FeedbackPage() {
                       value={formData.service}
                       onChange={handleChange}
                       required
+                      aria-invalid={Boolean(fieldErrors.service)}
+                      aria-describedby={fieldErrors.service ? "feedback-service-error" : undefined}
                       className="h-12 w-full rounded-lg border border-gray-200 bg-gray-50 px-4 text-sm text-gray-700 outline-none transition-all focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
                     >
                       <option value="" disabled>
@@ -366,6 +384,7 @@ export default function FeedbackPage() {
                       <option value="diagnostic">Diagnostic Services</option>
                       <option value="other">Other</option>
                     </select>
+                    <InlineError id="feedback-service-error" message={fieldErrors.service} />
                   </div>
                 </div>
 
@@ -383,7 +402,10 @@ export default function FeedbackPage() {
                         aria-label={`Rate ${star} out of 5`}
                         onMouseEnter={() => setHoverRating(star)}
                         onMouseLeave={() => setHoverRating(0)}
-                        onClick={() => setRating(star)}
+                        onClick={() => {
+                          setRating(star);
+                          setFieldErrors((previous) => ({ ...previous, rating: "" }));
+                        }}
                         className="transition-transform hover:scale-110"
                       >
                         <Star
@@ -402,6 +424,7 @@ export default function FeedbackPage() {
                       ? "Select a rating"
                       : `${rating} out of 5 stars`}
                   </p>
+                  <InlineError id="feedback-rating-error" message={fieldErrors.rating} />
                 </div>
 
                 {/* Feedback Message */}
@@ -421,8 +444,11 @@ export default function FeedbackPage() {
                     onChange={handleChange}
                     placeholder="Tell us about your experience..."
                     required
+                    aria-invalid={Boolean(fieldErrors.message)}
+                    aria-describedby={fieldErrors.message ? "feedback-message-error" : undefined}
                     className="w-full resize-none rounded-lg border border-gray-200 bg-gray-50 px-4 py-3 text-sm text-gray-800 outline-none transition-all placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
                   />
+                  <InlineError id="feedback-message-error" message={fieldErrors.message} />
                 </div>
 
                 {/* Submit */}

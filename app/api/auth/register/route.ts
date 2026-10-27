@@ -3,10 +3,8 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { signUpSchema } from "@/lib/validations/auth";
-import { connectDB } from "../../../../lib/mongoose";
-import User from "@/models/User";
 import { db } from "@/lib/db";
-import mongoose from "mongoose";
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();
@@ -20,6 +18,31 @@ export async function POST(req: Request) {
     }
 
     const { name, email, password, role, phone_no } = validation.data;
+    const normalizedEmail = email.toLowerCase();
+    const existingUser = await db.collection("user").findOne<{
+      emailVerified?: boolean;
+    }>({ email: normalizedEmail }, { projection: { emailVerified: 1 } });
+
+    if (existingUser?.emailVerified) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "This user is already registered and verified. Please sign in instead.",
+        },
+        { status: 409 },
+      );
+    }
+
+    if (existingUser) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "This email is already registered but not verified. Sign in to receive a new verification code.",
+        },
+        { status: 409 },
+      );
+    }
+
     const userResponse = await auth.api.signUpEmail({
       body: {
         email,
@@ -31,17 +54,6 @@ export async function POST(req: Request) {
       headers: req.headers,
     });
 
-    const user = await auth.api.getSession({ headers: req.headers});
-    if(user?.user.emailVerified === true){
-      return NextResponse.json(
-        {
-          success: false,
-          message: "User already exists and is verified. Please log in instead.",
-        },
-        { status: 400 },
-      );
-    }
-    // 2. Explicitly send OTP email & catch delivery failures
     try {
       const otpResponse = await auth.api.sendVerificationOTP({
         body: {
@@ -51,22 +63,17 @@ export async function POST(req: Request) {
         headers: req.headers,
       });
 
-      // Better Auth API methods return an object with an error property if the hook throws an APIError
       if (otpResponse && "error" in otpResponse && otpResponse.error) {
-        throw new Error("Failed to send OTP email.");
+        throw new Error("Verification email could not be sent.");
       }
     } catch (emailError: any) {
       console.error("OTP Delivery Error:", emailError);
-
-      // Return a 400 error immediately so the client knows email sending failed
       return NextResponse.json(
         {
           success: false,
-          message:
-            emailError?.message ||
-            "User created, but failed to send verification OTP email.",
+          message: "Your account was created, but we couldn't send the verification email. Please try again.",
         },
-        { status: 400 },
+        { status: 502 },
       );
     }
 
@@ -81,8 +88,15 @@ export async function POST(req: Request) {
   } catch (e: any) {
     console.error("Registration route error:", e);
 
-    const errorMessage = e?.message || "Registration or server error occurred.";
-    const statusCode = e?.statusCode === 422 ? 409 : 500;
+    const alreadyRegistered =
+      e?.statusCode === 422 ||
+      e?.status === 422 ||
+      e?.status === "UNPROCESSABLE_ENTITY";
+    const statusCode = alreadyRegistered ? 409 : 500;
+    const errorMessage =
+      alreadyRegistered
+        ? "This email is already registered. Please sign in instead."
+        : e?.message || "Registration failed. Please try again.";
 
     return NextResponse.json(
       { success: false, message: errorMessage },

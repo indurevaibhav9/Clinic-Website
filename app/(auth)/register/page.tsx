@@ -41,7 +41,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const otpSchema = z.object({
-  otp: z.string().length(6, "OTP must be exactly 6 digits."),
+  otp: z.string().regex(/^\d{6}$/, "Enter the 6-digit verification code."),
 });
 
 type SignUpSchema = z.infer<typeof signUpSchema>;
@@ -170,7 +170,10 @@ export default function SignUpForm() {
       });
 
       if (error) {
-        toast.error(error.message || "Invalid or expired OTP.");
+        toast.error(
+          error.message ||
+            "Invalid or expired verification code. Request a new code and try again.",
+        );
 
         return;
       }
@@ -201,7 +204,9 @@ export default function SignUpForm() {
       });
 
       if (error) {
-        toast.error(error.message || "Failed to resend OTP.");
+        toast.error(
+          "We couldn't send the verification email. Please try again.",
+        );
 
         return;
       }
@@ -221,46 +226,44 @@ export default function SignUpForm() {
   // =========================================================
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center bg-background px-3 py-5 sm:px-4 sm:py-8">
+    <div className="flex min-h-screen w-full items-center justify-center bg-slate-50 px-3 py-5 sm:px-4 sm:py-8">
       {/* Main Card */}
-      <Card className="w-full max-w-lg overflow-hidden border border-border bg-card shadow-xl">
+      <Card className="w-full max-w-lg overflow-hidden border border-slate-200 bg-white shadow-xl rounded-2xl">
         {/* =================================================
           HEADER
       ================================================= */}
 
-        <CardHeader className="space-y-4 border-b bg-card px-4 py-6 sm:px-8 sm:py-7">
+        <CardHeader className="space-y-4 border-b border-slate-100 bg-white px-6 py-6 sm:px-8 sm:py-7">
           {/* Logo / Brand */}
 
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary text-lg font-bold text-primary-foreground shadow-sm">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-blue-600 text-lg font-bold text-white shadow-sm">
               C
             </div>
 
             <div>
-              <p className="text-sm font-semibold text-primary">
+              <p className="text-sm font-semibold text-blue-600">
                 Clinic Portal
               </p>
 
-              <p className="text-xs text-muted-foreground">
-                Secure healthcare access
-              </p>
+              <p className="text-xs text-slate-500">Secure healthcare access</p>
             </div>
           </div>
 
           {/* Title */}
 
           <div className="space-y-1">
-            <CardTitle className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            <CardTitle className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
               {step === "REGISTER" ? "Create an Account" : "Verify Your Email"}
             </CardTitle>
 
-            <CardDescription className="text-sm leading-6 text-muted-foreground">
+            <CardDescription className="text-sm leading-6 text-slate-600">
               {step === "REGISTER" ? (
                 "Enter your details below to create your clinic account."
               ) : (
                 <>
                   We sent a 6-digit verification code to{" "}
-                  <span className="font-medium text-foreground">
+                  <span className="font-medium text-slate-900">
                     {userEmail}
                   </span>
                 </>
@@ -272,14 +275,12 @@ export default function SignUpForm() {
 
           <div className="flex items-center gap-2 pt-1">
             <div
-              className={`h-1.5 flex-1 rounded-full transition-colors ${
-                step === "REGISTER" ? "bg-primary" : "bg-primary"
-              }`}
+              className={`h-1.5 flex-1 rounded-full transition-colors bg-blue-600`}
             />
 
             <div
               className={`h-1.5 flex-1 rounded-full transition-colors ${
-                step === "VERIFY_OTP" ? "bg-primary" : "bg-muted"
+                step === "VERIFY_OTP" ? "bg-blue-600" : "bg-slate-200"
               }`}
             />
           </div>
@@ -289,7 +290,7 @@ export default function SignUpForm() {
           CONTENT
       ================================================= */}
 
-        <CardContent className="px-4 py-6 sm:px-8 sm:py-7">
+        <CardContent className="px-6 py-6 sm:px-8 sm:py-7">
           {step === "REGISTER" ? (
             /* ================= SIGN UP ================= */
 
@@ -307,7 +308,7 @@ export default function SignUpForm() {
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel
                         htmlFor="signup-username"
-                        className="text-sm font-medium text-foreground"
+                        className="text-sm font-medium text-slate-900"
                       >
                         Full Name
                       </FieldLabel>
@@ -315,10 +316,10 @@ export default function SignUpForm() {
                       <Input
                         {...field}
                         id="signup-username"
-                        placeholder="full name"
+                        placeholder="John Doe"
                         aria-invalid={fieldState.invalid}
                         autoComplete="name"
-                        className="h-11 border-input bg-background transition focus:border-primary focus:ring-primary"
+                        className="h-11 border-slate-300 bg-white text-slate-900 transition focus:border-blue-600 focus:ring-blue-600"
                       />
 
                       {fieldState.invalid && (
@@ -337,7 +338,7 @@ export default function SignUpForm() {
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel
                         htmlFor="signup-email"
-                        className="text-sm font-medium text-foreground"
+                        className="text-sm font-medium text-slate-900"
                       >
                         Email Address
                       </FieldLabel>
@@ -349,7 +350,7 @@ export default function SignUpForm() {
                         placeholder="name@example.com"
                         aria-invalid={fieldState.invalid}
                         autoComplete="email"
-                        className="h-11 border-input bg-background transition focus:border-primary focus:ring-primary"
+                        className="h-11 border-slate-300 bg-white text-slate-900 transition focus:border-blue-600 focus:ring-blue-600"
                       />
 
                       {fieldState.invalid && (
@@ -368,7 +369,7 @@ export default function SignUpForm() {
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel
                         htmlFor="signup-phone"
-                        className="text-sm font-medium text-foreground"
+                        className="text-sm font-medium text-slate-900"
                       >
                         Phone Number
                       </FieldLabel>
@@ -377,50 +378,13 @@ export default function SignUpForm() {
                         {...field}
                         id="signup-phone"
                         type="tel"
-                        placeholder="98765...."
-                        aria-invalid={fieldState.invalid}
+                        placeholder="9876543210"
+                        inputMode="tel"
                         autoComplete="tel"
-                        className="h-11 border-input bg-background transition focus:border-primary focus:ring-primary"
+                        maxLength={16}
+                        aria-invalid={fieldState.invalid}
+                        className="h-11 border-slate-300 bg-white text-slate-900 transition focus:border-blue-600 focus:ring-blue-600"
                       />
-
-                      {fieldState.invalid && (
-                        <FieldError errors={[fieldState.error]} />
-                      )}
-                    </Field>
-                  )}
-                />
-
-                {/* ROLE */}
-
-                <Controller
-                  name="role"
-                  control={signUpForm.control}
-                  render={({ field, fieldState }) => (
-                    <Field data-invalid={fieldState.invalid}>
-                      <FieldLabel
-                        htmlFor="signup-role"
-                        className="text-sm font-medium text-foreground"
-                      >
-                        Account Type
-                      </FieldLabel>
-
-                      <Select
-                        value={field.value}
-                        onValueChange={field.onChange}
-                      >
-                        <SelectTrigger
-                          id="signup-role"
-                          className="h-11 border-input bg-background"
-                        >
-                          <SelectValue placeholder="Select account type" />
-                        </SelectTrigger>
-
-                        <SelectContent>
-                          <SelectItem value="NORMAL_USER">
-                            Normal User
-                          </SelectItem>
-                        </SelectContent>
-                      </Select>
 
                       {fieldState.invalid && (
                         <FieldError errors={[fieldState.error]} />
@@ -438,7 +402,7 @@ export default function SignUpForm() {
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel
                         htmlFor="signup-password"
-                        className="text-sm font-medium text-foreground"
+                        className="text-sm font-medium text-slate-900"
                       >
                         Password
                       </FieldLabel>
@@ -451,13 +415,13 @@ export default function SignUpForm() {
                           placeholder="••••••••"
                           aria-invalid={fieldState.invalid}
                           autoComplete="new-password"
-                          className="h-11 border-input bg-background transition focus:border-primary focus:ring-primary"
+                          className="h-11 border-slate-300 bg-white text-slate-900 transition focus:border-blue-600 focus:ring-blue-600 pr-10"
                         />
                         {/* Toggle Button */}
                         <button
-                          type="button" // Always specify type="button" so it doesn't accidentally submit forms
+                          type="button"
                           onClick={togglePasswordVisibility}
-                          className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500 hover:text-gray-700 select-none"
+                          className="absolute inset-y-0 right-0 flex items-center pr-3 text-slate-400 hover:text-slate-600 select-none"
                           aria-label={
                             showPassword ? "Hide password" : "Show password"
                           }
@@ -485,7 +449,7 @@ export default function SignUpForm() {
                     <Field data-invalid={fieldState.invalid}>
                       <FieldLabel
                         htmlFor="signup-confirm-password"
-                        className="text-sm font-medium text-foreground"
+                        className="text-sm font-medium text-slate-900"
                       >
                         Confirm Password
                       </FieldLabel>
@@ -497,7 +461,7 @@ export default function SignUpForm() {
                         placeholder="••••••••"
                         aria-invalid={fieldState.invalid}
                         autoComplete="new-password"
-                        className="h-11 border-input bg-background transition focus:border-primary focus:ring-primary"
+                        className="h-11 border-slate-300 bg-white text-slate-900 transition focus:border-blue-600 focus:ring-blue-600"
                       />
 
                       {fieldState.invalid && (
@@ -516,14 +480,14 @@ export default function SignUpForm() {
                 {/* OTP Icon */}
 
                 <div className="flex justify-center">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 ring-8 ring-primary/5">
+                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-blue-50 ring-8 ring-blue-50/50">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
                       strokeWidth="1.8"
-                      className="h-9 w-9 text-primary"
+                      className="h-9 w-9 text-blue-600"
                     >
                       <rect width="18" height="13" x="3" y="5" rx="2" />
 
@@ -535,7 +499,7 @@ export default function SignUpForm() {
                 {/* OTP Description */}
 
                 <div className="text-center">
-                  <p className="text-sm leading-6 text-muted-foreground">
+                  <p className="text-sm leading-6 text-slate-600">
                     Enter the verification code sent to your email address.
                   </p>
                 </div>
@@ -551,7 +515,7 @@ export default function SignUpForm() {
                       >
                         <FieldLabel
                           htmlFor="otp-input"
-                          className="text-sm font-medium text-foreground"
+                          className="text-sm font-medium text-slate-900"
                         >
                           Verification Code
                         </FieldLabel>
@@ -563,7 +527,7 @@ export default function SignUpForm() {
                           inputMode="numeric"
                           placeholder="123456"
                           autoComplete="one-time-code"
-                          className="h-14 max-w-xs border-input bg-background text-center font-mono text-2xl font-semibold tracking-[0.5em] focus:border-primary focus:ring-primary"
+                          className="h-14 max-w-xs border-slate-300 bg-white text-slate-950 text-center font-mono text-2xl font-semibold tracking-[0.5em] focus:border-blue-600 focus:ring-blue-600"
                           onChange={(e) => {
                             const value = e.target.value
                               .replace(/\D/g, "")
@@ -583,7 +547,7 @@ export default function SignUpForm() {
 
                 {/* Security message */}
 
-                <div className="rounded-lg border border-primary/20 bg-primary/10 px-4 py-3 text-center text-xs leading-5 text-primary">
+                <div className="rounded-lg border border-blue-200 bg-blue-50 px-4 py-3 text-center text-xs leading-5 text-blue-800">
                   Your verification code is valid for 10 minutes. Do not share
                   this code with anyone.
                 </div>
@@ -596,7 +560,7 @@ export default function SignUpForm() {
           FOOTER
       ================================================= */}
 
-        <CardFooter className="flex flex-col gap-4 border-t bg-muted/30 px-4 py-5 sm:px-8">
+        <CardFooter className="flex flex-col gap-4 border-t border-slate-100 bg-slate-50/50 px-6 py-5 sm:px-8">
           {step === "REGISTER" ? (
             <Field className="w-full" orientation="horizontal">
               <Button
@@ -604,7 +568,7 @@ export default function SignUpForm() {
                 variant="outline"
                 onClick={() => signUpForm.reset()}
                 disabled={isLoading}
-                className="h-11 flex-1 border-input"
+                className="h-11 flex-1 border-slate-300 text-slate-700 hover:bg-slate-100"
               >
                 Reset
               </Button>
@@ -613,7 +577,7 @@ export default function SignUpForm() {
                 type="submit"
                 form="signup-form"
                 disabled={isLoading}
-                className="h-11 flex-1 font-medium shadow-sm"
+                className="h-11 flex-1 font-medium bg-blue-600 text-white hover:bg-blue-700 shadow-sm"
               >
                 {isLoading ? "Registering..." : "Create Account"}
               </Button>
@@ -624,7 +588,7 @@ export default function SignUpForm() {
                 type="submit"
                 form="otp-form"
                 disabled={isLoading}
-                className="h-11 w-full font-medium shadow-sm"
+                className="h-11 w-full font-medium bg-blue-600 text-white hover:bg-blue-700 shadow-sm"
               >
                 {isLoading ? "Verifying..." : "Verify Email"}
               </Button>
@@ -639,7 +603,7 @@ export default function SignUpForm() {
                     otpForm.reset();
                   }}
                   disabled={isLoading}
-                  className="text-muted-foreground hover:text-foreground"
+                  className="text-slate-600 hover:text-slate-900"
                 >
                   ← Back to register
                 </Button>
@@ -650,7 +614,7 @@ export default function SignUpForm() {
                   size="sm"
                   onClick={handleResendOtp}
                   disabled={resendTimer > 0 || isLoading}
-                  className="text-primary hover:text-primary/80"
+                  className="text-blue-600 hover:text-blue-700"
                 >
                   {resendTimer > 0
                     ? `Resend in ${resendTimer}s`
@@ -662,7 +626,7 @@ export default function SignUpForm() {
 
           {/* Footer text */}
           {step === "REGISTER" && (
-            <p className="text-gray-600">
+            <p className="text-sm text-slate-600 text-center">
               Already have an account?{" "}
               <Link
                 href="/login"
@@ -672,8 +636,9 @@ export default function SignUpForm() {
               </Link>
             </p>
           )}
-          <p className="text-center text-xs text-muted-foreground">
-            By continuing, you agree to the clinics terms and privacy policy.
+          <p className="text-center text-xs text-slate-500">
+            By continuing, you agree to the clinic`&apos;s terms and privacy
+            policy.
           </p>
         </CardFooter>
       </Card>

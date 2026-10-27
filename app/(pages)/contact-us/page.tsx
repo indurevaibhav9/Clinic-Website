@@ -3,6 +3,9 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import { toast } from "sonner";
+import { contactSchema } from "@/lib/validation";
+import { InlineError } from "@/components/ui/inline-error";
 
 interface LocationInfo {
   city: string;
@@ -66,6 +69,7 @@ export default function ContactPage() {
     type: "success" | "error" | null;
     text: string;
   }>({ type: null, text: "" });
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   // Track which location's contact details are expanded (accordion style)
   // You can also use location.city to store the open ID
@@ -82,10 +86,22 @@ export default function ContactPage() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFieldErrors((previous) => ({ ...previous, [e.target.name]: "" }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const validation = contactSchema.safeParse(formData);
+    if (!validation.success) {
+      const errors = Object.fromEntries(
+        validation.error.issues.map((issue) => [String(issue.path[0]), issue.message]),
+      );
+      setFieldErrors(errors);
+      setStatusMessage({ type: "error", text: "Please correct the highlighted fields." });
+      toast.error(validation.error.issues[0]?.message || "Please correct the highlighted fields.");
+      return;
+    }
+
     setIsSubmitting(true);
     setStatusMessage({ type: null, text: "" });
 
@@ -95,7 +111,7 @@ export default function ContactPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(validation.data),
       });
 
       const data = await response.json();
@@ -108,6 +124,8 @@ export default function ContactPage() {
         type: "success",
         text: "Thank you! Your message has been sent successfully.",
       });
+      setFieldErrors({});
+      toast.success("Your message has been sent successfully.");
 
       // Reset form after successful submission
       setFormData({
@@ -118,11 +136,12 @@ export default function ContactPage() {
         message: "",
       });
     } catch (error: any) {
+      const message = error.message || "An unexpected error occurred. Please try again.";
       setStatusMessage({
         type: "error",
-        text:
-          error.message || "An unexpected error occurred. Please try again.",
+        text: message,
       });
+      toast.error(message);
     } finally {
       setIsSubmitting(false);
     }
@@ -462,48 +481,80 @@ export default function ContactPage() {
               )}
 
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Name*"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border border-transparent rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
-                />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email Address*"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border border-transparent rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
-                />
+                <div>
+                  <input
+                    id="contact-name"
+                    type="text"
+                    name="name"
+                    aria-label="Name"
+                    aria-invalid={Boolean(fieldErrors.name)}
+                    aria-describedby={fieldErrors.name ? "contact-name-error" : undefined}
+                    placeholder="Name*"
+                    required
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 bg-white border border-transparent rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                  />
+                  <InlineError id="contact-name-error" message={fieldErrors.name} />
+                </div>
+                <div>
+                  <input
+                    id="contact-email"
+                    type="email"
+                    name="email"
+                    aria-label="Email address"
+                    aria-invalid={Boolean(fieldErrors.email)}
+                    aria-describedby={fieldErrors.email ? "contact-email-error" : undefined}
+                    placeholder="Email Address*"
+                    required
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 bg-white border border-transparent rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                  />
+                  <InlineError id="contact-email-error" message={fieldErrors.email} />
+                </div>
               </div>
 
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                <input
-                  type="tel"
-                  name="phone"
-                  placeholder="Phone Number"
-                  value={formData.phone}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border border-transparent rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
-                />
-                <input
-                  type="text"
-                  name="subject"
-                  placeholder="Subject"
-                  value={formData.subject}
-                  onChange={handleChange}
-                  className="w-full px-4 py-3 bg-white border border-transparent rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
-                />
+                <div>
+                  <input
+                    id="contact-phone"
+                    type="tel"
+                    name="phone"
+                    aria-label="Phone number"
+                    aria-invalid={Boolean(fieldErrors.phone)}
+                    aria-describedby={fieldErrors.phone ? "contact-phone-error" : undefined}
+                    placeholder="Phone Number"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 bg-white border border-transparent rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                  />
+                  <InlineError id="contact-phone-error" message={fieldErrors.phone} />
+                </div>
+                <div>
+                  <input
+                    id="contact-subject"
+                    type="text"
+                    name="subject"
+                    aria-label="Subject"
+                    aria-invalid={Boolean(fieldErrors.subject)}
+                    aria-describedby={fieldErrors.subject ? "contact-subject-error" : undefined}
+                    placeholder="Subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 bg-white border border-transparent rounded-lg text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+                  />
+                  <InlineError id="contact-subject-error" message={fieldErrors.subject} />
+                </div>
               </div>
 
               <div>
                 <textarea
+                  id="contact-message"
                   name="message"
+                  aria-label="Your message"
+                  aria-invalid={Boolean(fieldErrors.message)}
+                  aria-describedby={fieldErrors.message ? "contact-message-error" : undefined}
                   rows={5}
                   placeholder="Your Message here*"
                   required
@@ -511,6 +562,7 @@ export default function ContactPage() {
                   onChange={handleChange}
                   className="w-full min-w-0 resize-none rounded-lg border border-transparent bg-white px-4 py-3 text-sm text-gray-800 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
+                <InlineError id="contact-message-error" message={fieldErrors.message} />
               </div>
 
               <button

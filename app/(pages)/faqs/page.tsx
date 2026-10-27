@@ -12,6 +12,9 @@ import {
   CheckCircle2,
   Loader2,
 } from "lucide-react";
+import { toast } from "sonner";
+import { faqSchema } from "@/lib/validation";
+import { InlineError } from "@/components/ui/inline-error";
 
 const faqs = [
   {
@@ -52,6 +55,7 @@ export default function FaqPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const toggleFaq = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -64,10 +68,30 @@ export default function FaqPage() {
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setFieldErrors((previous) => ({
+      ...previous,
+      [name === "message" ? "question" : name]: "",
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const validation = faqSchema.safeParse({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      service: formData.service,
+      question: formData.message,
+    });
+    if (!validation.success) {
+      const errors = Object.fromEntries(
+        validation.error.issues.map((issue) => [String(issue.path[0]), issue.message]),
+      );
+      setFieldErrors(errors);
+      toast.error(validation.error.issues[0]?.message || "Please correct the highlighted fields.");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -76,24 +100,21 @@ export default function FaqPage() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          service: formData.service,
-          question: formData.message, // Map message to question
-        }),
+        body: JSON.stringify(validation.data),
       });
 
       if (!response.ok) {
-        throw new Error("Failed to submit the FAQ question.");
+        const result = await response.json();
+        throw new Error(result.error || "Failed to submit the question. Please try again.");
       }
 
       setIsSubmitted(true);
+      setFieldErrors({});
       setFormData({ name: "", email: "", phone: "", service: "", message: "" });
+      toast.success("Your question has been submitted.");
     } catch (error) {
       console.error("Submission error:", error);
-      alert("Failed to send your message. Please try again.");
+      toast.error(error instanceof Error ? error.message : "Failed to submit your question. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -350,8 +371,11 @@ export default function FaqPage() {
                       onChange={handleChange}
                       placeholder="Enter your name"
                       required
+                      aria-invalid={Boolean(fieldErrors.name)}
+                      aria-describedby={fieldErrors.name ? "faq-name-error" : undefined}
                       className="h-12 w-full rounded-lg border border-gray-200 bg-white px-4 text-sm text-gray-800 outline-none transition-all placeholder:text-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                     />
+                    <InlineError id="faq-name-error" message={fieldErrors.name} />
                   </div>
 
                   <div>
@@ -369,8 +393,11 @@ export default function FaqPage() {
                       onChange={handleChange}
                       placeholder="Enter your email"
                       required
+                      aria-invalid={Boolean(fieldErrors.email)}
+                      aria-describedby={fieldErrors.email ? "faq-email-error" : undefined}
                       className="h-12 w-full rounded-lg border border-gray-200 bg-white px-4 text-sm text-gray-800 outline-none transition-all placeholder:text-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                     />
+                    <InlineError id="faq-email-error" message={fieldErrors.email} />
                   </div>
                 </div>
 
@@ -390,8 +417,12 @@ export default function FaqPage() {
                       value={formData.phone}
                       onChange={handleChange}
                       placeholder="985262..."
+                      required
+                      aria-invalid={Boolean(fieldErrors.phone)}
+                      aria-describedby={fieldErrors.phone ? "faq-phone-error" : undefined}
                       className="h-12 w-full rounded-lg border border-gray-200 bg-gray-50 px-4 text-sm text-gray-800 outline-none transition-all placeholder:text-gray-400 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-100"
                     />
+                    <InlineError id="faq-phone-error" message={fieldErrors.phone} />
                   </div>
 
                   <div>
@@ -406,6 +437,9 @@ export default function FaqPage() {
                       name="service"
                       value={formData.service}
                       onChange={handleChange}
+                      required
+                      aria-invalid={Boolean(fieldErrors.service)}
+                      aria-describedby={fieldErrors.service ? "faq-service-error" : undefined}
                       className="h-12 w-full rounded-lg border border-gray-200 bg-white px-4 text-sm text-gray-700 outline-none transition-all focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                     >
                       <option value="" disabled>
@@ -422,6 +456,7 @@ export default function FaqPage() {
                         Online Consultation
                       </option>
                     </select>
+                    <InlineError id="faq-service-error" message={fieldErrors.service} />
                   </div>
                 </div>
 
@@ -441,8 +476,11 @@ export default function FaqPage() {
                     placeholder="Tell us how we can help you..."
                     rows={5}
                     required
+                    aria-invalid={Boolean(fieldErrors.question)}
+                    aria-describedby={fieldErrors.question ? "faq-question-error" : undefined}
                     className="w-full resize-none rounded-lg border border-gray-200 bg-white px-4 py-3 text-sm text-gray-800 outline-none transition-all placeholder:text-gray-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
                   />
+                  <InlineError id="faq-question-error" message={fieldErrors.question} />
                 </div>
 
                 {/* Submit */}

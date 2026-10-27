@@ -453,7 +453,9 @@ export default function ChatbotPage() {
                 onKeyDown={handleKeyDown}
                 placeholder="Ask your question..."
                 aria-label="Type your message"
+                required
                 rows={1}
+                minLength={1}
                 maxLength={4000}
                 disabled={isLoading}
                 className="max-h-[140px] min-h-[44px] flex-1 resize-none bg-transparent px-3 py-3 text-sm leading-5 text-slate-800 outline-none placeholder:text-slate-400 disabled:opacity-60"

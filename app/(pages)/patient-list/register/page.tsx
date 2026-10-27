@@ -2,6 +2,8 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import { patientSchema } from "@/lib/validation";
+import { InlineError } from "@/components/ui/inline-error";
 
 type PatientResponse = {
   success: boolean;
@@ -26,6 +28,7 @@ export default function RegisterPatientPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -33,13 +36,19 @@ export default function RegisterPatientPage() {
     setError("");
     setSuccess("");
 
-    if (!name.trim() || !email.trim() || !phone.trim()) {
-      setError("Please fill in all required fields.");
+    const validation = patientSchema.safeParse({ name, email, phone });
+    if (!validation.success) {
+      const errors = Object.fromEntries(
+        validation.error.issues.map((issue) => [String(issue.path[0]), issue.message]),
+      );
+      setFieldErrors(errors);
+      setError("Please correct the highlighted fields.");
       return;
     }
 
     try {
       setLoading(true);
+      setFieldErrors({});
 
       const response = await fetch("/api/patients", {
         method: "POST",
@@ -47,9 +56,7 @@ export default function RegisterPatientPage() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: name.trim(),
-          email: email.trim(),
-          phone: phone.trim(),
+          ...validation.data,
           doctorId,
         }),
       });
@@ -146,8 +153,11 @@ export default function RegisterPatientPage() {
                 placeholder="Enter patient's full name"
                 required
                 maxLength={100}
+                aria-invalid={Boolean(fieldErrors.name)}
+                aria-describedby={fieldErrors.name ? "patient-name-error" : undefined}
                 className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
+              <InlineError id="patient-name-error" message={fieldErrors.name} />
             </div>
 
             <div>
@@ -167,8 +177,11 @@ export default function RegisterPatientPage() {
                 onChange={(event) => setEmail(event.target.value)}
                 placeholder="patient@example.com"
                 required
+                aria-invalid={Boolean(fieldErrors.email)}
+                aria-describedby={fieldErrors.email ? "patient-email-error" : undefined}
                 className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
+              <InlineError id="patient-email-error" message={fieldErrors.email} />
             </div>
 
             <div>
@@ -189,8 +202,11 @@ export default function RegisterPatientPage() {
                 placeholder="Enter phone number"
                 required
                 maxLength={20}
+                aria-invalid={Boolean(fieldErrors.phone)}
+                aria-describedby={fieldErrors.phone ? "patient-phone-error" : undefined}
                 className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
               />
+              <InlineError id="patient-phone-error" message={fieldErrors.phone} />
             </div>
 
             <button

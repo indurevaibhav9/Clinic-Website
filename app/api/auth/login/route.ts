@@ -2,6 +2,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { signInSchema } from "@/lib/validations/auth";
+import { db } from "@/lib/db";
 
 export async function POST(req: Request) {
   try {
@@ -17,6 +18,17 @@ export async function POST(req: Request) {
     }
 
     const { email, password } = validation.data;
+
+    const user = await db.collection("user").findOne(
+      { email: email.toLowerCase() },
+      { projection: { _id: 1 } },
+    );
+    if (!user) {
+      return NextResponse.json(
+        { success: false, message: "User not registered. Please create an account first." },
+        { status: 404 },
+      );
+    }
 
     // 2. Authenticate user with Better Auth
     const authResult = await auth.api.signInEmail({

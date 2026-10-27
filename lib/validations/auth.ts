@@ -1,24 +1,24 @@
 import * as z from "zod";
 
 export const signUpSchema = z.object({
-    name: z.string().min(3, "Name must be at least 3 characters long"),
-    email: z.string().email("Invalid email address"),
-    password: z.string().min(6, "Password must be at least 6 characters long"),
-    confirmPassword: z.string(),
-    role: z.enum(["ADMIN", "NORMAL_USER"], "Role must be either ADMIN or NORMAL_USER"),
-    phone_no: z.string().regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number format"),
+    name: z.string().trim().min(3, "Name must be at least 3 characters long").max(100, "Name cannot exceed 100 characters"),
+    email: z.string().trim().email("Enter a valid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters long"),
+    confirmPassword: z.string().min(1, "Please confirm your password"),
+    role: z.literal("NORMAL_USER"),
+    phone_no: z.string().trim().regex(/^\+?[1-9]\d{7,14}$/, "Enter a valid phone number, including country code if needed"),
 }).refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"]
 })
 
 export const verifyOtpSchema = z.object({
-    email: z.string().email("Invalid email address"),
-    otp: z.string().length(6, "OTP must be 6 characters long")
+    email: z.string().trim().email("Enter a valid email address"),
+    otp: z.string().regex(/^\d{6}$/, "Enter the 6-digit verification code")
 })
 
 export const signInSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
+  email: z.string().trim().email("Enter a valid email address"),
   password: z.string().min(1, "Password is required"),
 });
 

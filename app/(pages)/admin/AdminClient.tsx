@@ -15,6 +15,8 @@ import {
   ShieldAlert,
 } from "lucide-react";
 import { toast } from "sonner";
+import { communicateSchema } from "@/lib/validation";
+import { InlineError } from "@/components/ui/inline-error";
 
 // --- TYPES ALIGNED WITH DB SCHEMAS ---
 interface Appointment {
@@ -90,6 +92,7 @@ export default function AdminClient() {
     message: "",
   });
   const [commSubmitting, setCommSubmitting] = useState(false);
+  const [commFieldErrors, setCommFieldErrors] = useState<Record<string, string>>({});
 
   // Role Guard Check
   const isAdmin =
@@ -206,10 +209,8 @@ export default function AdminClient() {
 
   const handleSendCommunication = async (e: React.FormEvent) => {
     e.preventDefault();
-    setCommSubmitting(true);
 
-    try {
-      const payload =
+    const rawPayload =
         commType === "whatsapp"
           ? {
               type: "whatsapp",
@@ -225,15 +226,29 @@ export default function AdminClient() {
               message: commForm.message,
             };
 
+    const validation = communicateSchema.safeParse(rawPayload);
+    if (!validation.success) {
+      const errors = Object.fromEntries(
+        validation.error.issues.map((issue) => [String(issue.path[0]), issue.message]),
+      );
+      setCommFieldErrors(errors);
+      toast.error(validation.error.issues[0]?.message || "Please correct the highlighted fields.");
+      return;
+    }
+
+    setCommSubmitting(true);
+
+    try {
       const res = await fetch("/api/admin/communicate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(validation.data),
       });
 
-      if (!res.ok) throw new Error("Failed to send message");
-
       const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to send message. Please try again.");
+      }
 
       if (commType === "whatsapp" && data.whatsappUrl) {
         toast.success("WhatsApp link generated! Opening...");
@@ -249,6 +264,7 @@ export default function AdminClient() {
         subject: "",
         message: "",
       });
+      setCommFieldErrors({});
     } catch (err: any) {
       toast.error(err.message || "Communication failed");
     } finally {
@@ -827,86 +843,111 @@ export default function AdminClient() {
 
               <form onSubmit={handleSendCommunication} className="space-y-4">
                 <div>
-                  <label className="mb-1 block text-xs font-semibold text-gray-700">
+                  <label htmlFor="comm-patient-name" className="mb-1 block text-xs font-semibold text-gray-700">
                     Patient Name
                   </label>
                   <input
+                    id="comm-patient-name"
                     type="text"
                     required
                     value={commForm.patientName}
-                    onChange={(e) =>
-                      setCommForm({ ...commForm, patientName: e.target.value })
-                    }
+                    aria-invalid={Boolean(commFieldErrors.patientName)}
+                    aria-describedby={commFieldErrors.patientName ? "comm-patient-name-error" : undefined}
+                    onChange={(e) => {
+                      setCommForm({ ...commForm, patientName: e.target.value });
+                      setCommFieldErrors((previous) => ({ ...previous, patientName: "" }));
+                    }}
                     placeholder="e.g. Aarav Sharma"
                     className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                   />
+                  <InlineError id="comm-patient-name-error" message={commFieldErrors.patientName} />
                 </div>
 
                 {commType === "whatsapp" ? (
                   <div>
-                    <label className="mb-1 block text-xs font-semibold text-gray-700">
+                    <label htmlFor="comm-phone" className="mb-1 block text-xs font-semibold text-gray-700">
                       Phone Number (with Country Code)
                     </label>
                     <input
                       type="text"
+                      id="comm-phone"
                       required
                       value={commForm.phone}
-                      onChange={(e) =>
-                        setCommForm({ ...commForm, phone: e.target.value })
-                      }
+                      aria-invalid={Boolean(commFieldErrors.phone)}
+                      aria-describedby={commFieldErrors.phone ? "comm-phone-error" : undefined}
+                      onChange={(e) => {
+                        setCommForm({ ...commForm, phone: e.target.value });
+                        setCommFieldErrors((previous) => ({ ...previous, phone: "" }));
+                      }}
                       placeholder="e.g. 919876543210"
                       className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                     />
+                    <InlineError id="comm-phone-error" message={commFieldErrors.phone} />
                   </div>
                 ) : (
                   <>
                     <div>
-                      <label className="mb-1 block text-xs font-semibold text-gray-700">
+                      <label htmlFor="comm-email" className="mb-1 block text-xs font-semibold text-gray-700">
                         Email Address
                       </label>
                       <input
                         type="email"
+                        id="comm-email"
                         required
                         value={commForm.email}
-                        onChange={(e) =>
-                          setCommForm({ ...commForm, email: e.target.value })
-                        }
+                        aria-invalid={Boolean(commFieldErrors.email)}
+                        aria-describedby={commFieldErrors.email ? "comm-email-error" : undefined}
+                        onChange={(e) => {
+                          setCommForm({ ...commForm, email: e.target.value });
+                          setCommFieldErrors((previous) => ({ ...previous, email: "" }));
+                        }}
                         placeholder="e.g. aarav@example.com"
                         className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                       />
+                      <InlineError id="comm-email-error" message={commFieldErrors.email} />
                     </div>
                     <div>
-                      <label className="mb-1 block text-xs font-semibold text-gray-700">
+                      <label htmlFor="comm-subject" className="mb-1 block text-xs font-semibold text-gray-700">
                         Subject
                       </label>
                       <input
                         type="text"
+                        id="comm-subject"
                         required
                         value={commForm.subject}
-                        onChange={(e) =>
-                          setCommForm({ ...commForm, subject: e.target.value })
-                        }
+                        aria-invalid={Boolean(commFieldErrors.subject)}
+                        aria-describedby={commFieldErrors.subject ? "comm-subject-error" : undefined}
+                        onChange={(e) => {
+                          setCommForm({ ...commForm, subject: e.target.value });
+                          setCommFieldErrors((previous) => ({ ...previous, subject: "" }));
+                        }}
                         placeholder="e.g. Appointment Confirmation"
                         className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                       />
+                      <InlineError id="comm-subject-error" message={commFieldErrors.subject} />
                     </div>
                   </>
                 )}
 
                 <div>
-                  <label className="mb-1 block text-xs font-semibold text-gray-700">
+                  <label htmlFor="comm-message" className="mb-1 block text-xs font-semibold text-gray-700">
                     Message
                   </label>
                   <textarea
+                    id="comm-message"
                     rows={4}
                     required
                     value={commForm.message}
-                    onChange={(e) =>
-                      setCommForm({ ...commForm, message: e.target.value })
-                    }
+                    aria-invalid={Boolean(commFieldErrors.message)}
+                    aria-describedby={commFieldErrors.message ? "comm-message-error" : undefined}
+                    onChange={(e) => {
+                      setCommForm({ ...commForm, message: e.target.value });
+                      setCommFieldErrors((previous) => ({ ...previous, message: "" }));
+                    }}
                     placeholder="Type your message here..."
                     className="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
                   />
+                  <InlineError id="comm-message-error" message={commFieldErrors.message} />
                 </div>
 
                 <button

@@ -1,17 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // app/api/admin/communicate/route.ts
 import { NextResponse } from "next/server";
-import { z } from "zod";
-
-const communicateSchema = z.object({
-  type: z.enum(["whatsapp", "email"]),
-  phone: z.string().optional(),
-  email: z.string().email().optional(),
-  patientName: z.string(),
-  message: z.string().min(1, "Message content is required"),
-  subject: z.string().optional(),
-});
-
+import { communicateSchema } from "@/lib/validation";
 import { sendTransactionalEmail } from "@/lib/email";
 import { verifyAdmin } from "@/lib/auth-guard-serverside";
 
@@ -126,7 +116,7 @@ export async function POST(req: Request) {
       { error: "Invalid communication type." },
       { status: 400 },
     );
-  } catch (error: any) {
+  } catch {
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 },

@@ -3,37 +3,25 @@ import { NextRequest, NextResponse } from "next/server";
 import { clientPromise } from "@/lib/db";
 import { ObjectId } from "mongodb";
 import { publishPatientRegistered } from "@/lib/patient-events";
+import { patientSchema } from "@/lib/validation";
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const name = String(body.name ?? "").trim();
-    const email = String(body.email ?? "").trim().toLowerCase();
-    const phone = String(body.phone ?? "").trim();
+    const validation = patientSchema.safeParse(body);
+    if (!validation.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Please correct the patient details.",
+          details: validation.error.flatten().fieldErrors,
+        },
+        { status: 400 },
+      );
+    }
+
+    const { name, phone } = validation.data;
+    const email = validation.data.email.toLowerCase();
     const doctorId = String(body.doctorId ?? "").trim();
-
-    // Validate required fields
-    if (!name || !email || !phone) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Name, email and phone are required.",
-        },
-        { status: 400 }
-      );
-    }
-
-    // Validate email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Please provide a valid email address.",
-        },
-        { status: 400 }
-      );
-    }
 
     // Connect to MongoDB and select the test database
     const client = await clientPromise;

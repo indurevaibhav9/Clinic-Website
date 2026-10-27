@@ -4,6 +4,8 @@ import { authClient } from "@/lib/auth-client";
 import { ChevronDown, Loader2 } from "lucide-react";
 import React, { Dispatch, SetStateAction, Suspense, useState } from "react";
 import { toast } from "sonner";
+import { appointmentSchema } from "@/lib/validation";
+import { InlineError } from "@/components/ui/inline-error";
 import { LoginRequiredDialog } from "./LoginRequiredDialogue";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
@@ -19,6 +21,7 @@ function AppointmentFormContent({ setShowForm }: AppointmentFormProps) {
 
   const [open, setOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   const checkLogin = () => {
     if (!session || !session.user) {
@@ -52,8 +55,6 @@ function AppointmentFormContent({ setShowForm }: AppointmentFormProps) {
 
     if (!checkLogin()) return;
 
-    setIsSubmitting(true);
-
     const formData = new FormData(e.currentTarget);
     const rawData = Object.fromEntries(formData.entries());
 
@@ -68,13 +69,25 @@ function AppointmentFormContent({ setShowForm }: AppointmentFormProps) {
       address: String(rawData.address || ""),
     };
 
+    const validation = appointmentSchema.safeParse(payload);
+    if (!validation.success) {
+      const errors = Object.fromEntries(
+        validation.error.issues.map((issue) => [String(issue.path[0]), issue.message]),
+      );
+      setFieldErrors(errors);
+      toast.error(validation.error.issues[0]?.message || "Please correct the highlighted fields.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
     try {
       const response = await fetch("/api/appointments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(validation.data),
       });
 
       if (!response.ok) {
@@ -82,10 +95,11 @@ function AppointmentFormContent({ setShowForm }: AppointmentFormProps) {
       }
 
       toast.success("Appointment booked successfully!");
+      setFieldErrors({});
       setShowForm(false);
     } catch (error) {
       console.error("Booking error:", error);
-      toast.error("Failed to book appointment. Please try again.");
+      toast.error(error instanceof Error ? error.message : "Failed to book appointment. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -104,10 +118,16 @@ function AppointmentFormContent({ setShowForm }: AppointmentFormProps) {
             onClick={checkLogin}
             type="text"
             name="fullName"
+            aria-label="Full name"
+            aria-invalid={Boolean(fieldErrors.patientName)}
+            aria-describedby={fieldErrors.patientName ? "appointment-name-error" : undefined}
+            minLength={2}
+            maxLength={100}
             required
             placeholder="Your Full Name*"
             className="w-full rounded-md bg-gray-100 px-4 py-3 text-xs text-gray-800 outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500"
           />
+          <InlineError id="appointment-name-error" message={fieldErrors.patientName} />
         </div>
 
         {/* Email Address */}
@@ -115,10 +135,14 @@ function AppointmentFormContent({ setShowForm }: AppointmentFormProps) {
           <input
             type="email"
             name="email"
+            aria-label="Email address"
+            aria-invalid={Boolean(fieldErrors.email)}
+            aria-describedby={fieldErrors.email ? "appointment-email-error" : undefined}
             required
             placeholder="Email Address*"
             className="w-full rounded-md bg-gray-100 px-4 py-3 text-xs text-gray-800 outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500"
           />
+          <InlineError id="appointment-email-error" message={fieldErrors.email} />
         </div>
 
         {/* Phone No */}
@@ -126,10 +150,14 @@ function AppointmentFormContent({ setShowForm }: AppointmentFormProps) {
           <input
             type="tel"
             name="phone_no"
+            aria-label="Phone number"
+            aria-invalid={Boolean(fieldErrors.phone)}
+            aria-describedby={fieldErrors.phone ? "appointment-phone-error" : undefined}
             required
             placeholder="985625...*"
             className="w-full rounded-md bg-gray-100 px-4 py-3 text-xs text-gray-800 outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500"
           />
+          <InlineError id="appointment-phone-error" message={fieldErrors.phone} />
         </div>
 
         {/* Date */}
@@ -140,8 +168,11 @@ function AppointmentFormContent({ setShowForm }: AppointmentFormProps) {
             required
             min={new Date().toISOString().split("T")[0]}
             aria-label="Preferred Date"
+            aria-invalid={Boolean(fieldErrors.date)}
+            aria-describedby={fieldErrors.date ? "appointment-date-error" : undefined}
             className="w-full min-w-0 rounded-md bg-gray-100 px-4 py-3 text-xs text-gray-800 outline-none focus:ring-2 focus:ring-blue-500"
           />
+          <InlineError id="appointment-date-error" message={fieldErrors.date} />
         </div>
 
         {/* Time */}
@@ -150,6 +181,8 @@ function AppointmentFormContent({ setShowForm }: AppointmentFormProps) {
             name="preferredTime"
             required
             aria-label="Preferred Time"
+            aria-invalid={Boolean(fieldErrors.time)}
+            aria-describedby={fieldErrors.time ? "appointment-time-error" : undefined}
             className="w-full min-w-0 rounded-md bg-gray-100 px-4 py-3 text-xs text-gray-800 outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">Select Time</option>
@@ -165,6 +198,7 @@ function AppointmentFormContent({ setShowForm }: AppointmentFormProps) {
             <option value="14:30">02:30 PM</option>
             <option value="15:00">03:00 PM</option>
           </select>
+          <InlineError id="appointment-time-error" message={fieldErrors.time} />
         </div>
 
         {/* Type of Services */}
@@ -173,6 +207,9 @@ function AppointmentFormContent({ setShowForm }: AppointmentFormProps) {
             name="service"
             required
             defaultValue=""
+            aria-label="Type of service"
+            aria-invalid={Boolean(fieldErrors.service)}
+            aria-describedby={fieldErrors.service ? "appointment-service-error" : undefined}
             className="w-full min-w-0 appearance-none rounded-md bg-gray-100 px-4 py-3 pr-10 text-xs text-gray-800 outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="" disabled>
@@ -182,6 +219,7 @@ function AppointmentFormContent({ setShowForm }: AppointmentFormProps) {
             <option value="Neurology">Neurology</option>
             <option value="Pediatrics">Pediatrics</option>
           </select>
+          <InlineError id="appointment-service-error" message={fieldErrors.service} />
 
           <div className="pointer-events-none absolute right-0 top-0 flex h-full w-10 items-center justify-center rounded-r-md bg-emerald-500 text-white">
             <ChevronDown className="h-4 w-4" />
@@ -193,10 +231,16 @@ function AppointmentFormContent({ setShowForm }: AppointmentFormProps) {
           <input
             type="text"
             name="address"
+            aria-label="Address"
+            aria-invalid={Boolean(fieldErrors.address)}
+            aria-describedby={fieldErrors.address ? "appointment-address-error" : undefined}
+            minLength={5}
+            maxLength={300}
             required
             placeholder="Address*"
             className="w-full rounded-md bg-gray-100 px-4 py-3 text-xs text-gray-800 outline-none placeholder:text-gray-400 focus:ring-2 focus:ring-blue-500"
           />
+          <InlineError id="appointment-address-error" message={fieldErrors.address} />
         </div>
 
         {/* Submit Button */}

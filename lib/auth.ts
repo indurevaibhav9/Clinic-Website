@@ -79,35 +79,35 @@ export const auth = betterAuth({
   // --------------------------------
   // Email Verification
   // --------------------------------
-  emailVerification: {
-    sendVerificationEmail: async ({ user, url }) => {
-      await sendTransactionalEmail({
-        senderName: "Clinic",
-        to: user.email,
-        subject: "Verify your email address",
+  // emailVerification: {
+  //   sendVerificationEmail: async ({ user, url }) => {
+  //     await sendTransactionalEmail({
+  //       senderName: "Clinic",
+  //       to: user.email,
+  //       subject: "Verify your email address",
 
-        html: `
-          <div>
-            <h2>Verify your email address</h2>
+  //       html: `
+  //         <div>
+  //           <h2>Verify your email address</h2>
 
-            <p>
-              Please click the link below to verify your email address.
-            </p>
+  //           <p>
+  //             Please click the link below to verify your email address.
+  //           </p>
 
-            <p>
-              <a href="${url}">
-                Verify Email
-              </a>
-            </p>
+  //           <p>
+  //             <a href="${url}">
+  //               Verify Email
+  //             </a>
+  //           </p>
 
-            <p>
-              If you did not request this, you can safely ignore this email.
-            </p>
-          </div>
-        `,
-      });
-    },
-  },
+  //           <p>
+  //             If you did not request this, you can safely ignore this email.
+  //           </p>
+  //         </div>
+  //       `,
+  //     });
+  //   },
+  // },
 
   // --------------------------------
   // Plugins
